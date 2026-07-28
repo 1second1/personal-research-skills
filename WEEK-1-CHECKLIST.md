@@ -12,6 +12,11 @@
 - [x] 兼容性说明：Codex、Claude Code、普通 Markdown、未实现 Runtime
 - [x] 贡献规范：Skill 目录、样例、评测、风险和变更记录
 - [x] 评估入口：第一阶段指标和基线任务
+- [x] `paper-reading` Skill：契约、合成输入、预期证据卡片与压力场景
+- [x] 本地校验器：`scripts/validate_repository.py`
+- [x] 证据卡片评测器：`scripts/evaluate_paper_reading.py`
+- [x] 自动测试：`tests/test_validate_repository.py` 与 `tests/test_evaluate_paper_reading.py`
+- [x] GitHub 协作文件：CI、Issue 表单、PR 模板、贡献与安全政策
 
 ## 本周验收标准
 
@@ -20,7 +25,10 @@
 - [x] Profile 可以被独立阅读，不依赖聊天上下文
 - [x] README 没有把未实现的 Runtime 描述为已经存在
 - [x] 第一周没有创建未经测试的生产 Skill
+- [x] `python -m unittest discover -s tests -v`：4 个测试通过
+- [x] `python scripts/validate_repository.py`：仓库契约通过
+- [x] `python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml`：合成 Demo 通过
 
 ## 下一周入口
 
-下一周进入 `paper-reading` Skill 的 RED 阶段：先准备压力场景并观察没有 Skill 时的基线行为，再编写最小 `SKILL.md`，最后运行同一组场景验证改进。
+下一周对 `paper-reading` 做独立 Agent 前向测试：运行 `skills/paper-reading/evals/pressure-scenarios.md` 中的三个场景，记录没有 Skill 和加载 Skill 时的原始输出，再决定是否扩展到 `codebase-analysis`。
