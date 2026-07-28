@@ -1,0 +1,36 @@
+name: paper-reading
+version: 0.1.0
+purpose: Produce an evidence-grounded research evidence card from supplied paper text.
+
+inputs:
+  - name: paper_text
+    required: true
+    type: markdown_or_text
+  - name: research_context
+    required: false
+    type: markdown_or_text
+  - name: source_locations
+    required: false
+    type: mapping
+
+outputs:
+  - problem
+  - evidence
+  - inferences
+  - assumptions
+  - boundaries
+  - connections
+  - next_actions
+
+constraints:
+  - Do not present inferences as source facts.
+  - Do not invent page, section, or experiment locations.
+  - Mark unsupported conclusions and information gaps explicitly.
+  - Make next_actions falsifiable and measurable.
+
+evaluation:
+  - factual_consistency
+  - evidence_coverage
+  - fact_inference_separation
+  - boundary_analysis
+  - actionability

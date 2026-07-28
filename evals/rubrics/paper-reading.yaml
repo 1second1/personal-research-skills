@@ -1,0 +1,13 @@
+required_headings:
+  - "## Problem"
+  - "## Evidence"
+  - "## Inferences"
+  - "## Assumptions"
+  - "## Boundaries"
+  - "## Connections"
+  - "## Next Actions"
+required_markers:
+  - "[Source:"
+  - "Inference:"
+  - "unsupported"
+  - "measure inference time"
