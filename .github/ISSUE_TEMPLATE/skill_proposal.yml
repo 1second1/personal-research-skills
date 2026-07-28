@@ -1,0 +1,39 @@
+name: Skill proposal
+description: Propose a research Skill with a contract and an evaluation boundary.
+title: "skill: "
+labels: [skill]
+body:
+  - type: textarea
+    id: trigger
+    attributes:
+      label: Trigger and research problem
+      description: State when an agent should use this Skill.
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Input and output contract
+    validations:
+      required: true
+  - type: textarea
+    id: evaluation
+    attributes:
+      label: Evaluation data and pass condition
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Failure boundaries and risks
+    validations:
+      required: true
+  - type: checkboxes
+    id: methodology
+    attributes:
+      label: Methodology layer affected
+      options:
+        - label: Values
+        - label: Thinking / Inquiry Pattern
+        - label: Workflow
+        - label: Preference

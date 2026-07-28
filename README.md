@@ -68,6 +68,20 @@ Skill 不只是 Prompt，而是继承这套方法的、具有输入输出边界�
 - 生产级 Runtime
 - 自动 Skill 演化
 
+## Quickstart
+
+不需要 API Key 或私有数据。克隆仓库后运行：
+
+```bash
+python -m unittest discover -s tests -v
+python scripts/validate_repository.py
+python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml
+```
+
+第一个命令验证脚本行为；第二个命令检查仓库和 Skill 契约；第三个命令检查合成证据卡片是否满足公开 Rubric。
+
+可从 [paper-reading Skill](skills/paper-reading/SKILL.md)、[合成输入](skills/paper-reading/examples/input.md)、[期望输出](skills/paper-reading/examples/expected-output.md) 和 [公开 Rubric](evals/rubrics/paper-reading.yaml) 开始阅读。
+
 ## 仓库结构
 
 ```text
@@ -122,6 +136,8 @@ skills/<skill-name>/
 
 详见 [`docs/contributing.md`](docs/contributing.md)。
 
+提交前请阅读根目录的 [CONTRIBUTING.md](CONTRIBUTING.md)、[安全政策](SECURITY.md)、[行为准则](CODE_OF_CONDUCT.md) 与 [发布清单](RELEASE.md)。
+
 ## 设计文档
 
 - [方法论基线](docs/methodology.md)
@@ -135,4 +151,4 @@ skills/<skill-name>/
 
 ## 许可证
 
-当前仍处于实验阶段，许可证将在第一版可运行 Skills 发布前确定。
+本项目采用 [MIT License](LICENSE)。
