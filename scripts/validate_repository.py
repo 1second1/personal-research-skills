@@ -9,7 +9,7 @@ from pathlib import Path
 
 REQUIRED_PATHS = (
     "README.md",
-    "profiles/researcher-example.yaml",
+    "profiles/reasoning-dna.yaml",
     "skills/paper-reading/SKILL.md",
     "skills/paper-reading/contract.yaml",
     "skills/paper-reading/examples/input.md",
@@ -17,6 +17,13 @@ REQUIRED_PATHS = (
     "evals/rubrics/paper-reading.yaml",
     "evals/fixtures/paper-reading-demo/source.md",
     "evals/fixtures/paper-reading-demo/evidence-card.md",
+    "skills/research-question/SKILL.md",
+    "skills/research-question/contract.yaml",
+    "skills/research-question/examples/input.md",
+    "skills/research-question/examples/expected-output.md",
+    "research_skills/dna.py",
+    "research_skills/compose.py",
+    "scripts/run_skill.py",
 )
 
 SKILL_FRONTMATTER_KEYS = ("name:", "description:")

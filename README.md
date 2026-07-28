@@ -51,22 +51,21 @@ Skill 不只是 Prompt，而是继承这套方法的、具有输入输出边界�
 
 ## 当前状态
 
-`v0.1 — Week 1: 方法论基线与仓库骨架`
+`v0.2 — Week 2: Reasoning DNA Runtime 与继承型 Skill`
 
 当前已完成：
 
-- 个人研究方法 Profile
-- 项目边界与非目标
-- Agent / Skill 职责划分
-- 贡献规范
-- 评估原则草案
+- `profiles/reasoning-dna.yaml`：个人 Values、Inquiry Pattern、Decision Rules、Workflow 与 Preference
+- 标准库实现的 DNA 加载与 Skill 组合运行时
+- `paper-reading`：证据导向的论文阅读 Skill
+- `research-question`：可证伪研究问题 Skill
+- CLI 与自动化测试
+- GitHub Actions、贡献规范与公开评测入口
 
 尚未完成：
 
-- 可运行的五个科研 Skill
-- 自动评测脚本
-- 生产级 Runtime
 - 自动 Skill 演化
+- API、PDF 解析、向量检索与实验执行
 
 ## Quickstart
 
@@ -76,11 +75,19 @@ Skill 不只是 Prompt，而是继承这套方法的、具有输入输出边界�
 python -m unittest discover -s tests -v
 python scripts/validate_repository.py
 python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml
+python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
+python scripts/run_skill.py research-question skills/research-question/examples/input.md
 ```
 
 第一个命令验证脚本行为；第二个命令检查仓库和 Skill 契约；第三个命令检查合成证据卡片是否满足公开 Rubric。
 
-可从 [paper-reading Skill](skills/paper-reading/SKILL.md)、[合成输入](skills/paper-reading/examples/input.md)、[期望输出](skills/paper-reading/examples/expected-output.md) 和 [公开 Rubric](evals/rubrics/paper-reading.yaml) 开始阅读。
+可从 [Reasoning DNA](profiles/reasoning-dna.yaml)、[paper-reading Skill](skills/paper-reading/SKILL.md)、[research-question Skill](skills/research-question/SKILL.md) 和 [公开 Rubric](evals/rubrics/paper-reading.yaml) 开始阅读。
+
+CLI 会输出“个人 Reasoning DNA + 目标 Skill”的组合规范。它目前不调用模型，作用是验证继承关系和生成可直接交给 Codex 或 Claude Code 的执行上下文：
+
+```bash
+python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
+```
 
 ## 仓库结构
 
@@ -88,7 +95,15 @@ python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evide
 personal-research-skills/
 ├── README.md
 ├── profiles/
-│   └── researcher-example.yaml
+│   └── reasoning-dna.yaml
+├── research_skills/
+│   ├── dna.py
+│   └── compose.py
+├── scripts/
+│   └── run_skill.py
+├── skills/
+│   ├── paper-reading/
+│   └── research-question/
 ├── docs/
 │   ├── methodology.md
 │   ├── compatibility.md

@@ -1,0 +1,26 @@
+name: research-question
+version: 0.1.0
+purpose: Convert an underspecified research idea into a bounded and falsifiable question.
+
+inputs:
+  - name: research_idea
+    required: true
+    type: markdown_or_text
+  - name: research_context
+    required: false
+    type: markdown_or_text
+
+outputs:
+  - question
+  - motivation
+  - hypothesis
+  - variables
+  - assumptions
+  - boundaries
+  - falsification
+  - next_actions
+
+constraints:
+  - The question must include an observable outcome.
+  - Claims without supplied evidence must be marked as unsupported.
+  - Next actions must have artifacts and measurable stopping conditions.
