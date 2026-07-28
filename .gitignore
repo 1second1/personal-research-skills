@@ -1,0 +1,8 @@
+.worktrees/
+__pycache__/
+*.py[cod]
+.coverage
+.venv/
+dist/
+build/
+.DS_Store
