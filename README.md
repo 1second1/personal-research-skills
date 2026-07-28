@@ -1,118 +1,96 @@
 # Personal Research Skills
 
-> 把研究方法、判断标准和工作流沉淀为可组合、可验证、可演化的 AI Skills。
+[![Validate repository](https://github.com/1second1/personal-research-skills/actions/workflows/validate.yml/badge.svg)](https://github.com/1second1/personal-research-skills/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](pyproject.toml)
 
-Personal Research Skills 是一个面向科研学习与深度研究的实验性开源项目。
-第一阶段以论文阅读、代码分析、实验设计和研究写作为参考场景，探索一个核心问题：
+> A composable, evidence-grounded way to turn research methodology into reusable AI Skills.
 
-> 明确的个人研究方法，能否让不同科研 Skill 的输出保持一致、可追溯，并且通过反馈持续改进？
+Personal Research Skills is an experimental open-source framework for research learning and deep research workflows. It explores one question:
 
-## 5 分钟理解
+> Can an explicit personal research methodology make different AI Skills more consistent, traceable, and open to improvement?
 
-输入一篇论文、一个公开代码仓库和一个研究问题，项目希望输出：
+[中文说明](README.zh-CN.md)
 
-```text
-论文证据卡片
-  → 论文-代码对应关系
-  → 可执行实验计划
-  → 研究复盘报告
-```
+## Why this project exists
 
-每个关键结论都应尽量回溯到论文页码、代码文件、配置项或实验日志，并明确区分：
+Most AI Skills are isolated prompts. This project treats a Skill as a capability with:
 
-- `evidence`：来源中明确出现的事实
-- `inference`：基于证据的推断
-- `recommendation`：面向下一步行动的建议
+- a reasoning profile;
+- explicit input and output contracts;
+- evidence and uncertainty rules;
+- examples and regression evaluations;
+- a documented boundary.
 
-## 核心方法
+The first reference profile models a four-layer system:
 
 ```text
-Identity
-  ↓
-Values
-  ↓
-Thinking / Inquiry Pattern
-  ↓
-Workflow
-  ↓
-Preference
-  ↓
-Skills
+Identity → Values → Thinking → Workflow → Preferences → Skills
 ```
 
-Inquiry Pattern 是项目的第一版思维基线：
+Its inquiry pattern is:
 
 ```text
-What → Why → Assumption → Boundary
-     → Connection → Generalization → Application → Value
+What → Why → Assumption → Boundary → Connection → Application → Value
 ```
 
-Skill 不只是 Prompt，而是继承这套方法的、具有输入输出边界和评估标准的能力单元。
+## Current status
 
-## 当前状态
+`v0.2 — Reasoning DNA runtime and inherited research Skills`
 
-`v0.2 — Week 2: Reasoning DNA Runtime 与继承型 Skill`
+Included today:
 
-当前已完成：
+- `profiles/reasoning-dna.yaml`: values, inquiry pattern, decision rules, workflows, and preferences;
+- a dependency-free Python loader and Skill composer;
+- `paper-reading`: evidence-grounded paper analysis;
+- `research-question`: conversion of broad ideas into bounded, falsifiable questions;
+- deterministic examples, tests, repository validation, and GitHub Actions.
 
-- `profiles/reasoning-dna.yaml`：个人 Values、Inquiry Pattern、Decision Rules、Workflow 与 Preference
-- 标准库实现的 DNA 加载与 Skill 组合运行时
-- `paper-reading`：证据导向的论文阅读 Skill
-- `research-question`：可证伪研究问题 Skill
-- CLI 与自动化测试
-- GitHub Actions、贡献规范与公开评测入口
-
-尚未完成：
-
-- 自动 Skill 演化
-- API、PDF 解析、向量检索与实验执行
+The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
 
 ## Quickstart
 
-不需要 API Key 或私有数据。克隆仓库后运行：
+Requirements: Python 3.10 or newer. No API key or private data is required.
 
 ```bash
+git clone https://github.com/1second1/personal-research-skills.git
+cd personal-research-skills
+
 python -m unittest discover -s tests -v
 python scripts/validate_repository.py
-python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml
+python scripts/evaluate_paper_reading.py \
+  evals/fixtures/paper-reading-demo/evidence-card.md \
+  evals/rubrics/paper-reading.yaml
+```
+
+Compose a Skill with the reference Reasoning DNA profile:
+
+```bash
 python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
 python scripts/run_skill.py research-question skills/research-question/examples/input.md
 ```
 
-第一个命令验证脚本行为；第二个命令检查仓库和 Skill 契约；第三个命令检查合成证据卡片是否满足公开 Rubric。
+The CLI emits a deterministic Markdown context containing the personal profile and the selected Skill contract. It can be inspected or passed to an agent runtime.
 
-可从 [Reasoning DNA](profiles/reasoning-dna.yaml)、[paper-reading Skill](skills/paper-reading/SKILL.md)、[research-question Skill](skills/research-question/SKILL.md) 和 [公开 Rubric](evals/rubrics/paper-reading.yaml) 开始阅读。
-
-CLI 会输出“个人 Reasoning DNA + 目标 Skill”的组合规范。它目前不调用模型，作用是验证继承关系和生成可直接交给 Codex 或 Claude Code 的执行上下文：
-
-```bash
-python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
-```
-
-## 仓库结构
+## Repository layout
 
 ```text
 personal-research-skills/
-├── README.md
-├── profiles/
-│   └── reasoning-dna.yaml
+├── profiles/reasoning-dna.yaml
 ├── research_skills/
 │   ├── dna.py
 │   └── compose.py
-├── scripts/
-│   └── run_skill.py
+├── scripts/run_skill.py
 ├── skills/
 │   ├── paper-reading/
 │   └── research-question/
+├── evals/
+├── tests/
 ├── docs/
-│   ├── methodology.md
-│   ├── compatibility.md
-│   └── contributing.md
-└── evals/
-    └── README.md
+└── .github/workflows/validate.yml
 ```
 
-后续 Skill 目录统一采用：
+Every Skill should include:
 
 ```text
 skills/<skill-name>/
@@ -123,47 +101,28 @@ skills/<skill-name>/
 └── changelog.md
 ```
 
-## 第一阶段路线
+## Design principles
 
-1. 建立个人研究方法基线。
-2. 编写 `paper-reading` 并用真实论文进行基线测试。
-3. 编写 `codebase-analysis`，建立论文到代码的追踪样例。
-4. 编写实验设计、实验复盘和研究写作 Skills。
-5. 建立失败案例、回归评测和可审查的改进提案。
+- Evidence is separate from inference.
+- Unsupported conclusions are marked instead of invented.
+- Every recommendation has a measurable next action.
+- A profile is reusable; a Skill remains independently testable.
+- Boundaries are part of the output, not an afterthought.
 
-## 运行方式
+## Roadmap
 
-当前版本以 Markdown、YAML 和 Agent-compatible 文件为主，可以被复制到 Codex 或 Claude Code 的项目级 Skills 目录中使用。
+1. Run independent-agent forward evaluations for `paper-reading` and `research-question`.
+2. Add a third Skill for codebase or paper-to-code analysis.
+3. Compare outputs from no profile, Skill only, and Skill plus Reasoning DNA.
+4. Add a reviewable feedback log for evolving rules.
+5. Consider model, PDF, repository, and experiment integrations only after the evaluation loop is reliable.
 
-执行具体 Skill 前，请先阅读对应的 `SKILL.md`、`contract.yaml` 和评测说明。需要 API、PDF 解析、仓库访问或实验执行的功能将在后续版本中逐步增加。
+## Contributing
 
-## 贡献一个 Skill
+Read [CONTRIBUTING.md](CONTRIBUTING.md), [the detailed contribution guide](docs/contributing.md), [SECURITY.md](SECURITY.md), and [RELEASE.md](RELEASE.md) before opening a pull request.
 
-一个 Skill 至少需要提交：
+Do not commit API keys, private papers, participant data, or unredacted conversation logs.
 
-- `SKILL.md`
-- 能力契约
-- 一个真实输入样例
-- 一个期望输出样例
-- 评估规则
-- 已知限制与风险
-- 变更记录
+## License
 
-详见 [`docs/contributing.md`](docs/contributing.md)。
-
-提交前请阅读根目录的 [CONTRIBUTING.md](CONTRIBUTING.md)、[安全政策](SECURITY.md)、[行为准则](CODE_OF_CONDUCT.md) 与 [发布清单](RELEASE.md)。
-
-## 设计文档
-
-- [方法论基线](docs/methodology.md)
-- [兼容性说明](docs/compatibility.md)
-- [贡献规范](docs/contributing.md)
-- [评估入口](evals/README.md)
-
-## 非目标
-
-第一阶段不做通用 Agent 平台、多用户 SaaS、无约束自动改写 Skill、完整人格复制或覆盖所有科研领域的知识库。
-
-## 许可证
-
-本项目采用 [MIT License](LICENSE)。
+MIT. See [LICENSE](LICENSE).
