@@ -1,10 +1,10 @@
-# Evaluation Entry
+# Evaluation
 
-第一周只建立评估入口和规则，不声称已有自动评测能力。
+This directory contains the public evaluation entry points. The current evaluator checks repository fixtures and contract-level behavior; it does not claim to measure the quality of model-generated research outputs.
 
-## 第一阶段指标
+## Metrics
 
-| 指标 | 说明 |
+| Metric | Meaning |
 |---|---|
 | factual-consistency | 是否忠实于论文、代码或实验记录 |
 | evidence-coverage | 关键结论是否带可追溯来源 |
@@ -12,16 +12,16 @@
 | method-consistency | 不同 Skill 是否继承同一方法论 Profile |
 | actionability | 输出是否能形成下一步研究任务 |
 
-## 基线任务
+## Baseline tasks
 
-后续每个 Skill 至少补充一个基线任务。第一批建议覆盖：
+Each Skill should eventually include at least one baseline task. Recommended coverage:
 
-1. 论文方法与假设提取。
-2. 论文公式变量解释。
-3. 论文到 GitHub 入口文件的对应。
-4. 医学图像分割实验方案设计。
-5. 训练日志异常与复盘建议。
+1. Extracting paper methods and assumptions.
+2. Explaining formula variables.
+3. Mapping paper claims to repository entry points.
+4. Designing medical image segmentation experiments.
+5. Reviewing training-log anomalies.
 
-## 评估原则
+## Evaluation rules
 
-评估结果必须保留输入、输出、评分和失败原因。任何方法论或 Skill 更新，都需要重新运行受影响的回归任务。
+Keep the input, output, score, and failure reason for every evaluation. Re-run affected regression tasks after any methodology or Skill change.

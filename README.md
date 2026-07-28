@@ -87,6 +87,7 @@ personal-research-skills/
 ├── evals/
 ├── tests/
 ├── docs/
+├── CHANGELOG.md
 └── .github/workflows/validate.yml
 ```
 
@@ -119,7 +120,7 @@ skills/<skill-name>/
 
 ## Contributing
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md), [the detailed contribution guide](docs/contributing.md), [SECURITY.md](SECURITY.md), and [RELEASE.md](RELEASE.md) before opening a pull request.
+Read [CONTRIBUTING.md](CONTRIBUTING.md), [the detailed contribution guide](docs/contributing.md), [SECURITY.md](SECURITY.md), [RELEASE.md](RELEASE.md), and [CHANGELOG.md](CHANGELOG.md) before opening a pull request.
 
 Do not commit API keys, private papers, participant data, or unredacted conversation logs.
 

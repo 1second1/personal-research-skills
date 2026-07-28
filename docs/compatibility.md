@@ -1,15 +1,16 @@
 # Compatibility
 
-## 当前支持方式
+## Current support level
 
-第一阶段使用 Agent-compatible 的 Markdown 与 YAML 文件，不依赖专用后端。
+The public release uses provider-neutral Markdown and YAML-compatible files. It does not require a hosted backend.
 
-| 环境 | 当前状态 | 说明 |
+| Environment | Status | Notes |
 |---|---|---|
-| Claude Code | 目标环境 | 可将每个 Skill 目录放入项目级 Skills 目录 |
-| Codex | 目标环境 | 可通过项目上下文和 Skills 目录加载方法论与 Skill |
-| 普通 Markdown 阅读器 | 支持 | 可以阅读全部方法论和契约文件 |
-| 自动 Runtime | 未实现 | Planner、Scheduler、Memory 和 Learner 不属于第一周交付 |
+| Claude Code | Compatible artifacts | Load the self-contained `SKILL.md` files using the project's supported Skill location |
+| Codex | Compatible artifacts | Load the profile and Skill files through project context or the supported Skills location |
+| Generic agents | Supported | Consume the deterministic Markdown output from `scripts/run_skill.py` |
+| Markdown readers | Supported | All profiles, contracts, examples, and rubrics are readable without tooling |
+| Model-serving runtime | Not included | This release does not call a model or provide memory, scheduling, or automatic learning |
 
 ## 兼容性原则
 
@@ -19,13 +20,8 @@
 - 外部工具、仓库访问和实验执行必须在 Skill 中明确声明前置条件。
 - 不把 Codex 或 Claude Code 的专有行为写成通用标准。
 
-## 后续兼容目标
+## Compatibility policy
 
-后续会在真实 Skill 完成后验证：
+Compatibility claims must be backed by an example or evaluation. The repository does not treat a provider name in documentation as proof of runtime compatibility.
 
-- Claude Code 项目级 Skills
-- Codex 项目级 Skills
-- 通过脚本运行的离线评测
-- 可选的 GitHub、PDF 和实验工具连接
-
-兼容性以实际样例和评测结果为准，不以 README 中的声明为准。
+Provider-specific adapters may be added later, but the canonical profile, Skill contract, and evaluation files must remain provider-neutral.
