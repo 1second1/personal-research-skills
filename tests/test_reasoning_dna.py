@@ -34,6 +34,66 @@ class ReasoningDnaTests(unittest.TestCase):
         self.assertIn("## Problem", result)
         self.assertIn("## Evidence", result)
 
+    # --- Phase 0: input content, contract, version, and source path assertions ---
+
+    def test_composed_skill_includes_input_content(self):
+        result = compose_skill(
+            ROOT / "skills" / "paper-reading",
+            ROOT / "profiles" / "reasoning-dna.yaml",
+            input_text="LiteSeg reports Dice 0.842 on Dataset-A.",
+        )
+
+        self.assertIn("## Input Document", result)
+        self.assertIn("LiteSeg reports Dice 0.842 on Dataset-A.", result)
+
+    def test_changing_input_changes_output(self):
+        result_a = compose_skill(
+            ROOT / "skills" / "paper-reading",
+            ROOT / "profiles" / "reasoning-dna.yaml",
+            input_text="Input alpha: segmentation model X with Dice 0.9.",
+        )
+        result_b = compose_skill(
+            ROOT / "skills" / "paper-reading",
+            ROOT / "profiles" / "reasoning-dna.yaml",
+            input_text="Input beta: segmentation model Y with Dice 0.7.",
+        )
+
+        self.assertIn("Input alpha", result_a)
+        self.assertIn("Input beta", result_b)
+        self.assertNotEqual(result_a, result_b)
+
+    def test_composed_skill_includes_contract_fields(self):
+        result = compose_skill(
+            ROOT / "skills" / "paper-reading",
+            ROOT / "profiles" / "reasoning-dna.yaml",
+        )
+
+        self.assertIn("paper-reading", result)
+        self.assertIn("version", result.lower())
+
+    def test_composed_skill_includes_version_and_source_info(self):
+        result = compose_skill(
+            ROOT / "skills" / "paper-reading",
+            ROOT / "profiles" / "reasoning-dna.yaml",
+        )
+
+        # Profile version from reasoning-dna.yaml
+        self.assertIn("0.1.0", result)
+        # Source path markers (profile path and skill directory appear in metadata)
+        self.assertIn("reasoning-dna.yaml", result)
+        self.assertIn("paper-reading", result)
+
+    def test_backward_compatible_without_input(self):
+        """Calling compose_skill without input_text must still work."""
+        result = compose_skill(
+            ROOT / "skills" / "paper-reading",
+            ROOT / "profiles" / "reasoning-dna.yaml",
+        )
+
+        self.assertIn("## Personal Reasoning DNA", result)
+        self.assertIn("## Skill Contract", result)
+        self.assertIn("## Evidence", result)
+
 
 if __name__ == "__main__":
     unittest.main()

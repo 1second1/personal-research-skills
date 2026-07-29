@@ -31,7 +31,8 @@ def main() -> int:
         print(f"Input file not found: {arguments.input}", file=sys.stderr)
         return 2
     try:
-        print(compose_skill(skill_dir, ROOT / arguments.profile), end="")
+        input_text = input_path.read_text(encoding="utf-8")
+        print(compose_skill(skill_dir, ROOT / arguments.profile, input_text=input_text), end="")
     except (FileNotFoundError, ValueError) as error:
         print(f"Could not compose Skill: {error}", file=sys.stderr)
         return 1
