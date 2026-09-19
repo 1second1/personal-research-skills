@@ -218,12 +218,13 @@ The project is a solid early prototype, not yet a mature AI product or a flagshi
 
 ### Current weaknesses
 
-1. `run_skill.py` currently checks that the input path exists but does not actually read the input and produce a research result. It composes an execution context. This must be fixed or renamed before claiming that it “runs” a Skill.
-2. `compose.py` currently reads `SKILL.md` but does not load `contract.yaml`. The runtime must compose and validate the contract as a first-class artifact.
-3. The evaluation currently checks deterministic fixtures and string-level requirements, not the quality of real model outputs.
-4. The custom YAML-compatible parser intentionally supports only a small subset of YAML. It is acceptable for the current profile but should not silently claim full YAML compatibility.
-5. The Python package is not yet installed through a standard console entry point; the CLI currently adjusts `sys.path` for repository-local execution.
-6. The Reasoning DNA is currently hand-authored. It has not yet been shown to improve research results through blinded or repeated comparisons.
+1. `run_skill.py` reads the input and composes a complete execution context, but it still does not execute a model.
+2. The evaluator checks structure, source labels, and numeric presence. It is a rejection filter, not a semantic judge.
+3. `PR-REAL-01` is a manually verified real-paper reference case, not a model output or an independent reproduction; the repeated three-condition comparison is still missing.
+4. The Python package is not yet installed through a standard console entry point; the CLI currently adjusts `sys.path` for repository-local execution.
+5. PDF ingestion and code execution are still manual; there is no provider-neutral adapter layer.
+6. The Reasoning DNA is hand-authored and has not yet been shown to improve research results through blinded or repeated comparisons.
+7. Feedback-to-rule evolution has not yet been implemented as a versioned, reviewable artifact.
 
 The correct status language is therefore:
 
@@ -365,13 +366,20 @@ The old repository examples still pass.
 
 Priority: **P0**
 
+Current status: the source-verified `PR-REAL-01` U-Mamba fixture is complete,
+including page-level evidence and a retained table/prose metric conflict. The
+remaining Phase 1 work is to generate repeated model outputs and conduct blinded
+human review; do not mislabel the curated reference answer as a model run.
+
 For both existing Skills, create the same prompt scenarios in three modes:
 
 1. no Skill;
 2. Skill without personal profile;
 3. Skill plus Reasoning DNA.
 
-Use a synthetic paper first, then a real public paper chosen by the maintainer. Store:
+Use the synthetic fixture and the U-Mamba real-paper source map. Store future
+model-run artifacts outside the public tree until reviewed, then publish only
+redacted records with this shape:
 
 ```text
 evals/
@@ -542,15 +550,15 @@ Use this priority order:
 
 ### Must do first
 
-- fix the CLI input/contract mismatch;
-- add one real forward-evaluation comparison;
+- run three repetitions for baseline, Skill-only, and profile conditions on `PR-REAL-01`;
+- score the randomized outputs with blinded human review and retain disagreements;
 - preserve tests and backward compatibility;
 - document exact limitations.
 
 ### Do next
 
-- add the Markdown/stdin adapter;
 - add a versioned feedback artifact;
+- add a provider-neutral model execution interface and Markdown/stdin adapter;
 - add `codebase-analysis` only after the first Skill evaluation is credible.
 
 ### Defer safely
@@ -576,15 +584,17 @@ Copy the following prompt when handing this repository to another coding agent:
 Read docs/AGENT-HANDOFF-PLAN.md, README.md, profiles/reasoning-dna.yaml,
 and the target Skill before making changes.
 
-Current priority: Phase 0. Fix the semantic mismatch in scripts/run_skill.py:
-the CLI must either include the input document and contract.yaml in its
-composed context or be renamed to reflect that it only renders context.
+Current priority: finish Phase 1 with the source-verified PR-REAL-01 case.
+Generate three fresh runs for baseline, Skill-only, and Skill + Reasoning DNA
+under identical model settings, then randomize and score them with blinded human
+review. Preserve raw outputs, run metadata, reviewer disagreements, and the
+negative result if the profile does not outperform Skill-only.
 
-Use TDD. First add failing tests that prove input content and contract fields
-affect the output. Preserve the current invocation and all existing tests.
-Do not add a model API, database, web UI, or provider-specific integration in
-this task. Run the full verification commands before committing. Report exact
-files changed, test output, remaining limitations, and the commit hash.
+Do not treat the curated reference answer as a model run, and do not add a
+database, web UI, automatic profile rewriting, or provider-specific product
+integration in this task. Use TDD for code changes and pressure scenarios for
+Skill changes. Run the full verification commands before committing. Report
+exact files changed, test output, remaining limitations, and the commit hash.
 ```
 
 ---

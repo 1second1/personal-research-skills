@@ -8,6 +8,10 @@ LiteSeg targets parameter-efficient 2D medical image segmentation.
 - On Dataset-A, LiteSeg reports Dice 0.842 and U-Net reports Dice 0.831. [Source: LiteSeg synthetic research note]
 - LiteSeg has 2.1M parameters and U-Net has 7.8M parameters. [Source: LiteSeg synthetic research note]
 
+## Conflicts and Anomalies
+
+- Conflict: none detected within the supplied synthetic note; this does not establish consistency beyond the checked material. [Source: LiteSeg synthetic research note]
+
 ## Inferences
 
 Inference: LiteSeg is a candidate parameter-efficient baseline under the reported Dataset-A setting.

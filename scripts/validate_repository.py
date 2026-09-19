@@ -17,6 +17,11 @@ REQUIRED_PATHS = (
     "evals/rubrics/paper-reading.yaml",
     "evals/fixtures/paper-reading-demo/source.md",
     "evals/fixtures/paper-reading-demo/evidence-card.md",
+    "evals/cases/u-mamba-real-paper/README.md",
+    "evals/cases/u-mamba-real-paper/case.yaml",
+    "evals/cases/u-mamba-real-paper/source-map.md",
+    "evals/cases/u-mamba-real-paper/expected-output.md",
+    "evals/cases/u-mamba-real-paper/rubric.yaml",
     "skills/research-question/SKILL.md",
     "skills/research-question/contract.yaml",
     "skills/research-question/examples/input.md",
@@ -37,6 +42,7 @@ CONTRACT_KEYS = (
     "paper_text",
     "problem",
     "evidence",
+    "conflicts_and_anomalies",
     "inferences",
     "assumptions",
     "boundaries",
@@ -52,6 +58,12 @@ def validate(root: Path) -> list[str]:
     for relative_path in REQUIRED_PATHS:
         if not (root / relative_path).is_file():
             errors.append(f"Missing required file: {relative_path}")
+
+    cases_root = root / "evals/cases"
+    if cases_root.is_dir():
+        for path in cases_root.rglob("*"):
+            if path.is_file() and path.suffix.casefold() == ".pdf":
+                errors.append(f"Do not commit source PDF: {path.relative_to(root).as_posix()}")
 
     for skill_name in ("paper-reading", "research-question", "argument-analysis"):
         skill_path = root / "skills" / skill_name / "SKILL.md"

@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "evals/fixtures/paper-reading-demo/evidence-card.md"
 RUBRIC = ROOT / "evals/rubrics/paper-reading.yaml"
+REAL_CASE = ROOT / "evals/cases/u-mamba-real-paper"
 
 
 class EvaluatePaperReadingTests(unittest.TestCase):
@@ -37,3 +38,23 @@ class EvaluatePaperReadingTests(unittest.TestCase):
 
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("Inference:", result.stderr)
+
+    def test_evaluator_accepts_u_mamba_real_paper_case(self) -> None:
+        result = subprocess.run(
+            [
+                sys.executable,
+                "scripts/evaluate_paper_reading.py",
+                str(REAL_CASE / "expected-output.md"),
+                str(REAL_CASE / "rubric.yaml"),
+                "--source",
+                str(REAL_CASE / "source-map.md"),
+                "--json",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('"check_passed": true', result.stdout)
+        self.assertIn('"source_checked": true', result.stdout)

@@ -1,0 +1,44 @@
+id: PR-REAL-01
+case_type: curated_reference
+status: verified_source_fixture
+model_runs: 0
+
+paper:
+  title: "U-Mamba: Enhancing Long-range Dependency for Biomedical Image Segmentation"
+  authors:
+    - Jun Ma
+    - Feifei Li
+    - Bo Wang
+  arxiv_id: "2401.04722"
+  version: v1
+  abstract_url: "https://arxiv.org/abs/2401.04722v1"
+  official_code_url: "https://github.com/bowang-lab/U-Mamba"
+
+source_file:
+  url: "https://arxiv.org/pdf/2401.04722v1"
+  retrieved_at: "2026-09-19"
+  pages: 17
+  bytes: 13369554
+  sha256: "2ffc896ee1fdea0410d5e5608b56a6577f6d3cc30bede40daa7e4c181ecb7709"
+  content_length_matched: true
+  duplicate_download_hash_matched: true
+  redistributed: false
+  integrity_note: "The response ETag was not treated as a checksum because it differed from the computed file SHA-256."
+
+evidence_scope:
+  - architecture on PDF page 5
+  - training protocol on PDF pages 7-8
+  - result summaries in Tables 3 and 4 on PDF pages 8-9
+  - interpretation and limitations on PDF pages 9-11
+
+known_conflict:
+  metric: endoscopy instrument segmentation DSC
+  table_value: 0.6540
+  table_location: "PDF page 9, Table 4"
+  prose_value: 0.6504
+  prose_location: "PDF page 9, Section 3.4"
+
+artifacts:
+  source_map: source-map.md
+  expected_output: expected-output.md
+  rubric: rubric.yaml

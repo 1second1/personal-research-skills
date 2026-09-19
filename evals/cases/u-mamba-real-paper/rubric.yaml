@@ -11,7 +11,9 @@ required_markers:
   - "[Source:"
   - "Conflict:"
   - "Inference:"
-  - "unsupported"
+  - "Unsupported:"
+  - "0.6540"
+  - "0.6504"
   - "measure inference time"
 claim_headings:
   - "## Evidence"

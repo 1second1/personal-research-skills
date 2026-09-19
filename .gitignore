@@ -7,4 +7,5 @@ dist/
 build/
 *.egg-info/
 evals/local/
+evals/cases/**/*.[Pp][Dd][Ff]
 .DS_Store

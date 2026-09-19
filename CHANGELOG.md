@@ -13,6 +13,8 @@ All notable project changes are documented here.
 - Document a blinded human-review protocol; no model quality gains are claimed.
 - Add the `argument-analysis` Skill after a paper-reading prompt overfit an argumentative essay.
 - Publish a limited three-condition pilot and its negative result: the profile did not outperform Skill-only in the first run.
+- Add a source-verified U-Mamba paper-reading case without redistributing the PDF.
+- Add an explicit conflicts-and-anomalies contract section and source checks for configurable claim sections.
 
 ## [0.2.0] - 2026-07-28
 

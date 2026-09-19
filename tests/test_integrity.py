@@ -27,6 +27,37 @@ class IntegrityTests(unittest.TestCase):
         self.assertIn('source_locations', result)
         self.assertIn('factual_consistency', result)
 
+    def test_paper_reading_context_requires_conflict_reporting(self):
+        result = compose_skill(ROOT / 'skills/paper-reading', ROOT / 'profiles/reasoning-dna.yaml')
+        self.assertIn('conflicts_and_anomalies', result)
+        self.assertIn('## Conflicts and Anomalies', result)
+        self.assertIn('Do not silently reconcile', result)
+
+    def test_real_case_manifest_pins_source_without_redistributing_pdf(self):
+        case_root = ROOT / 'evals/cases/u-mamba-real-paper'
+        manifest_path = case_root / 'case.yaml'
+        self.assertTrue(manifest_path.is_file(), 'real-paper case manifest is missing')
+        manifest = _parse(manifest_path.read_text(encoding='utf-8'))
+        self.assertEqual(manifest['paper']['arxiv_id'], '2401.04722')
+        self.assertEqual(manifest['paper']['version'], 'v1')
+        self.assertEqual(manifest['source_file']['bytes'], 13369554)
+        self.assertEqual(
+            manifest['source_file']['sha256'],
+            '2ffc896ee1fdea0410d5e5608b56a6577f6d3cc30bede40daa7e4c181ecb7709',
+        )
+        self.assertFalse(manifest['source_file']['redistributed'])
+        self.assertEqual(
+            [path for path in case_root.rglob('*') if path.suffix.casefold() == '.pdf'],
+            [],
+        )
+
+    def test_real_case_does_not_claim_reproducibility_without_execution(self):
+        output = (ROOT / 'evals/cases/u-mamba-real-paper/expected-output.md').read_text(
+            encoding='utf-8'
+        )
+        self.assertNotIn('reproducible comparison family', output)
+        self.assertIn('public implementation', output)
+
     def test_empty_rubric_rejected(self):
         with self.assertRaises(ValueError):
             evaluate('', '')
@@ -57,6 +88,38 @@ class IntegrityTests(unittest.TestCase):
             source_text='# Note\nChange was -0.5.',
         )
         self.assertTrue(any('0.5' in error for error in errors))
+
+    def test_configured_conflict_section_rejects_unknown_citation(self):
+        rubric = (
+            'required_headings: ["## Conflicts and Anomalies"]\n'
+            'claim_headings: ["## Conflicts and Anomalies"]'
+        )
+        try:
+            errors = evaluate(
+                '## Conflicts and Anomalies\n'
+                '- Conflict: table and prose disagree. [Source: Invented location]',
+                rubric,
+                source_text='# Verified location\nTable and prose disagree.',
+            )
+        except ValueError as error:
+            self.fail(f'claim_headings should be supported: {error}')
+        self.assertTrue(any('source' in error.lower() for error in errors))
+
+    def test_configured_conflict_section_rejects_number_absent_from_source(self):
+        rubric = (
+            'required_headings: ["## Conflicts and Anomalies"]\n'
+            'claim_headings: ["## Conflicts and Anomalies"]'
+        )
+        try:
+            errors = evaluate(
+                '## Conflicts and Anomalies\n'
+                '- Conflict: narrative reports 0.6504. [Source: Verified location]',
+                rubric,
+                source_text='# Verified location\nTable reports 0.6540.',
+            )
+        except ValueError as error:
+            self.fail(f'claim_headings should be supported: {error}')
+        self.assertTrue(any('0.6504' in error for error in errors))
 
     def test_comparison_modes_isolate_profile_and_skill(self):
         base = ROOT / 'skills/paper-reading'

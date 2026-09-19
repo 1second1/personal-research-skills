@@ -45,7 +45,8 @@ Included today:
 - `paper-reading`: evidence-grounded paper analysis;
 - `research-question`: conversion of broad ideas into bounded, falsifiable questions;
 - `argument-analysis`: claim, support, warrant, counterargument, and boundary analysis for argumentative prose;
-- deterministic examples, tests, repository validation, and GitHub Actions.
+- deterministic examples, tests, repository validation, and GitHub Actions;
+- a source-verified [U-Mamba real-paper case](evals/cases/u-mamba-real-paper/README.md) that preserves an internal table/prose conflict instead of hiding it.
 
 The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
 
@@ -62,7 +63,9 @@ python -m unittest discover -s tests -v
 python scripts/validate_repository.py
 python scripts/evaluate_paper_reading.py \
   evals/fixtures/paper-reading-demo/evidence-card.md \
-  evals/rubrics/paper-reading.yaml
+  evals/rubrics/paper-reading.yaml \
+  --source evals/fixtures/paper-reading-demo/source.md \
+  --json
 ```
 
 Compose a Skill with the reference Reasoning DNA profile:
@@ -110,6 +113,7 @@ skills/<skill-name>/
 
 - Evidence is separate from inference.
 - Unsupported conclusions are marked instead of invented.
+- Conflicting source claims remain visible and traceable.
 - Every recommendation has a measurable next action.
 - A profile is reusable; a Skill remains independently testable.
 - Boundaries are part of the output, not an afterthought.
@@ -120,16 +124,19 @@ For source checks and three-condition experiments, see
 [the evaluation protocol](evals/PROTOCOL.md). Passing automated checks does not
 establish semantic correctness or demonstrate a benefit from the profile.
 
-The parser/contract layer and initial evaluation protocol are implemented. A
+The parser/contract layer, initial evaluation protocol, and first
+[source-verified real-paper case](evals/cases/u-mamba-real-paper/README.md) are
+implemented. The real-paper case uncovered and retains a `0.6540` table value
+versus `0.6504` prose value conflict; it is a curated reference fixture, not a
+model-quality result. A
 single-run [argument-analysis pilot](evals/cases/2013-text3-pilot/README.md)
 showed a clear benefit from the Skill contract but no measured gain from the
 profile over Skill-only. This is evidence from one evaluation setup, not a
 general result.
 
-1. Complete a real-paper reading case with verifiable source locations.
-2. Repeat blinded baseline / Skill / Skill-plus-profile comparisons across tasks.
-3. Add a reviewable feedback log for evolving rules.
-4. Add model, PDF, repository, and experiment adapters only after those evaluations.
+1. Run three-repetition blinded baseline / Skill / Skill-plus-profile comparisons on the real-paper and synthetic tasks.
+2. Add a reviewable, versioned feedback log for evolving rules.
+3. Add provider-neutral model execution, then PDF, repository, and experiment adapters after those evaluations.
 
 ## Contributing
 

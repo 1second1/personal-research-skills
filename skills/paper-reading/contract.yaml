@@ -1,5 +1,5 @@
 name: paper-reading
-version: 0.1.0
+version: 0.2.0
 purpose: Produce an evidence-grounded research evidence card from supplied paper text.
 
 inputs:
@@ -16,6 +16,7 @@ inputs:
 outputs:
   - problem
   - evidence
+  - conflicts_and_anomalies
   - inferences
   - assumptions
   - boundaries
@@ -24,6 +25,7 @@ outputs:
 
 constraints:
   - Do not present inferences as source facts.
+  - Do not silently reconcile conflicting source claims or values.
   - Do not invent page, section, or experiment locations.
   - Mark unsupported conclusions and information gaps explicitly.
   - Make next_actions falsifiable and measurable.
@@ -31,6 +33,7 @@ constraints:
 evaluation:
   - factual_consistency
   - evidence_coverage
+  - conflict_detection
   - fact_inference_separation
   - boundary_analysis
   - actionability

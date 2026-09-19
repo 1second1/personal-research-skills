@@ -7,6 +7,10 @@ LiteSeg targets parameter-efficient 2D medical image segmentation.
 - LiteSeg uses an encoder-decoder architecture, depthwise separable convolutions, and a boundary-aware loss. [Source: LiteSeg synthetic research note]
 - LiteSeg reports Dice 0.842 versus 0.831 for U-Net on Dataset-A. [Source: LiteSeg synthetic research note]
 
+## Conflicts and Anomalies
+
+- Conflict: none detected within the supplied synthetic note; this does not establish consistency beyond the checked material. [Source: LiteSeg synthetic research note]
+
 ## Inferences
 
 Inference: LiteSeg is a candidate lightweight baseline in the reported setting.
