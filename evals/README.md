@@ -25,3 +25,7 @@ Each Skill should eventually include at least one baseline task. Recommended cov
 ## Evaluation rules
 
 Keep the input, output, score, and failure reason for every evaluation. Re-run affected regression tasks after any methodology or Skill change.
+
+Public case reports live under `evals/cases/`. They must state model settings,
+sample count, reviewer blinding, known transport or source limitations, and
+negative findings. Do not publish source material without redistribution rights.

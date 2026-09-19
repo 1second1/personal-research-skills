@@ -2,6 +2,18 @@
 
 All notable project changes are documented here.
 
+## Unreleased
+
+- Replace the custom YAML parser with safe parsing, duplicate-key rejection,
+  and typed profile/contract validation.
+- Include workflows and the complete contract in composed contexts.
+- Add baseline, Skill-only and profile comparison modes.
+- Reject empty rubrics and incomplete evidence cards; add optional source-label
+  and numeric consistency checks with machine-readable reports.
+- Document a blinded human-review protocol; no model quality gains are claimed.
+- Add the `argument-analysis` Skill after a paper-reading prompt overfit an argumentative essay.
+- Publish a limited three-condition pilot and its negative result: the profile did not outperform Skill-only in the first run.
+
 ## [0.2.0] - 2026-07-28
 
 ### Added

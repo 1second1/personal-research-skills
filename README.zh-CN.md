@@ -11,9 +11,10 @@
 当前包含：
 
 - `profiles/reasoning-dna.yaml`：Values、Inquiry Pattern、Decision Rules、Workflow 和 Preference；
-- 标准库实现的 DNA 加载器与 Skill 组合器；
+- 基于 PyYAML 严格校验的 DNA 加载器与 Skill 组合器；
 - `paper-reading`：证据导向的论文阅读 Skill；
 - `research-question`：将宽泛想法转化为有边界、可证伪研究问题的 Skill；
+- `argument-analysis`：分析文章、评论和访谈中的主张、依据、隐含前提与边界；
 - 示例、自动测试、仓库校验和 GitHub Actions。
 
 当前 Runtime 只负责生成组合后的执行上下文，不调用模型、不保存私有记忆，也不声称已经具备自动学习能力。
@@ -25,11 +26,13 @@
 ```bash
 git clone https://github.com/1second1/personal-research-skills.git
 cd personal-research-skills
+python -m pip install -e .
 
 python -m unittest discover -s tests -v
 python scripts/validate_repository.py
 python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
 python scripts/run_skill.py research-question skills/research-question/examples/input.md
+python scripts/run_skill.py argument-analysis skills/argument-analysis/examples/input.md
 ```
 
 ## 核心模型
@@ -48,10 +51,16 @@ What → Why → Assumption → Boundary → Connection → Application → Valu
 
 ## 后续路线
 
-1. 对现有 Skill 做独立 Agent 前向测试；
-2. 增加代码库分析或论文到代码追踪 Skill；
-3. 对比无 Profile、仅 Skill、Skill + Reasoning DNA 三组输出；
-4. 建立可审查的反馈与规则演化日志；
-5. 在评测闭环稳定后，再考虑模型、PDF、仓库和实验执行集成。
+格式与来源检查、三组对照和人工评分方式见 [评测协议](evals/PROTOCOL.md)。
+自动检查通过不等于科研结论正确，目前尚未证明 Profile 有质量增益。
+
+解析与合同传递、初版评测协议已经完成。一次
+[论证分析小型实验](evals/cases/2013-text3-pilot/README.md) 显示 Skill 合同有明显作用，
+但尚未测出 Reasoning DNA 相比仅 Skill 的独立增益；这只是单次试验，不能推广。
+
+1. 完成一个带可核验原文位置的真实论文阅读案例；
+2. 在多类任务上重复盲测无 Profile、仅 Skill、Skill + Reasoning DNA；
+3. 建立可审查的反馈与规则演化日志；
+4. 在评测结果稳定后，再接模型、PDF、仓库和实验执行适配器。
 
 英文主说明请阅读 [README.md](README.md)。

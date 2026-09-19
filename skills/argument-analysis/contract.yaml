@@ -1,0 +1,37 @@
+name: argument-analysis
+version: 0.1.0
+purpose: Reconstruct and evaluate an argument without importing unsupported evidence or overfitting a research-paper template.
+
+inputs:
+  - name: source_text
+    required: true
+    type: markdown_or_text
+  - name: reader_goal
+    required: false
+    type: markdown_or_text
+  - name: source_locations
+    required: false
+    type: mapping
+
+outputs:
+  - thesis
+  - argument_map
+  - evidence
+  - assumptions
+  - counterarguments
+  - boundaries
+  - implications
+
+constraints:
+  - Separate the author's claims from the analyst's inferences.
+  - Evaluate the connection between support and conclusion.
+  - Do not invent external evidence or arbitrary thresholds.
+  - Match depth and recommendations to the source genre and reader goal.
+
+evaluation:
+  - thesis_fidelity
+  - argument_reconstruction
+  - evidence_classification
+  - assumption_relevance
+  - boundary_precision
+  - reader_value

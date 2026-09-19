@@ -2,6 +2,17 @@
 
 ## Cross-Agent Handoff and Long-Term Engineering Plan
 
+### Local implementation update — 2026-09-17
+
+The configuration parser now requires PyYAML (install with `python -m pip install -e .`).
+Profiles and contracts are validated; full contracts and workflows reach composed
+contexts. `run_skill.py --mode baseline|skill|profile` supports controlled comparisons.
+The evaluator checks structure and, with `--source`, source labels and numeric
+presence. It does not establish semantic entailment. See `evals/PROTOCOL.md`.
+The historical commit and status below describe the original handoff, not current HEAD.
+Next: collect and blindly review actual model outputs; do not report ablation gains
+before those runs exist.
+
 > This document is the source of truth for the next agent working on this repository.
 > Read it before changing architecture, naming, profiles, or Skill contracts.
 
@@ -160,10 +171,11 @@ Preferences can change more easily than values or thinking rules. They must not 
 The current public repository contains:
 
 - `profiles/reasoning-dna.yaml` — the first reference profile;
-- `research_skills/dna.py` — a dependency-free profile loader and validator;
+- `research_skills/dna.py` — a PyYAML-based loader with duplicate-key and type validation;
 - `research_skills/compose.py` — profile and Skill text composition;
 - `skills/paper-reading/` — evidence-grounded paper reading instructions, contract, examples, and evaluation material;
 - `skills/research-question/` — bounded and falsifiable research-question instructions, contract, and examples;
+- `skills/argument-analysis/` — genre-aware argument reconstruction for essays, editorials, interviews, and policy prose;
 - `scripts/run_skill.py` — a deterministic composition CLI;
 - `scripts/validate_repository.py` — repository shape validation;
 - `scripts/evaluate_paper_reading.py` — fixture evaluation;

@@ -12,8 +12,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - run: python -m pip install -e .
       - run: python -m unittest discover -s tests -v
       - run: python scripts/validate_repository.py
-      - run: python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml
+      - run: python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml --source evals/fixtures/paper-reading-demo/source.md --json
       - run: python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
       - run: python scripts/run_skill.py research-question skills/research-question/examples/input.md

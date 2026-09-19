@@ -1,139 +1,103 @@
-"""Load and validate the repository's intentionally small YAML profile format."""
-
-from __future__ import annotations
-
+"""Strict YAML loading and validation for methodology profiles and contracts."""
 from pathlib import Path
-import ast
 import re
+import yaml
 
-
-REQUIRED_SECTIONS = ("identity", "values", "thinking", "decision_rules", "workflows", "preferences")
-
-
-def _scalar(value: str):
-    value = value.strip()
-    if not value:
-        return {}
-    if value.startswith(("'", '"')):
-        try:
-            return ast.literal_eval(value)
-        except (SyntaxError, ValueError):
-            return value.strip("'\"")
-    if value in {"true", "false"}:
-        return value == "true"
-    if value.startswith("[") and value.endswith("]"):
-        return [_scalar(part) for part in value[1:-1].split(",") if part.strip()]
-    return value
-
-
-def _strip_comment(line: str) -> str:
-    if " #" in line:
-        return line.split(" #", 1)[0].rstrip()
-    return line.rstrip()
-
+class UniqueSafeLoader(yaml.SafeLoader):
+    """Reject duplicate mapping keys while retaining safe YAML semantics."""
+    def construct_mapping(self, node, deep=False):
+        self.flatten_mapping(node)
+        result = {}
+        for key_node, value_node in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if not isinstance(key, str):
+                raise ValueError("Mapping keys must be strings")
+            if key in result:
+                raise ValueError(f"Duplicate key: {key} at line {key_node.start_mark.line + 1}")
+            result[key] = self.construct_object(value_node, deep=deep)
+        return result
 
 def _parse(text: str) -> dict:
-    root: dict = {}
-    stack: list[tuple[int, object]] = [(-1, root)]
-    for line_number, raw in enumerate(text.splitlines(), 1):
-        line = _strip_comment(raw)
-        if not line.strip() or line.lstrip().startswith("#"):
-            continue
-        indent = len(line) - len(line.lstrip(" "))
-        if "\t" in line[:indent]:
-            raise ValueError(f"Tabs are not supported in profile line {line_number}")
-        content = line.strip()
-        while stack[-1][0] >= indent:
-            stack.pop()
-        parent = stack[-1][1]
-        if content.startswith("- "):
-            if not isinstance(parent, list):
-                raise ValueError(f"List item has no list parent on line {line_number}")
-            item_body = content[2:]
-            if ":" in item_body:
-                # List-of-objects: "- key: value" with optional nested children.
-                item_key, item_value = item_body.split(":", 1)
-                item_key = item_key.strip()
-                if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]*", item_key):
-                    raise ValueError(f"Invalid key {item_key!r} on line {line_number}")
-                if item_value.strip():
-                    child: object = {item_key: _scalar(item_value)}
-                else:
-                    next_content = ""
-                    for future in text.splitlines()[line_number:]:
-                        if future.strip() and not future.lstrip().startswith("#"):
-                            next_content = future.strip()
-                            break
-                    child = {item_key: [] if next_content.startswith("-") else {}}
-                parent.append(child)
-                stack.append((indent, child))
-            else:
-                parent.append(_scalar(item_body))
-            continue
-        if ":" not in content:
-            raise ValueError(f"Expected key/value on line {line_number}")
-        key, raw_value = content.split(":", 1)
-        key = key.strip()
-        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_-]*", key):
-            raise ValueError(f"Invalid key {key!r} on line {line_number}")
-        if not isinstance(parent, dict):
-            raise ValueError(f"Mapping item has no mapping parent on line {line_number}")
-        if raw_value.strip():
-            parent[key] = _scalar(raw_value)
-        else:
-            next_content = ""
-            for future in text.splitlines()[line_number:]:
-                if future.strip() and not future.lstrip().startswith("#"):
-                    next_content = future.strip()
-                    break
-            child: object = [] if next_content.startswith("-") else {}
-            parent[key] = child
-        stack.append((indent, parent[key]))
-    return root
+    try:
+        result = yaml.load(text, Loader=UniqueSafeLoader)
+    except yaml.YAMLError as error:
+        raise ValueError(f"Invalid YAML: {error}") from error
+    if not isinstance(result, dict) or not result:
+        raise ValueError("Expected a non-empty YAML mapping")
+    return result
 
+def _text(value, field):
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{field} must be a non-empty string")
+
+def _strings(value, field):
+    if not isinstance(value, list) or not value:
+        raise ValueError(f"{field} must be a non-empty list")
+    for item in value:
+        _text(item, field)
+
+def _mapping(value, field):
+    if not isinstance(value, dict) or not value:
+        raise ValueError(f"{field} must be a non-empty mapping")
+    for key, item in value.items():
+        _text(item, f"{field}.{key}")
+
+def _version(value, field):
+    _text(value, field)
+    if not re.fullmatch(r"\d+\.\d+\.\d+", value):
+        raise ValueError(f"{field} must use major.minor.patch")
 
 def load_profile(path: str | Path) -> dict:
-    """Load a profile and reject missing or malformed top-level sections."""
-    profile_path = Path(path)
-    if not profile_path.is_file():
-        raise FileNotFoundError(profile_path)
-    profile = _parse(profile_path.read_text(encoding="utf-8"))
-    missing = [section for section in REQUIRED_SECTIONS if section not in profile]
+    profile = _parse(Path(path).read_text(encoding="utf-8"))
+    required = ("identity", "values", "thinking", "decision_rules", "workflows", "preferences")
+    missing = [name for name in required if name not in profile]
     if missing:
         raise ValueError("Profile missing required sections: " + ", ".join(missing))
-    if not isinstance(profile["identity"], dict) or not profile["identity"].get("name"):
-        raise ValueError("Profile identity.name is required")
+    for name in ("identity", "thinking", "workflows", "preferences"):
+        _mapping(profile[name], name)
+    _text(profile["identity"].get("name"), "identity.name")
+    _version(profile["identity"].get("version"), "identity.version")
+    _text(profile["thinking"].get("inquiry_pattern"), "thinking.inquiry_pattern")
+    for name in ("values", "decision_rules"):
+        _strings(profile[name], name)
     return profile
 
-
-REQUIRED_CONTRACT_FIELDS = ("name", "version")
-
-
 def load_contract(path: str | Path) -> dict:
-    """Load a Skill contract and reject missing required fields."""
-    contract_path = Path(path)
-    if not contract_path.is_file():
-        raise FileNotFoundError(contract_path)
-    contract = _parse(contract_path.read_text(encoding="utf-8"))
-    missing = [field for field in REQUIRED_CONTRACT_FIELDS if field not in contract]
-    if missing:
-        raise ValueError("Contract missing required fields: " + ", ".join(missing))
+    contract = _parse(Path(path).read_text(encoding="utf-8"))
+    for name in ("name", "purpose"):
+        _text(contract.get(name), name)
+    _version(contract.get("version"), "version")
+    for name in ("outputs", "constraints"):
+        _strings(contract.get(name), name)
+    if "evaluation" in contract:
+        _strings(contract["evaluation"], "evaluation")
+    inputs = contract.get("inputs")
+    if not isinstance(inputs, list) or not inputs:
+        raise ValueError("inputs must be a non-empty list")
+    names = set()
+    for item in inputs:
+        if not isinstance(item, dict):
+            raise ValueError("Each input must be a mapping")
+        _text(item.get("name"), "inputs.name")
+        _text(item.get("type"), "inputs.type")
+        if not isinstance(item.get("required"), bool):
+            raise ValueError("inputs.required must be boolean")
+        if item["name"] in names:
+            raise ValueError(f"Duplicate input: {item['name']}")
+        names.add(item["name"])
     return contract
 
-
 def format_profile_rules(profile: dict) -> str:
-    """Render the profile as deterministic instructions for a composed Skill."""
-    lines = ["## Personal Reasoning DNA", "", f"Profile: {profile['identity']['name']}", ""]
-    lines.append("### Values")
-    lines.extend(f"- {item}" for item in profile["values"])
-    lines.extend(["", "### Inquiry Pattern", f"{profile['thinking']['inquiry_pattern']}", ""])
-    lines.append("### Thinking Rules")
-    for key, value in profile["thinking"].items():
-        if key != "inquiry_pattern":
-            lines.append(f"- {key}: {value}")
-    lines.extend(["", "### Decision Rules"])
-    lines.extend(f"- {item}" for item in profile["decision_rules"])
-    lines.extend(["", "### Output Preferences"])
-    for key, value in profile["preferences"].items():
-        lines.append(f"- {key}: {value}")
+    lines = ["## Personal Reasoning DNA", "", f"Profile: {profile['identity']['name']}"]
+    for heading, key in (
+        ("Values", "values"), ("Thinking Rules", "thinking"),
+        ("Decision Rules", "decision_rules"), ("Workflows", "workflows"),
+        ("Output Preferences", "preferences"),
+    ):
+        lines.extend(["", f"### {heading}"])
+        value = profile[key]
+        if isinstance(value, dict):
+            lines.extend(f"- {name}: {item}" for name, item in value.items())
+        else:
+            lines.extend(f"- {item}" for item in value)
     return "\n".join(lines)

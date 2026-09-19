@@ -15,6 +15,7 @@ from research_skills.compose import compose_skill  # noqa: E402
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("skill", help="Skill directory name under skills/")
+    parser.add_argument("--mode", choices=("baseline", "skill", "profile"), default="profile")
     parser.add_argument("input", help="Input Markdown path, retained for reproducible invocation")
     parser.add_argument(
         "--profile",
@@ -32,7 +33,7 @@ def main() -> int:
         return 2
     try:
         input_text = input_path.read_text(encoding="utf-8")
-        print(compose_skill(skill_dir, ROOT / arguments.profile, input_text=input_text), end="")
+        print(compose_skill(skill_dir, ROOT / arguments.profile, input_text=input_text, mode=arguments.mode), end="")
     except (FileNotFoundError, ValueError) as error:
         print(f"Could not compose Skill: {error}", file=sys.stderr)
         return 1

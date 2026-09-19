@@ -41,9 +41,10 @@ What → Why → Assumption → Boundary → Connection → Application → Valu
 Included today:
 
 - `profiles/reasoning-dna.yaml`: values, inquiry pattern, decision rules, workflows, and preferences;
-- a dependency-free Python loader and Skill composer;
+- a validated YAML profile loader and Skill composer (PyYAML);
 - `paper-reading`: evidence-grounded paper analysis;
 - `research-question`: conversion of broad ideas into bounded, falsifiable questions;
+- `argument-analysis`: claim, support, warrant, counterargument, and boundary analysis for argumentative prose;
 - deterministic examples, tests, repository validation, and GitHub Actions.
 
 The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
@@ -55,6 +56,7 @@ Requirements: Python 3.10 or newer. No API key or private data is required.
 ```bash
 git clone https://github.com/1second1/personal-research-skills.git
 cd personal-research-skills
+python -m pip install -e .
 
 python -m unittest discover -s tests -v
 python scripts/validate_repository.py
@@ -68,6 +70,7 @@ Compose a Skill with the reference Reasoning DNA profile:
 ```bash
 python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
 python scripts/run_skill.py research-question skills/research-question/examples/input.md
+python scripts/run_skill.py argument-analysis skills/argument-analysis/examples/input.md
 ```
 
 The CLI emits a deterministic Markdown context containing the personal profile and the selected Skill contract. It can be inspected or passed to an agent runtime.
@@ -83,7 +86,8 @@ personal-research-skills/
 ├── scripts/run_skill.py
 ├── skills/
 │   ├── paper-reading/
-│   └── research-question/
+│   ├── research-question/
+│   └── argument-analysis/
 ├── evals/
 ├── tests/
 ├── docs/
@@ -112,11 +116,20 @@ skills/<skill-name>/
 
 ## Roadmap
 
-1. Run independent-agent forward evaluations for `paper-reading` and `research-question`.
-2. Add a third Skill for codebase or paper-to-code analysis.
-3. Compare outputs from no profile, Skill only, and Skill plus Reasoning DNA.
-4. Add a reviewable feedback log for evolving rules.
-5. Consider model, PDF, repository, and experiment integrations only after the evaluation loop is reliable.
+For source checks and three-condition experiments, see
+[the evaluation protocol](evals/PROTOCOL.md). Passing automated checks does not
+establish semantic correctness or demonstrate a benefit from the profile.
+
+The parser/contract layer and initial evaluation protocol are implemented. A
+single-run [argument-analysis pilot](evals/cases/2013-text3-pilot/README.md)
+showed a clear benefit from the Skill contract but no measured gain from the
+profile over Skill-only. This is evidence from one evaluation setup, not a
+general result.
+
+1. Complete a real-paper reading case with verifiable source locations.
+2. Repeat blinded baseline / Skill / Skill-plus-profile comparisons across tasks.
+3. Add a reviewable feedback log for evolving rules.
+4. Add model, PDF, repository, and experiment adapters only after those evaluations.
 
 ## Contributing
 

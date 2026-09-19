@@ -1,0 +1,8 @@
+identity:
+  name: test
+  version: 0.1.0
+values: wrong
+thinking: {}
+decision_rules: []
+workflows: {}
+preferences: {}

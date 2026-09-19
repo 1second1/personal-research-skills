@@ -20,7 +20,13 @@ REQUIRED_PATHS = (
     "skills/research-question/SKILL.md",
     "skills/research-question/contract.yaml",
     "skills/research-question/examples/input.md",
-    "skills/research-question/examples/expected-output.md",
+   "skills/research-question/examples/expected-output.md",
+    "skills/argument-analysis/SKILL.md",
+    "skills/argument-analysis/contract.yaml",
+    "skills/argument-analysis/examples/input.md",
+    "skills/argument-analysis/examples/expected-output.md",
+    "skills/argument-analysis/evals/pressure-scenarios.md",
+    "evals/cases/2013-text3-pilot/README.md",
     "research_skills/dna.py",
     "research_skills/compose.py",
     "scripts/run_skill.py",
@@ -47,12 +53,13 @@ def validate(root: Path) -> list[str]:
         if not (root / relative_path).is_file():
             errors.append(f"Missing required file: {relative_path}")
 
-    skill_path = root / "skills/paper-reading/SKILL.md"
-    if skill_path.is_file():
-        skill_text = skill_path.read_text(encoding="utf-8")
-        for key in SKILL_FRONTMATTER_KEYS:
-            if key not in skill_text:
-                errors.append(f"Missing Skill frontmatter key: {key}")
+    for skill_name in ("paper-reading", "research-question", "argument-analysis"):
+        skill_path = root / "skills" / skill_name / "SKILL.md"
+        if skill_path.is_file():
+            skill_text = skill_path.read_text(encoding="utf-8")
+            for key in SKILL_FRONTMATTER_KEYS:
+                if key not in skill_text:
+                    errors.append(f"Missing Skill frontmatter key in {skill_name}: {key}")
 
     contract_path = root / "skills/paper-reading/contract.yaml"
     if contract_path.is_file():
