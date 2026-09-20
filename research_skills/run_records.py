@@ -169,6 +169,8 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
             if not artifact_path.is_file():
                 errors.append(f"Artifact not found: {relative}")
                 continue
+            if b"\r" in artifact_path.read_bytes():
+                errors.append(f"Artifact must use LF line endings: {relative}")
             if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
                 errors.append(f"digests.{name} must be a lowercase SHA-256 value")
                 continue

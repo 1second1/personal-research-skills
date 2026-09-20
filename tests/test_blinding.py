@@ -24,7 +24,9 @@ def _record(root: Path, condition: str, text: str) -> Path:
     run_root.mkdir(parents=True)
     for name in ARTIFACT_NAMES:
         content = text if name == "output" else f"# {name}\n"
-        (run_root / f"{name}.md").write_text(content, encoding="utf-8")
+        (run_root / f"{name}.md").write_text(
+            content, encoding="utf-8", newline="\n"
+        )
     data = {
         "schema_version": "1.0",
         "run_id": f"RQ-01-{condition}-r1",

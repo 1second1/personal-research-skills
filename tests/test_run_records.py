@@ -27,7 +27,9 @@ def _write_record(
     artifacts = root / "artifacts"
     artifacts.mkdir(parents=True)
     for name in ARTIFACT_NAMES:
-        (artifacts / f"{name}.md").write_text(f"# {name}\n", encoding="utf-8")
+        (artifacts / f"{name}.md").write_text(
+            f"# {name}\n", encoding="utf-8", newline="\n"
+        )
     record = {
         "schema_version": schema_version,
         "run_id": f"RQ-01-{condition}-r1",
@@ -80,6 +82,20 @@ class RunRecordTests(unittest.TestCase):
             errors = validate_run_record(record, root=root)
 
         self.assertTrue(any("Digest mismatch for output" in error for error in errors))
+
+    def test_carriage_return_in_artifact_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            record = _write_record(root)
+            context = root / "artifacts/context.md"
+            context.write_bytes(b"# context\r\n")
+            data = yaml.safe_load(record.read_text(encoding="utf-8"))
+            data["digests"]["context"] = _digest(context)
+            record.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+            errors = validate_run_record(record, root=root)
+
+        self.assertTrue(any("must use LF line endings" in error for error in errors))
 
     def test_path_traversal_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:

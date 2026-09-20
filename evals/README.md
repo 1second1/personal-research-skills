@@ -35,6 +35,8 @@ being presented as a factual-quality score.
 Every real run must preserve the exact input, composed context, raw output,
 model identity, generation settings, repository revision, and SHA-256 digests.
 Paths are repository-relative and may not escape the evaluation root.
+Text artifacts must use LF line endings so byte-level digests remain portable
+across Windows and Linux checkouts.
 Use schema `1.1` when a runtime does not expose `temperature` or
 `max_output_tokens`; record those values as `null` rather than inventing a
 setting. `reasoning_effort` and `verbosity` are optional because not every
