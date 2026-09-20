@@ -31,10 +31,15 @@ python -m pip install -e .
 
 python -m unittest discover -s tests -v
 python scripts/validate_repository.py
-python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
-python scripts/run_skill.py research-question skills/research-question/examples/input.md
-python scripts/run_skill.py argument-analysis skills/argument-analysis/examples/input.md
+research-skills paper-reading skills/paper-reading/examples/input.md --output context.md
+research-skills research-question skills/research-question/examples/input.md
+research-skills argument-analysis skills/argument-analysis/examples/input.md
 ```
+
+输入路径写成 `-` 时从 stdin 读取；`--output` 会直接写入 UTF-8 Markdown，
+避免依赖 PowerShell 管道传递 Unicode 字符。原有 `scripts/run_skill.py` 仍兼容。
+若在仓库目录外运行已安装命令，请传入
+`--root /path/to/personal-research-skills`；wheel 不复制公开的 Skill 和 Profile 文件。
 
 ## 核心模型
 

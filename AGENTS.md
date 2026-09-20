@@ -4,7 +4,8 @@ This project composes research methodology profiles and Skill contracts into
 portable Markdown contexts. It does not execute a model or learn automatically.
 
 - Core: research_skills/dna.py and research_skills/compose.py.
-- CLI: scripts/run_skill.py. Evaluation: scripts/evaluate_paper_reading.py.
+- CLI: research_skills/cli.py (`research-skills`); scripts/run_skill.py is the compatibility wrapper.
+- Evaluation: scripts/evaluate_paper_reading.py.
 - Install: python -m pip install -e .
 - Verify: python -m unittest discover -s tests -v, then
   python scripts/validate_repository.py.

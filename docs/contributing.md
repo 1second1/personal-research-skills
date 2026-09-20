@@ -13,9 +13,8 @@ skills/<skill-name>/
 ├── examples/
 │   ├── input.md
 │   └── expected-output.md
-├── evals/
-│   └── rubric.md
-└── changelog.md
+└── evals/
+    └── pressure-scenarios.md
 ```
 
 ## 必须说明
@@ -61,4 +60,4 @@ skills/<skill-name>/
 - 评测规则可以被复现。
 - 没有把推断写成来源事实。
 - 没有把私密对话、私有数据或 API 密钥提交到仓库。
-- 变更记录说明了版本和行为变化。
+- 根目录 `CHANGELOG.md` 说明了面向用户的版本和行为变化。

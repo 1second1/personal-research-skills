@@ -11,6 +11,74 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ValidateRepositoryTests(unittest.TestCase):
+    def test_validator_requires_profile_and_skill_directories(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            errors = validate(Path(temporary_directory))
+
+        self.assertIn("Missing required directory: profiles", errors)
+        self.assertIn("Missing required directory: skills", errors)
+
+    def test_validator_rejects_invalid_profile_schema(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            profile_path = root / "profiles/broken.yaml"
+            profile_path.parent.mkdir(parents=True)
+            profile_path.write_text("profile: broken\n", encoding="utf-8")
+
+            errors = validate(root)
+
+        self.assertTrue(any("Invalid profile" in error for error in errors))
+
+    def test_validator_rejects_invalid_skill_contract(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            skill_root = root / "skills/example"
+            skill_root.mkdir(parents=True)
+            (skill_root / "SKILL.md").write_text(
+                "---\nname: example\ndescription: Example Skill.\n---\n",
+                encoding="utf-8",
+            )
+            (skill_root / "contract.yaml").write_text(
+                "name: different-name\nversion: invalid\n",
+                encoding="utf-8",
+            )
+
+            errors = validate(root)
+
+        self.assertTrue(any("Invalid Skill contract" in error for error in errors))
+
+    def test_validator_requires_standard_artifacts_for_discovered_skills(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            skill_root = root / "skills/example"
+            skill_root.mkdir(parents=True)
+            (skill_root / "SKILL.md").write_text(
+                "---\nname: example\ndescription: Example Skill.\n---\n",
+                encoding="utf-8",
+            )
+            (skill_root / "contract.yaml").write_text(
+                """name: example
+version: 0.1.0
+purpose: Demonstrate repository validation.
+inputs:
+  - name: source
+    required: true
+    type: text
+outputs: [result]
+constraints: [Do not invent evidence.]
+""",
+                encoding="utf-8",
+            )
+
+            errors = validate(root)
+
+        self.assertTrue(
+            any("Missing Skill artifact: skills/example/examples/input.md" in error for error in errors)
+        )
+        self.assertTrue(
+            any("Missing Skill artifact: skills/example/evals/pressure-scenarios.md" in error for error in errors)
+        )
+
     def test_real_paper_case_is_a_required_public_artifact(self) -> None:
         expected = {
             "evals/cases/u-mamba-real-paper/README.md",

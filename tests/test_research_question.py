@@ -2,12 +2,24 @@ import unittest
 from pathlib import Path
 
 from research_skills.compose import compose_skill
+from research_skills.dna import load_contract
 
 
 ROOT = Path(__file__).parents[1]
 
 
 class ResearchQuestionSkillTests(unittest.TestCase):
+    def test_composed_context_exposes_research_question_evaluation(self):
+        contract = load_contract(ROOT / "skills/research-question/contract.yaml")
+        result = compose_skill(
+            ROOT / "skills/research-question",
+            ROOT / "profiles/reasoning-dna.yaml",
+        )
+
+        self.assertIn("evaluation", contract)
+        self.assertIn("falsifiability", contract["evaluation"])
+        self.assertIn('"falsifiability"', result)
+
     def test_skill_requires_a_falsifiable_question_contract(self):
         contract = (ROOT / "skills" / "research-question" / "contract.yaml").read_text(encoding="utf-8")
         skill = (ROOT / "skills" / "research-question" / "SKILL.md").read_text(encoding="utf-8")

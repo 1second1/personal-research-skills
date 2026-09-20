@@ -1,6 +1,8 @@
+import importlib.metadata
 import unittest
 from pathlib import Path
 
+import research_skills
 from research_skills.dna import _parse, load_profile
 from research_skills.compose import compose_skill
 from scripts.evaluate_paper_reading import evaluate
@@ -9,6 +11,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class IntegrityTests(unittest.TestCase):
+    def test_runtime_version_matches_installed_distribution(self):
+        self.assertEqual(
+            research_skills.__version__,
+            importlib.metadata.version("personal-research-skills"),
+        )
+
     def test_quoted_hash_and_comma_are_preserved(self):
         self.assertEqual(_parse('name: "Evidence #1"\nitems: ["a,b", c]'),
                          {'name': 'Evidence #1', 'items': ['a,b', 'c']})

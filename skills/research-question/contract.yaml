@@ -24,3 +24,10 @@ constraints:
   - The question must include an observable outcome.
   - Claims without supplied evidence must be marked as unsupported.
   - Next actions must have artifacts and measurable stopping conditions.
+
+evaluation:
+  - question_specificity
+  - falsifiability
+  - variable_operationalization
+  - boundary_precision
+  - actionability

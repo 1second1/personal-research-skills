@@ -1,8 +1,17 @@
 [project]
 name = "personal-research-skills"
 version = "0.2.0"
+description = "Composable, evidence-grounded research methodology for reusable AI Skills"
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["PyYAML>=6.0.3,<7"]
+
+[project.scripts]
+research-skills = "research_skills.cli:main"
+
+[project.urls]
+Repository = "https://github.com/1second1/personal-research-skills"
+Issues = "https://github.com/1second1/personal-research-skills/issues"
 
 [build-system]
 requires = ["setuptools>=68"]

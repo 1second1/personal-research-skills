@@ -4,6 +4,12 @@ All notable project changes are documented here.
 
 ## Unreleased
 
+- Add the installed `research-skills` command with stdin and UTF-8 file output.
+- Discover and validate every public Profile and Skill contract instead of
+  hard-coding the current Skill names.
+- Remove a stale, incompatible example Profile and align the documented Skill
+  layout with the repository's actual evaluation artifacts.
+- Add evaluation criteria and pressure scenarios for `research-question`.
 - Replace the custom YAML parser with safe parsing, duplicate-key rejection,
   and typed profile/contract validation.
 - Include workflows and the complete contract in composed contexts.

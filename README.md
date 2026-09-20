@@ -71,12 +71,18 @@ python scripts/evaluate_paper_reading.py \
 Compose a Skill with the reference Reasoning DNA profile:
 
 ```bash
-python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
-python scripts/run_skill.py research-question skills/research-question/examples/input.md
-python scripts/run_skill.py argument-analysis skills/argument-analysis/examples/input.md
+research-skills paper-reading skills/paper-reading/examples/input.md --output context.md
+research-skills research-question skills/research-question/examples/input.md
+research-skills argument-analysis skills/argument-analysis/examples/input.md
 ```
 
-The CLI emits a deterministic Markdown context containing the personal profile and the selected Skill contract. It can be inspected or passed to an agent runtime.
+Use `-` as the input path to read from stdin. `python scripts/run_skill.py ...`
+remains available as a backward-compatible repository command. The CLI emits a
+deterministic Markdown context containing the personal profile and selected
+Skill contract; `--output` writes it directly as UTF-8 instead of relying on a
+shell pipeline. When invoking an installed command outside the checkout, pass
+`--root /path/to/personal-research-skills` so it can find the public Skills and
+profiles; the wheel intentionally does not duplicate those repository artifacts.
 
 ## Repository layout
 
@@ -84,6 +90,7 @@ The CLI emits a deterministic Markdown context containing the personal profile a
 personal-research-skills/
 ├── profiles/reasoning-dna.yaml
 ├── research_skills/
+│   ├── cli.py
 │   ├── dna.py
 │   └── compose.py
 ├── scripts/run_skill.py
@@ -105,8 +112,10 @@ skills/<skill-name>/
 ├── SKILL.md
 ├── contract.yaml
 ├── examples/
-├── evals/
-└── changelog.md
+│   ├── input.md
+│   └── expected-output.md
+└── evals/
+    └── pressure-scenarios.md
 ```
 
 ## Design principles

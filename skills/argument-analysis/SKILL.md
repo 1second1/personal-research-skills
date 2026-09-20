@@ -13,37 +13,37 @@ and the source's genre.
 
 ## Required Output
 
-### Thesis
+## Thesis
 
 State the strongest conclusion the passage actually argues for. Distinguish it
 from its topic and from a stronger conclusion the author does not establish.
 
-### Argument Map
+## Argument Map
 
 Represent each material step as `claim → support → warrant`. Mark a warrant as
 `implicit` when the source relies on it without stating it.
 
-### Evidence
+## Evidence
 
 List direct textual support with available locations. Classify examples,
 statistics, quotations, analogies, and assertions accurately; an example of
 interest in an idea is not evidence that the idea is true.
 
-### Assumptions
+## Assumptions
 
 Identify only assumptions required to connect support to a conclusion.
 
-### Counterarguments
+## Counterarguments
 
 Give the strongest source-grounded objection or missing alternative. Do not
 invent external facts.
 
-### Boundaries
+## Boundaries
 
 State the narrower conclusion the supplied material supports and what remains
 unestablished.
 
-### Implications
+## Implications
 
 Answer the supplied `reader_goal`. If none is supplied, explain the most useful
 reading implication in proportion to the source; do not turn an ordinary essay

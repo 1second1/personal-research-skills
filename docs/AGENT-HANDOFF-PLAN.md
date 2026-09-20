@@ -2,19 +2,21 @@
 
 ## Cross-Agent Handoff and Long-Term Engineering Plan
 
-### Local implementation update — 2026-09-17
+### Local implementation update — 2026-09-19
 
 The configuration parser now requires PyYAML (install with `python -m pip install -e .`).
 Profiles and contracts are validated; full contracts and workflows reach composed
 contexts. `run_skill.py --mode baseline|skill|profile` supports controlled comparisons.
+The installed `research-skills` command supports stdin and direct UTF-8 file output.
+Repository validation discovers all Profile and Skill directories rather than a fixed list.
 The evaluator checks structure and, with `--source`, source labels and numeric
 presence. It does not establish semantic entailment. See `evals/PROTOCOL.md`.
 The historical commit and status below describe the original handoff, not current HEAD.
 Next: collect and blindly review actual model outputs; do not report ablation gains
 before those runs exist.
 
-> This document is the source of truth for the next agent working on this repository.
-> Read it before changing architecture, naming, profiles, or Skill contracts.
+> This is the historical design and cross-agent handoff record. The opening update,
+> README, CHANGELOG, tests, and current Git state define implementation status.
 
 **Repository:** <https://github.com/1second1/personal-research-skills>
 
@@ -179,7 +181,7 @@ The current public repository contains:
 - `scripts/run_skill.py` — a deterministic composition CLI;
 - `scripts/validate_repository.py` — repository shape validation;
 - `scripts/evaluate_paper_reading.py` — fixture evaluation;
-- `tests/` — 11 passing tests at the last verified handoff;
+- `tests/` — the regression suite; always use a fresh run rather than a stored count;
 - `.github/workflows/validate.yml` — GitHub Actions validation;
 - `README.md` — English public entry point;
 - `README.zh-CN.md` — Chinese explanation;
@@ -584,7 +586,7 @@ Copy the following prompt when handing this repository to another coding agent:
 Read docs/AGENT-HANDOFF-PLAN.md, README.md, profiles/reasoning-dna.yaml,
 and the target Skill before making changes.
 
-Current priority: finish Phase 1 with the source-verified PR-REAL-01 case.
+Current priority: run the remaining Phase 1 comparison on the source-verified PR-REAL-01 case.
 Generate three fresh runs for baseline, Skill-only, and Skill + Reasoning DNA
 under identical model settings, then randomize and score them with blinded human
 review. Preserve raw outputs, run metadata, reviewer disagreements, and the
