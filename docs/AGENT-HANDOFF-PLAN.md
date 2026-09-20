@@ -16,8 +16,10 @@ public schema with SHA-256 integrity checks; blinded exports separate reviewer
 files from the private condition key. None of these deterministic checks
 establish semantic entailment. See `evals/PROTOCOL.md`.
 The historical commit and status below describe the original handoff, not current HEAD.
-Next: collect and blindly review actual model outputs; do not report ablation gains
-before those runs exist.
+The first `PR-REAL-01` comparison now contains nine validated model runs and a
+best-effort blinded single-agent review. Skill-only outscored baseline, while
+the profile did not improve on Skill-only. Next: obtain independent review and
+turn the observed `±` attribution failure into a versioned feedback proposal.
 
 > This is the historical design and cross-agent handoff record. The opening update,
 > README, CHANGELOG, tests, and current Git state define implementation status.
@@ -231,8 +233,8 @@ The project is a solid early prototype, not yet a mature AI product or a flagshi
 
 1. `run_skill.py` reads the input and composes a complete execution context, but it still does not execute a model.
 2. The evaluator checks structure, source labels, and numeric presence. It is a rejection filter, not a semantic judge.
-3. `PR-REAL-01` is a manually verified real-paper reference case, not a model output or an independent reproduction; the repeated three-condition comparison is still missing.
-4. The run-record and blinding infrastructure is implemented, but no complete repeated-run dataset and scored blinded review report exists yet.
+3. `PR-REAL-01` includes a nine-run three-condition comparison, but it is still analysis of a curated source map rather than an independent reproduction of the paper.
+4. The comparison has one semantic reviewer; condition style may have weakened blinding, and independent human review is still pending.
 5. PDF ingestion and code execution are still manual; there is no provider-neutral adapter layer.
 6. The Reasoning DNA is hand-authored and has not yet been shown to improve research results through blinded or repeated comparisons.
 7. Feedback-to-rule evolution has not yet been implemented as a versioned, reviewable artifact.
@@ -378,10 +380,10 @@ The old repository examples still pass.
 Priority: **P0**
 
 Current status: the source-verified `PR-REAL-01` U-Mamba fixture, generic
-rubrics, run-record schema, integrity validation, and blind-review export are
-complete. The remaining Phase 1 work is to generate repeated model outputs,
-store validated records, and conduct blinded human review; do not mislabel the
-curated reference answer or deterministic run fixture as a model run.
+rubrics, run-record schemas, integrity validation, blind-review export, nine
+model outputs, and a scored single-agent review are complete. The remaining
+Phase 1 work is independent second review and adjudication; do not mislabel the
+curated reference answer as a model run or this analysis as paper reproduction.
 
 For both existing Skills, create the same prompt scenarios in three modes:
 
@@ -568,8 +570,8 @@ Use this priority order:
 
 ### Must do first
 
-- run three repetitions for baseline, Skill-only, and profile conditions on `PR-REAL-01`, recording every run with the v1 schema;
-- score the randomized outputs with blinded human review and retain disagreements;
+- obtain an independent second review of the nine published `PR-REAL-01` runs and retain disagreements;
+- adjudicate the disputed interpretation of undefined `±` values without revealing condition labels during scoring;
 - preserve tests and backward compatibility;
 - document exact limitations.
 
@@ -602,13 +604,12 @@ Copy the following prompt when handing this repository to another coding agent:
 Read docs/AGENT-HANDOFF-PLAN.md, README.md, profiles/reasoning-dna.yaml,
 and the target Skill before making changes.
 
-Current priority: run the remaining Phase 1 comparison on the source-verified PR-REAL-01 case.
-Generate three fresh runs for baseline, Skill-only, and Skill + Reasoning DNA
-under identical model settings, then randomize and score them with blinded human
-review. Validate every run record and artifact digest, generate the reviewer
-bundle with `research-skills blind`, keep its private key hidden until scoring,
-and preserve raw outputs, reviewer disagreements, and the negative result if the
-profile does not outperform Skill-only.
+Current priority: independently review the nine published `PR-REAL-01` outputs
+without opening their condition-labeled run records. Score the five documented
+dimensions, quote evidence for each deduction, record suspected unblinding,
+then compare against `comparison-2026-09-20/review-scores.yaml` and retain every
+disagreement. The current result is negative for incremental profile value and
+must remain so unless a documented adjudication changes the scores.
 
 Do not treat the curated reference answer as a model run, and do not add a
 database, web UI, automatic profile rewriting, or provider-specific product

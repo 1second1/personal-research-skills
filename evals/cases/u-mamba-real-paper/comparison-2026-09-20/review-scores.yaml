@@ -1,0 +1,133 @@
+schema_version: '1.0'
+reviewer: primary-agent
+reviewed_at: '2026-09-20'
+reviewer_count: 1
+key_accessed_before_scoring: false
+blinding: best-effort
+suspected_unblinding: true
+unblinding_note: Candidate language and heading structure differed visibly, so condition style may have
+  been inferable even though the private mapping was not opened.
+rubric_scale: 0-2 per dimension; 10 maximum
+runs:
+- run_id: PR-REAL-01-baseline-r1
+  condition: baseline
+  repetition: 1
+  factual_consistency: 2
+  evidence_coverage: 1
+  fact_inference_separation: 1
+  boundaries: 2
+  actionability: 0
+  total: 6
+  critical_failure: false
+  note: Accurate summary and explicit 0.6504/0.6540 caveat, but most claims cite only the paper generally,
+    inference is not systematically labeled, and no executable next action is supplied.
+  evidence_quote: The source is a selective paraphrased evidence map, not the complete paper or a substitute
+    for independent reproduction.
+- run_id: PR-REAL-01-baseline-r2
+  condition: baseline
+  repetition: 2
+  factual_consistency: 2
+  evidence_coverage: 2
+  fact_inference_separation: 2
+  boundaries: 2
+  actionability: 0
+  total: 8
+  critical_failure: false
+  note: Material claims are linked to page or table locations and interpretation is attributed to the
+    authors, but the response provides no executable next step or decision criterion.
+  evidence_quote: the table and narrative are inconsistent (p. 9, §3.4 vs. Table 4).
+- run_id: PR-REAL-01-baseline-r3
+  condition: baseline
+  repetition: 3
+  factual_consistency: 2
+  evidence_coverage: 1
+  fact_inference_separation: 1
+  boundaries: 2
+  actionability: 0
+  total: 6
+  critical_failure: false
+  note: Accurate and appropriately caveated, but claims are not tied to precise source locations, interpretation
+    is only partially separated, and no next action is given.
+  evidence_quote: The supplied evidence is a selective paraphrased source map, not the full paper or PDF.
+- run_id: PR-REAL-01-profile-r1
+  condition: profile
+  repetition: 1
+  factual_consistency: 1
+  evidence_coverage: 2
+  fact_inference_separation: 2
+  boundaries: 2
+  actionability: 2
+  total: 9
+  critical_failure: false
+  note: Strong structure and next actions, with one attribution ambiguity from calling the reported dispersion
+    standard deviation without a supplied definition.
+  evidence_quote: 不能判断报告差异是否具有统计显著性；缺少重复实验、置信区间、显著性检验或逐病例结果。
+- run_id: PR-REAL-01-profile-r2
+  condition: profile
+  repetition: 2
+  factual_consistency: 1
+  evidence_coverage: 2
+  fact_inference_separation: 2
+  boundaries: 2
+  actionability: 2
+  total: 9
+  critical_failure: false
+  note: Detailed evidence chain and useful falsification criteria, but describes the plus/minus values
+    as standard deviations although the supplied source does not define the statistic.
+  evidence_quote: 不能仅据此断言统计显著优越。
+- run_id: PR-REAL-01-profile-r3
+  condition: profile
+  repetition: 3
+  factual_consistency: 1
+  evidence_coverage: 2
+  fact_inference_separation: 2
+  boundaries: 2
+  actionability: 2
+  total: 9
+  critical_failure: false
+  note: Fully traceable and actionable, but it calls the plus/minus values standard deviations before
+    correctly noting that their meaning is not supplied; this internal attribution ambiguity prevents
+    a factual score of 2.
+  evidence_quote: 仅凭均值无法判断差异的统计可靠性；文本未提供重复实验、置信区间或显著性检验。
+- run_id: PR-REAL-01-skill-r1
+  condition: skill
+  repetition: 1
+  factual_consistency: 2
+  evidence_coverage: 2
+  fact_inference_separation: 2
+  boundaries: 2
+  actionability: 2
+  total: 10
+  critical_failure: false
+  note: Uses the neutral term dispersion, keeps the table/prose conflict visible, separates inference,
+    and defines measurable reproduction actions.
+  evidence_quote: The supplied text does not establish whether the reported `±` values are standard deviations,
+    standard errors, or another dispersion measure.
+- run_id: PR-REAL-01-skill-r2
+  condition: skill
+  repetition: 2
+  factual_consistency: 2
+  evidence_coverage: 2
+  fact_inference_separation: 2
+  boundaries: 2
+  actionability: 2
+  total: 10
+  critical_failure: false
+  note: Complete evidence traceability, cautious treatment of undefined dispersion, explicit unsupported
+    claims, and measurable next actions.
+  evidence_quote: The source does not establish statistical significance, reproducibility across random
+    seeds, or superiority under equal compute and tuning budgets.
+- run_id: PR-REAL-01-skill-r3
+  condition: skill
+  repetition: 3
+  factual_consistency: 1
+  evidence_coverage: 2
+  fact_inference_separation: 2
+  boundaries: 2
+  actionability: 2
+  total: 9
+  critical_failure: false
+  note: Strong traceability and falsifiable actions, but labels the plus/minus values as standard deviations
+    immediately before acknowledging that the supplied text does not define them.
+  evidence_quote: The source map does not provide statistical significance tests, confidence intervals,
+    random seeds, or the number of evaluation cases.

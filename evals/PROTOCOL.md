@@ -46,9 +46,12 @@ Use the same model version, sampling parameters, token budget and tools in all
 conditions. Start a fresh conversation per run. Save the exact context and raw
 output, model/version, parameters, condition, source, task ID and run ID.
 Run three repetitions per condition. Store each run with
-`evals/schemas/run-record-v1.schema.json`; the input, context, and raw output
+`evals/schemas/run-record-v1.1.schema.json`; the input, context, and raw output
 digests must validate before review. Randomize presentation order and hide the
 condition from reviewers. Do not reuse the authored example as a model output.
+If the runtime does not expose a generation control, record `null`; never infer
+or invent a temperature, seed, or token limit. The original `1.0` schema remains
+available for existing records whose numeric settings are known.
 
 Create the reviewer bundle with a fixed seed:
 

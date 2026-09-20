@@ -1,0 +1,28 @@
+schema_version: '1.1'
+run_id: PR-REAL-01-baseline-r3
+task_id: PR-REAL-01
+condition: baseline
+repetition: 3
+created_at: '2026-09-20T08:08:52.072455+00:00'
+repository_revision: 55616aa15192952640a0ff85b36a8d164dfd5255
+model:
+  provider: OpenAI Codex CLI 0.145.0
+  name: gpt-5.6-luna
+  version: provider-managed alias accessed 2026-09-20
+generation:
+  temperature: null
+  seed: null
+  max_output_tokens: null
+  tools: []
+  reasoning_effort: low
+  verbosity: low
+artifacts:
+  input: evals/cases/u-mamba-real-paper/source-map.md
+  context: evals/cases/u-mamba-real-paper/comparison-2026-09-20/contexts/baseline.md
+  output: evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r3.md
+digests:
+  input: 9e9d8c1004e99fe11a065cdbbc178b4fa6b521b0dd5778198f956612e6d39911
+  context: 0a377f70e4c6f2a26f605645329ffb4d6d7abf25be3219dafc34a4f4e3fd37eb
+  output: 9843415f0ac293420d306922e2d10f395dc887d95ae69510388f7a4cf12acfc7
+review:
+  status: reviewed

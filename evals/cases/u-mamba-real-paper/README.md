@@ -2,7 +2,10 @@
 
 `PR-REAL-01` is the first source-verified paper-reading case in this repository. It uses [U-Mamba: Enhancing Long-range Dependency for Biomedical Image Segmentation](https://arxiv.org/abs/2401.04722v1) because the architecture and experiments align with medical image segmentation and expose both methodological strengths and a concrete reporting inconsistency.
 
-This directory contains a curated reference answer, not a model-generated result and not evidence that one prompt condition or model is superior.
+This directory contains a curated reference answer and a separate repeated
+model comparison. The reference answer is not a model output. The comparison is
+a small pilot and does not establish that one condition or model is generally
+superior.
 
 ## What was verified
 
@@ -31,5 +34,8 @@ The check validates required structure, citations, and numeric presence in the c
 
 - Selected pages and claims were checked; this is not an exhaustive audit of all 17 pages.
 - No training run or source-code execution was performed.
-- No controlled model comparison was run for this case yet.
+- A three-condition, three-repetition comparison is available in
+  [`comparison-2026-09-20/`](comparison-2026-09-20/README.md). Skill-only
+  outscored the baseline in that setup; the profile did not improve on
+  Skill-only. It used one semantic reviewer and still needs independent review.
 - The reported metrics are paper claims, not independently reproduced results.

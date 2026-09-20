@@ -1,7 +1,7 @@
 id: PR-REAL-01
 case_type: curated_reference
-status: verified_source_fixture
-model_runs: 0
+status: verified_source_fixture_with_pilot_comparison
+model_runs: 9
 
 paper:
   title: "U-Mamba: Enhancing Long-range Dependency for Biomedical Image Segmentation"
@@ -42,3 +42,13 @@ artifacts:
   source_map: source-map.md
   expected_output: expected-output.md
   rubric: rubric.yaml
+  model_comparison: comparison-2026-09-20/README.md
+
+comparison:
+  runtime: OpenAI Codex CLI 0.145.0
+  model: gpt-5.6-luna
+  conditions: [baseline, skill, profile]
+  repetitions_per_condition: 3
+  reviewer_count: 1
+  review_type: best-effort blinded single-agent semantic review
+  independent_human_review: pending

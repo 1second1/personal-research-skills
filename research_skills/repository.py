@@ -17,6 +17,7 @@ REQUIRED_PATHS = (
     "evals/rubrics/research-question.yaml",
     "evals/rubrics/argument-analysis.yaml",
     "evals/schemas/run-record-v1.schema.json",
+    "evals/schemas/run-record-v1.1.schema.json",
     "evals/fixtures/paper-reading-demo/source.md",
     "evals/fixtures/paper-reading-demo/evidence-card.md",
     "evals/fixtures/run-record-demo/input.md",
@@ -111,15 +112,20 @@ def validate(root: Path) -> list[str]:
                 errors.append(f"Invalid rubric {relative_path}: {error}")
 
     fixtures_root = root / "evals/fixtures"
+    record_paths: list[Path] = []
     if fixtures_root.is_dir():
-        for record_path in sorted(fixtures_root.rglob("run.yaml")):
-            for error in validate_run_record(record_path, root=root):
-                relative_path = record_path.relative_to(root).as_posix()
-                errors.append(f"Invalid run record {relative_path}: {error}")
+        record_paths.extend(fixtures_root.rglob("run.yaml"))
 
     cases_root = root / "evals/cases"
     if cases_root.is_dir():
+        for runs_directory in cases_root.rglob("runs"):
+            if runs_directory.is_dir():
+                record_paths.extend(runs_directory.glob("*.yaml"))
         for path in cases_root.rglob("*"):
             if path.is_file() and path.suffix.casefold() == ".pdf":
                 errors.append(f"Do not commit source PDF: {path.relative_to(root).as_posix()}")
+    for record_path in sorted(record_paths):
+        for error in validate_run_record(record_path, root=root):
+            relative_path = record_path.relative_to(root).as_posix()
+            errors.append(f"Invalid run record {relative_path}: {error}")
     return errors

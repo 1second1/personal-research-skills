@@ -21,13 +21,15 @@ def _digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _write_record(root: Path, *, condition: str = "skill") -> Path:
+def _write_record(
+    root: Path, *, condition: str = "skill", schema_version: str = "1.0"
+) -> Path:
     artifacts = root / "artifacts"
     artifacts.mkdir(parents=True)
     for name in ARTIFACT_NAMES:
         (artifacts / f"{name}.md").write_text(f"# {name}\n", encoding="utf-8")
     record = {
-        "schema_version": "1.0",
+        "schema_version": schema_version,
         "run_id": f"RQ-01-{condition}-r1",
         "task_id": "RQ-01",
         "condition": condition,
@@ -117,6 +119,62 @@ class RunRecordTests(unittest.TestCase):
 
                 self.assertTrue(any("temperature" in error for error in errors))
 
+    def test_v1_1_accepts_unavailable_sampling_limits_and_records_exposed_controls(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            record = _write_record(root, schema_version="1.1")
+            data = yaml.safe_load(record.read_text(encoding="utf-8"))
+            data["generation"].update(
+                {
+                    "temperature": None,
+                    "max_output_tokens": None,
+                    "reasoning_effort": "low",
+                    "verbosity": "low",
+                }
+            )
+            record.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+            errors = validate_run_record(record, root=root)
+
+        self.assertEqual(errors, [])
+
+    def test_v1_1_allows_omitting_optional_exposed_controls(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            record = _write_record(root, schema_version="1.1")
+
+            errors = validate_run_record(record, root=root)
+
+        self.assertEqual(errors, [])
+
+    def test_v1_0_rejects_v1_1_generation_fields(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            record = _write_record(root)
+            data = yaml.safe_load(record.read_text(encoding="utf-8"))
+            data["generation"]["reasoning_effort"] = "low"
+            record.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+
+            errors = validate_run_record(record, root=root)
+
+        self.assertTrue(any("generation has unknown fields" in error for error in errors))
+
+    def test_v1_1_rejects_blank_exposed_controls(self) -> None:
+        for field in ("reasoning_effort", "verbosity"):
+            with self.subTest(field=field):
+                with tempfile.TemporaryDirectory() as temporary_directory:
+                    root = Path(temporary_directory)
+                    record = _write_record(root, schema_version="1.1")
+                    data = yaml.safe_load(record.read_text(encoding="utf-8"))
+                    data["generation"][field] = " "
+                    record.write_text(
+                        yaml.safe_dump(data, sort_keys=False), encoding="utf-8"
+                    )
+
+                    errors = validate_run_record(record, root=root)
+
+                self.assertTrue(any(field in error for error in errors))
+
     def test_public_json_schema_matches_runtime_constants(self) -> None:
         schema = json.loads(
             (ROOT / "evals/schemas/run-record-v1.schema.json").read_text(encoding="utf-8")
@@ -128,6 +186,21 @@ class RunRecordTests(unittest.TestCase):
         self.assertEqual(
             set(schema["properties"]["artifacts"]["required"]), set(ARTIFACT_NAMES)
         )
+
+        schema_v1_1 = json.loads(
+            (ROOT / "evals/schemas/run-record-v1.1.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        generation = schema_v1_1["properties"]["generation"]
+        self.assertEqual(schema_v1_1["properties"]["schema_version"]["const"], "1.1")
+        self.assertEqual(generation["properties"]["temperature"]["type"], ["number", "null"])
+        self.assertEqual(
+            generation["properties"]["max_output_tokens"]["type"],
+            ["integer", "null"],
+        )
+        self.assertIn("reasoning_effort", generation["properties"])
+        self.assertIn("verbosity", generation["properties"])
 
 
 if __name__ == "__main__":

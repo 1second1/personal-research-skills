@@ -20,6 +20,8 @@
 - 带 SHA-256 完整性校验的 provider-neutral 运行记录 Schema；
 - 将盲评候选与 condition 对照表分离的可复现导出工具；
 - 首个带来源完整性记录的 [U-Mamba 真实论文案例](evals/cases/u-mamba-real-paper/README.md)，保留表格与正文的数值冲突而不替作者消解。
+- 九次运行的 [U-Mamba 三条件对照实验](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)，
+  公开上下文、原始输出、完整性记录以及 Profile 未带来增益的负结果。
 
 当前 Runtime 只负责生成组合后的执行上下文，不调用模型、不保存私有记忆，也不声称已经具备自动学习能力。
 
@@ -47,10 +49,11 @@ research-skills validate --run evals/fixtures/run-record-demo/run.yaml
 若在仓库目录外运行已安装命令，请传入
 `--root /path/to/personal-research-skills`；wheel 不复制公开的 Skill 和 Profile 文件。
 
-真实模型输出应按 `evals/schemas/run-record-v1.schema.json` 记录输入、组合上下文、
+真实模型输出应按 `evals/schemas/run-record-v1.1.schema.json` 记录输入、组合上下文、
 输出、模型设置和 SHA-256。至少准备两个运行记录后，可用 `research-skills blind`
 生成盲评包；只把 `review-manifest.json` 和 `candidates/` 交给评审，评分完成前不要
-提供 `private/review-key.json`。仓库中的 demo 仅用于完整性测试，不是模型成绩。
+提供 `private/review-key.json`。运行时没有公开的采样参数应记为 `null`，不能猜测；
+旧版 `1.0` 记录仍然兼容。仓库中的 demo 仅用于完整性测试，不是模型成绩。
 
 ## 核心模型
 
@@ -72,12 +75,15 @@ What → Why → Assumption → Boundary → Connection → Application → Valu
 自动检查通过不等于科研结论正确，目前尚未证明 Profile 有质量增益。
 
 解析与合同传递、通用评测器、运行记录 Schema、盲评导出、初版评测协议以及首个真实论文证据案例已经完成。U-Mamba 案例核实到
-Table 4 的 `0.6540` 与正文的 `0.6504` 冲突；它是人工核验的参考夹具，不是模型质量结果。一次
+Table 4 的 `0.6540` 与正文的 `0.6504` 冲突；它是人工核验的参考夹具，不是模型质量结果。
+首轮三条件重复实验中，baseline、仅 Skill、Skill + Profile 的平均分分别为
+`6.67`、`9.67`、`9.00`。这说明本次设置下 Skill 有明显作用，但 Profile 没有额外增益；
+评审只有一个 Agent，仍需独立人工复核。一次
 [论证分析小型实验](evals/cases/2013-text3-pilot/README.md) 显示 Skill 合同有明显作用，
 但尚未测出 Reasoning DNA 相比仅 Skill 的独立增益；这只是单次试验，不能推广。
 
-1. 对真实论文与合成任务各运行三次无 Skill、仅 Skill、Skill + Reasoning DNA 盲测；
-2. 建立可审查、可版本化的反馈与规则演化日志；
-3. 在评测结果稳定后，先接通用模型执行层，再接 PDF、仓库和实验执行适配器。
+1. 对已发布的真实论文运行进行第二位独立评审并保留分歧；
+2. 针对 `±` 被错误解释为标准差的问题建立可审查、可版本化反馈，并回归测试；
+3. 在反馈回归后接通用模型执行层，再接 PDF、仓库和实验执行适配器。
 
 英文主说明请阅读 [README.md](README.md)。

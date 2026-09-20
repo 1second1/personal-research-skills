@@ -93,6 +93,9 @@ constraints: [Do not invent evidence.]
 
         self.assertTrue(expected.issubset(REQUIRED_PATHS))
 
+    def test_latest_run_record_schema_is_a_required_public_artifact(self) -> None:
+        self.assertIn("evals/schemas/run-record-v1.1.schema.json", REQUIRED_PATHS)
+
     def test_validator_rejects_nested_pdf_regardless_of_extension_case(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
@@ -110,6 +113,17 @@ constraints: [Do not invent evidence.]
             record = root / "evals/fixtures/example/run.yaml"
             record.parent.mkdir(parents=True)
             record.write_text("schema_version: '1.0'\n", encoding="utf-8")
+
+            errors = validate(root)
+
+        self.assertTrue(any("Invalid run record" in error for error in errors))
+
+    def test_validator_rejects_invalid_case_run_record(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            record = root / "evals/cases/example/runs/bad.yaml"
+            record.parent.mkdir(parents=True)
+            record.write_text("schema_version: '1.1'\n", encoding="utf-8")
 
             errors = validate(root)
 

@@ -9,6 +9,8 @@ All notable project changes are documented here.
 - Generalize deterministic evaluation across all public Skills and version JSON reports.
 - Add a versioned provider-neutral run-record schema with path containment,
   timezone, metadata, and SHA-256 integrity checks.
+- Add backward-compatible run-record schema `1.1` so unavailable provider
+  controls can be recorded as `null` instead of fabricated numeric settings.
 - Add deterministic blind-review export that keeps the random seed and
   condition mapping out of the reviewer manifest.
 - Add the installed `research-skills` command with stdin and UTF-8 file output.
@@ -28,6 +30,9 @@ All notable project changes are documented here.
 - Publish a limited three-condition pilot and its negative result: the profile did not outperform Skill-only in the first run.
 - Add a source-verified U-Mamba paper-reading case without redistributing the PDF.
 - Add an explicit conflicts-and-anomalies contract section and source checks for configurable claim sections.
+- Publish the first repeated `PR-REAL-01` model comparison: nine validated runs,
+  best-effort blind scoring, a Skill-only gain over baseline, and no measured
+  incremental gain from the Reasoning DNA profile.
 
 ## [0.2.0] - 2026-07-28
 

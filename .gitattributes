@@ -5,3 +5,6 @@
 *.jpg binary
 *.jpeg binary
 *.pdf binary
+
+# Preserve model outputs byte-for-byte; Markdown hard breaks may end in two spaces.
+evals/cases/**/outputs/*.md whitespace=-blank-at-eol

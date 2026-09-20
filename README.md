@@ -47,9 +47,13 @@ Included today:
 - `argument-analysis`: claim, support, warrant, counterargument, and boundary analysis for argumentative prose;
 - deterministic examples, tests, repository validation, and GitHub Actions;
 - a generic structural evaluator with versioned JSON reports and rubrics for all three Skills;
-- a provider-neutral run-record schema with SHA-256 artifact verification;
+- backward-compatible run-record schemas with SHA-256 artifact verification
+  and honest `null` values for provider settings a runtime does not expose;
 - deterministic blind-review export with the condition key separated from reviewer files;
 - a source-verified [U-Mamba real-paper case](evals/cases/u-mamba-real-paper/README.md) that preserves an internal table/prose conflict instead of hiding it.
+- a nine-run [U-Mamba controlled comparison](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
+  with published contexts, raw outputs, integrity records, and a negative
+  profile result.
 
 The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
 
@@ -155,20 +159,23 @@ For source checks and three-condition experiments, see
 [the evaluation protocol](evals/PROTOCOL.md). Passing automated checks does not
 establish semantic correctness or demonstrate a benefit from the profile.
 
-The parser/contract layer, generic evaluator, versioned run-record schema,
+The parser/contract layer, generic evaluator, versioned run-record schemas,
 blind-review exporter, initial evaluation protocol, and first
 [source-verified real-paper case](evals/cases/u-mamba-real-paper/README.md) are
 implemented. The real-paper case uncovered and retains a `0.6540` table value
 versus `0.6504` prose value conflict; it is a curated reference fixture, not a
-model-quality result. A
+model-quality result. Its first repeated comparison found Skill-only above the
+baseline (`9.67` versus `6.67` mean rubric score), while Skill + profile scored
+`9.00`; the profile therefore showed no incremental gain in this setup. This
+was a single-agent best-effort blind review, not an independent human study. A
 single-run [argument-analysis pilot](evals/cases/2013-text3-pilot/README.md)
 showed a clear benefit from the Skill contract but no measured gain from the
 profile over Skill-only. This is evidence from one evaluation setup, not a
 general result.
 
-1. Capture three repetitions per condition with the run-record schema, then conduct blinded baseline / Skill / Skill-plus-profile review on the real-paper and synthetic tasks.
-2. Add a reviewable, versioned feedback log for evolving rules.
-3. Add provider-neutral model execution, then PDF, repository, and experiment adapters after those evaluations.
+1. Obtain an independent second review of the published real-paper runs and retain disagreements.
+2. Add a reviewable, versioned feedback proposal for the observed `±` attribution failure, then rerun the affected case.
+3. Add provider-neutral model execution, then PDF, repository, and experiment adapters after the feedback regression.
 
 ## Contributing
 

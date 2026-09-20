@@ -7,7 +7,9 @@ outputs; they do not claim to measure semantic research quality.
 ## What is implemented
 
 - `rubrics/`: deterministic structure and marker checks for every public Skill;
-- `schemas/run-record-v1.schema.json`: the public contract for model-run metadata;
+- `schemas/run-record-v1.schema.json`: the original `1.0` model-run contract;
+- `schemas/run-record-v1.1.schema.json`: the current contract, which can record
+  provider controls while representing unavailable sampling parameters as `null`;
 - `fixtures/run-record-demo/`: a non-model integrity fixture used by tests;
 - `cases/`: reviewed examples and limited pilot reports;
 - `PROTOCOL.md`: repeated-run and blinded human-review procedure.
@@ -33,6 +35,10 @@ being presented as a factual-quality score.
 Every real run must preserve the exact input, composed context, raw output,
 model identity, generation settings, repository revision, and SHA-256 digests.
 Paths are repository-relative and may not escape the evaluation root.
+Use schema `1.1` when a runtime does not expose `temperature` or
+`max_output_tokens`; record those values as `null` rather than inventing a
+setting. `reasoning_effort` and `verbosity` are optional because not every
+provider exposes them. Existing `1.0` records remain valid.
 
 Prepare a review bundle only after at least two records validate:
 

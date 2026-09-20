@@ -11,7 +11,8 @@ import re
 from .dna import _parse
 
 
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"
+SUPPORTED_SCHEMA_VERSIONS = ("1.0", SCHEMA_VERSION)
 CONDITIONS = ("baseline", "skill", "profile")
 ARTIFACT_NAMES = ("input", "context", "output")
 REQUIRED_FIELDS = (
@@ -51,12 +52,15 @@ def _mapping_fields(
     field: str,
     required: set[str],
     errors: list[str],
+    *,
+    optional: set[str] | None = None,
 ) -> dict | None:
     if not isinstance(value, dict):
         errors.append(f"{field} must be a mapping")
         return None
+    allowed = required | (optional or set())
     missing = required - set(value)
-    unknown = set(value) - required
+    unknown = set(value) - allowed
     if missing:
         errors.append(f"{field} missing fields: {', '.join(sorted(missing))}")
     if unknown:
@@ -81,8 +85,11 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
     if unknown:
         errors.append("Unknown run-record fields: " + ", ".join(sorted(unknown)))
 
-    if record.get("schema_version") != SCHEMA_VERSION:
-        errors.append(f"schema_version must be {SCHEMA_VERSION}")
+    schema_version = record.get("schema_version")
+    if schema_version not in SUPPORTED_SCHEMA_VERSIONS:
+        errors.append(
+            "schema_version must be one of: " + ", ".join(SUPPORTED_SCHEMA_VERSIONS)
+        )
     for field in ("run_id", "task_id", "created_at", "repository_revision"):
         if not _non_empty_text(record.get(field)):
             errors.append(f"{field} must be a non-empty string")
@@ -106,15 +113,21 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
             if not _non_empty_text(model.get(field)):
                 errors.append(f"model.{field} must be a non-empty string")
 
+    generation_fields = {"temperature", "seed", "max_output_tokens", "tools"}
+    optional_generation_fields = (
+        {"reasoning_effort", "verbosity"} if schema_version == "1.1" else set()
+    )
     generation = _mapping_fields(
         record.get("generation"),
         "generation",
-        {"temperature", "seed", "max_output_tokens", "tools"},
+        generation_fields,
         errors,
+        optional=optional_generation_fields,
     )
     if generation is not None:
         temperature = generation.get("temperature")
-        if (
+        temperature_unavailable = schema_version == "1.1" and temperature is None
+        if not temperature_unavailable and (
             isinstance(temperature, bool)
             or not isinstance(temperature, (int, float))
             or not math.isfinite(temperature)
@@ -125,11 +138,19 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
         if seed is not None and (isinstance(seed, bool) or not isinstance(seed, int)):
             errors.append("generation.seed must be an integer or null")
         limit = generation.get("max_output_tokens")
-        if isinstance(limit, bool) or not isinstance(limit, int) or limit < 1:
+        limit_unavailable = schema_version == "1.1" and limit is None
+        if not limit_unavailable and (
+            isinstance(limit, bool) or not isinstance(limit, int) or limit < 1
+        ):
             errors.append("generation.max_output_tokens must be a positive integer")
         tools = generation.get("tools")
         if not isinstance(tools, list) or any(not _non_empty_text(item) for item in tools):
             errors.append("generation.tools must be a list of non-empty strings")
+        if schema_version == "1.1":
+            for field in ("reasoning_effort", "verbosity"):
+                value = generation.get(field)
+                if value is not None and not _non_empty_text(value):
+                    errors.append(f"generation.{field} must be a non-empty string or null")
 
     artifacts = _mapping_fields(record.get("artifacts"), "artifacts", set(ARTIFACT_NAMES), errors)
     digests = _mapping_fields(record.get("digests"), "digests", set(ARTIFACT_NAMES), errors)
