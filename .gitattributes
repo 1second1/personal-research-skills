@@ -1,0 +1,7 @@
+# Run-record digests cover text artifacts, so checkout line endings must be stable.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary

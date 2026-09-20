@@ -12,8 +12,8 @@ Describe the user-visible change and the research workflow it affects.
 ## Verification
 
 - [ ] `python -m unittest discover -s tests -v`
-- [ ] `python scripts/validate_repository.py`
-- [ ] `python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml`
+- [ ] `research-skills validate`
+- [ ] `research-skills evaluate evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml --source evals/fixtures/paper-reading-demo/source.md --format json`
 
 ## Methodology impact
 

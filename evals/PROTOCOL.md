@@ -6,12 +6,16 @@ Install dependencies with `python -m pip install -e .`, then run:
 
 ```bash
 python -m unittest discover -s tests -v
-python scripts/evaluate_paper_reading.py evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml --source evals/fixtures/paper-reading-demo/source.md --json
-python scripts/evaluate_paper_reading.py evals/cases/u-mamba-real-paper/expected-output.md evals/cases/u-mamba-real-paper/rubric.yaml --source evals/cases/u-mamba-real-paper/source-map.md --json
+research-skills validate
+research-skills evaluate evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml --source evals/fixtures/paper-reading-demo/source.md --format json
+research-skills evaluate evals/cases/u-mamba-real-paper/expected-output.md evals/cases/u-mamba-real-paper/rubric.yaml --source evals/cases/u-mamba-real-paper/source-map.md --format json
+research-skills evaluate skills/research-question/examples/expected-output.md evals/rubrics/research-question.yaml --format json
+research-skills evaluate skills/argument-analysis/examples/expected-output.md evals/rubrics/argument-analysis.yaml --format json
+research-skills validate --run evals/fixtures/run-record-demo/run.yaml
 ```
 
 Exit codes: 0 = checks passed, 1 = candidate failed checks, 2 = invalid input.
-The JSON report always labels semantic quality as `not_evaluated`.
+The versioned JSON report always labels semantic quality as `not_evaluated`.
 Source labels must exactly match headings in the supplied Markdown source.
 Each Evidence claim must occupy one line and contain a complete citation.
 Rubrics may use `claim_headings` to apply the same citation and numeric checks to
@@ -30,9 +34,9 @@ sections, headings hidden inside prose, and the U-Mamba source-verified case.
 Generate each condition for the same input:
 
 ```bash
-python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md --mode baseline
-python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md --mode skill
-python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md --mode profile
+research-skills compose paper-reading skills/paper-reading/examples/input.md --mode baseline
+research-skills compose paper-reading skills/paper-reading/examples/input.md --mode skill
+research-skills compose paper-reading skills/paper-reading/examples/input.md --mode profile
 ```
 
 Baseline receives the task purpose and input. Skill adds its complete contract and
@@ -41,8 +45,22 @@ is not required to adopt the Skill's output headings: score its meaning, not for
 Use the same model version, sampling parameters, token budget and tools in all
 conditions. Start a fresh conversation per run. Save the exact context and raw
 output, model/version, parameters, condition, source, task ID and run ID.
-Run three repetitions per condition. Randomize presentation order and hide the
+Run three repetitions per condition. Store each run with
+`evals/schemas/run-record-v1.schema.json`; the input, context, and raw output
+digests must validate before review. Randomize presentation order and hide the
 condition from reviewers. Do not reuse the authored example as a model output.
+
+Create the reviewer bundle with a fixed seed:
+
+```bash
+research-skills blind evals/local/runs/run-a.yaml evals/local/runs/run-b.yaml \
+  --seed 20260919 --output evals/local/review-export
+```
+
+Give reviewers `review-manifest.json` and `candidates/`, but not
+`private/review-key.json`. Keep the key for adjudication and reproducibility.
+Because output wording may identify a condition, describe this as best-effort
+blinding and record any suspected unblinding.
 
 Start with these fixed tasks:
 

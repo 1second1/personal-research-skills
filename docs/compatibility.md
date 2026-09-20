@@ -8,7 +8,7 @@ The public release uses provider-neutral Markdown and YAML-compatible files. It 
 |---|---|---|
 | Claude Code | Compatible artifacts | Load the self-contained `SKILL.md` files using the project's supported Skill location |
 | Codex | Compatible artifacts | Load the profile and Skill files through project context or the supported Skills location |
-| Generic agents | Supported | Consume deterministic Markdown from `research-skills` or `scripts/run_skill.py` |
+| Generic agents | Supported | Consume deterministic Markdown from `research-skills compose` or the legacy wrapper |
 | Markdown readers | Supported | All profiles, contracts, examples, and rubrics are readable without tooling |
 | Model-serving runtime | Not included | This release does not call a model or provide memory, scheduling, or automatic learning |
 
@@ -21,6 +21,8 @@ The public release uses provider-neutral Markdown and YAML-compatible files. It 
 - 不把 Codex 或 Claude Code 的专有行为写成通用标准。
 - Windows 下优先使用 CLI 的 `--output` 写入 UTF-8 文件，避免 shell 管道改变 Unicode 文本。
 - CLI 在仓库目录外运行时必须通过 `--root` 指向包含 `skills/` 和 `profiles/` 的 checkout。
+- Run records and evaluator reports are versioned provider-neutral YAML/JSON;
+  provider-specific metadata must not be added to the canonical schema without a compatibility decision.
 
 ## Compatibility policy
 

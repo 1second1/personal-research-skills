@@ -1,0 +1,13 @@
+required_headings:
+  - "## Research Question"
+  - "## Motivation"
+  - "## Hypothesis"
+  - "## Variables"
+  - "## Assumptions"
+  - "## Boundaries"
+  - "## Falsification"
+  - "## Next Actions"
+required_markers:
+  - "Reject the hypothesis"
+  - "Controls:"
+claim_headings: []

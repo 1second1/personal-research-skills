@@ -4,6 +4,13 @@ All notable project changes are documented here.
 
 ## Unreleased
 
+- Organize the CLI into `compose`, `list`, `validate`, `evaluate`, and `blind`
+  commands while preserving the original compose invocation.
+- Generalize deterministic evaluation across all public Skills and version JSON reports.
+- Add a versioned provider-neutral run-record schema with path containment,
+  timezone, metadata, and SHA-256 integrity checks.
+- Add deterministic blind-review export that keeps the random seed and
+  condition mapping out of the reviewer manifest.
 - Add the installed `research-skills` command with stdin and UTF-8 file output.
 - Discover and validate every public Profile and Skill contract instead of
   hard-coding the current Skill names.

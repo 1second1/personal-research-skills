@@ -18,11 +18,11 @@ Table 4 reports endoscopy DSC `0.6540` for `U-Mamba_Bot`, while Section 3.4 repo
 ## Run the deterministic check
 
 ```bash
-python scripts/evaluate_paper_reading.py \
+research-skills evaluate \
   evals/cases/u-mamba-real-paper/expected-output.md \
   evals/cases/u-mamba-real-paper/rubric.yaml \
   --source evals/cases/u-mamba-real-paper/source-map.md \
-  --json
+  --format json
 ```
 
 The check validates required structure, citations, and numeric presence in the curated source map. It does not judge whether the scientific interpretation is correct.

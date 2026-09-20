@@ -1,6 +1,51 @@
 # Evaluation
 
-This directory contains the public evaluation entry points. The current evaluator checks repository fixtures and contract-level behavior; it does not claim to measure the quality of model-generated research outputs.
+This directory contains provider-neutral evaluation contracts, fixtures, and
+public case reports. Automated checks reject malformed or source-inconsistent
+outputs; they do not claim to measure semantic research quality.
+
+## What is implemented
+
+- `rubrics/`: deterministic structure and marker checks for every public Skill;
+- `schemas/run-record-v1.schema.json`: the public contract for model-run metadata;
+- `fixtures/run-record-demo/`: a non-model integrity fixture used by tests;
+- `cases/`: reviewed examples and limited pilot reports;
+- `PROTOCOL.md`: repeated-run and blinded human-review procedure.
+
+Run the public checks through one CLI:
+
+```bash
+research-skills evaluate \
+  evals/fixtures/paper-reading-demo/evidence-card.md \
+  evals/rubrics/paper-reading.yaml \
+  --source evals/fixtures/paper-reading-demo/source.md \
+  --format json
+
+research-skills validate --run evals/fixtures/run-record-demo/run.yaml
+```
+
+Evaluation JSON is versioned and always reports
+`"semantic_quality": "not_evaluated"`. This prevents a deterministic gate from
+being presented as a factual-quality score.
+
+## Run records and blind review
+
+Every real run must preserve the exact input, composed context, raw output,
+model identity, generation settings, repository revision, and SHA-256 digests.
+Paths are repository-relative and may not escape the evaluation root.
+
+Prepare a review bundle only after at least two records validate:
+
+```bash
+research-skills blind evals/local/runs/run-a.yaml evals/local/runs/run-b.yaml \
+  --seed 20260919 --output evals/local/review-export
+```
+
+The public manifest contains only opaque IDs, task IDs, and candidate paths.
+The random seed and condition mapping stay in `private/review-key.json`; do not
+give that file to reviewers before scoring. Candidate prose may still reveal a
+condition indirectly, so report this as best-effort blinding rather than proof
+of perfect blindness.
 
 ## Metrics
 

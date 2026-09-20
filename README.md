@@ -46,6 +46,9 @@ Included today:
 - `research-question`: conversion of broad ideas into bounded, falsifiable questions;
 - `argument-analysis`: claim, support, warrant, counterargument, and boundary analysis for argumentative prose;
 - deterministic examples, tests, repository validation, and GitHub Actions;
+- a generic structural evaluator with versioned JSON reports and rubrics for all three Skills;
+- a provider-neutral run-record schema with SHA-256 artifact verification;
+- deterministic blind-review export with the condition key separated from reviewer files;
 - a source-verified [U-Mamba real-paper case](evals/cases/u-mamba-real-paper/README.md) that preserves an internal table/prose conflict instead of hiding it.
 
 The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
@@ -60,29 +63,45 @@ cd personal-research-skills
 python -m pip install -e .
 
 python -m unittest discover -s tests -v
-python scripts/validate_repository.py
-python scripts/evaluate_paper_reading.py \
+research-skills validate
+research-skills evaluate \
   evals/fixtures/paper-reading-demo/evidence-card.md \
   evals/rubrics/paper-reading.yaml \
   --source evals/fixtures/paper-reading-demo/source.md \
-  --json
+  --format json
 ```
 
 Compose a Skill with the reference Reasoning DNA profile:
 
 ```bash
-research-skills paper-reading skills/paper-reading/examples/input.md --output context.md
-research-skills research-question skills/research-question/examples/input.md
-research-skills argument-analysis skills/argument-analysis/examples/input.md
+research-skills compose paper-reading skills/paper-reading/examples/input.md --output context.md
+research-skills compose research-question skills/research-question/examples/input.md
+research-skills compose argument-analysis skills/argument-analysis/examples/input.md
+research-skills list --format json
 ```
 
-Use `-` as the input path to read from stdin. `python scripts/run_skill.py ...`
-remains available as a backward-compatible repository command. The CLI emits a
+The original `research-skills paper-reading ...` form and
+`python scripts/run_skill.py ...` remain backward compatible. Use `-` as the
+input path to read from stdin. The CLI emits a
 deterministic Markdown context containing the personal profile and selected
 Skill contract; `--output` writes it directly as UTF-8 instead of relying on a
 shell pipeline. When invoking an installed command outside the checkout, pass
 `--root /path/to/personal-research-skills` so it can find the public Skills and
 profiles; the wheel intentionally does not duplicate those repository artifacts.
+
+Validate an evaluation run before review:
+
+```bash
+research-skills validate --run evals/fixtures/run-record-demo/run.yaml
+
+# Two or more real run records are required.
+research-skills blind evals/local/runs/run-a.yaml evals/local/runs/run-b.yaml \
+  --seed 20260919 --output evals/local/review-export
+```
+
+Give reviewers only `review-manifest.json` and `candidates/`. Keep
+`private/review-key.json` hidden until scoring is complete. The bundled run is a
+deterministic integrity fixture, not a model result.
 
 ## Repository layout
 
@@ -92,8 +111,11 @@ personal-research-skills/
 ├── research_skills/
 │   ├── cli.py
 │   ├── dna.py
-│   └── compose.py
-├── scripts/run_skill.py
+│   ├── compose.py
+│   ├── evaluation.py
+│   ├── run_records.py
+│   └── blinding.py
+├── scripts/                  # backward-compatible wrappers
 ├── skills/
 │   ├── paper-reading/
 │   ├── research-question/
@@ -133,7 +155,8 @@ For source checks and three-condition experiments, see
 [the evaluation protocol](evals/PROTOCOL.md). Passing automated checks does not
 establish semantic correctness or demonstrate a benefit from the profile.
 
-The parser/contract layer, initial evaluation protocol, and first
+The parser/contract layer, generic evaluator, versioned run-record schema,
+blind-review exporter, initial evaluation protocol, and first
 [source-verified real-paper case](evals/cases/u-mamba-real-paper/README.md) are
 implemented. The real-paper case uncovered and retains a `0.6540` table value
 versus `0.6504` prose value conflict; it is a curated reference fixture, not a
@@ -143,7 +166,7 @@ showed a clear benefit from the Skill contract but no measured gain from the
 profile over Skill-only. This is evidence from one evaluation setup, not a
 general result.
 
-1. Run three-repetition blinded baseline / Skill / Skill-plus-profile comparisons on the real-paper and synthetic tasks.
+1. Capture three repetitions per condition with the run-record schema, then conduct blinded baseline / Skill / Skill-plus-profile review on the real-paper and synthetic tasks.
 2. Add a reviewable, versioned feedback log for evolving rules.
 3. Add provider-neutral model execution, then PDF, repository, and experiment adapters after those evaluations.
 

@@ -78,6 +78,9 @@ constraints: [Do not invent evidence.]
         self.assertTrue(
             any("Missing Skill artifact: skills/example/evals/pressure-scenarios.md" in error for error in errors)
         )
+        self.assertTrue(
+            any("Missing Skill rubric: evals/rubrics/example.yaml" in error for error in errors)
+        )
 
     def test_real_paper_case_is_a_required_public_artifact(self) -> None:
         expected = {
@@ -100,6 +103,17 @@ constraints: [Do not invent evidence.]
             errors = validate(root)
 
         self.assertTrue(any("source PDF" in error for error in errors))
+
+    def test_validator_rejects_invalid_discovered_run_record(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            record = root / "evals/fixtures/example/run.yaml"
+            record.parent.mkdir(parents=True)
+            record.write_text("schema_version: '1.0'\n", encoding="utf-8")
+
+            errors = validate(root)
+
+        self.assertTrue(any("Invalid run record" in error for error in errors))
 
     def test_validator_reports_missing_required_files(self) -> None:
         incomplete_root = ROOT / "tests/fixtures/incomplete-repository"

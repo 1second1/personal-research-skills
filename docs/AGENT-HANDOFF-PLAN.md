@@ -9,8 +9,12 @@ Profiles and contracts are validated; full contracts and workflows reach compose
 contexts. `run_skill.py --mode baseline|skill|profile` supports controlled comparisons.
 The installed `research-skills` command supports stdin and direct UTF-8 file output.
 Repository validation discovers all Profile and Skill directories rather than a fixed list.
-The evaluator checks structure and, with `--source`, source labels and numeric
-presence. It does not establish semantic entailment. See `evals/PROTOCOL.md`.
+The CLI now exposes explicit `compose`, `list`, `validate`, `evaluate`, and
+`blind` commands while retaining the original compose form. The generic
+evaluator covers every public Skill and emits versioned JSON. Run records use a
+public schema with SHA-256 integrity checks; blinded exports separate reviewer
+files from the private condition key. None of these deterministic checks
+establish semantic entailment. See `evals/PROTOCOL.md`.
 The historical commit and status below describe the original handoff, not current HEAD.
 Next: collect and blindly review actual model outputs; do not report ablation gains
 before those runs exist.
@@ -180,7 +184,10 @@ The current public repository contains:
 - `skills/argument-analysis/` — genre-aware argument reconstruction for essays, editorials, interviews, and policy prose;
 - `scripts/run_skill.py` — a deterministic composition CLI;
 - `scripts/validate_repository.py` — repository shape validation;
-- `scripts/evaluate_paper_reading.py` — fixture evaluation;
+- `research_skills/evaluation.py` — generic deterministic output evaluation;
+- `research_skills/run_records.py` — versioned run-record and artifact-integrity checks;
+- `research_skills/blinding.py` — reproducible reviewer export with a private condition key;
+- `scripts/evaluate_paper_reading.py` — compatibility wrapper for the original command;
 - `tests/` — the regression suite; always use a fresh run rather than a stored count;
 - `.github/workflows/validate.yml` — GitHub Actions validation;
 - `README.md` — English public entry point;
@@ -191,12 +198,14 @@ The last verified commands were:
 
 ```bash
 python -m unittest discover -s tests -v
-python scripts/validate_repository.py
-python scripts/evaluate_paper_reading.py \
+research-skills validate
+research-skills evaluate \
   evals/fixtures/paper-reading-demo/evidence-card.md \
-  evals/rubrics/paper-reading.yaml
-python scripts/run_skill.py paper-reading skills/paper-reading/examples/input.md
-python scripts/run_skill.py research-question skills/research-question/examples/input.md
+  evals/rubrics/paper-reading.yaml \
+  --source evals/fixtures/paper-reading-demo/source.md \
+  --format json
+research-skills compose paper-reading skills/paper-reading/examples/input.md
+research-skills compose research-question skills/research-question/examples/input.md
 ```
 
 The public GitHub Actions run for the presentation update passed. Do not treat this as evidence that a model's research output is correct; it only proves repository and fixture checks.
@@ -223,7 +232,7 @@ The project is a solid early prototype, not yet a mature AI product or a flagshi
 1. `run_skill.py` reads the input and composes a complete execution context, but it still does not execute a model.
 2. The evaluator checks structure, source labels, and numeric presence. It is a rejection filter, not a semantic judge.
 3. `PR-REAL-01` is a manually verified real-paper reference case, not a model output or an independent reproduction; the repeated three-condition comparison is still missing.
-4. The Python package is not yet installed through a standard console entry point; the CLI currently adjusts `sys.path` for repository-local execution.
+4. The run-record and blinding infrastructure is implemented, but no complete repeated-run dataset and scored blinded review report exists yet.
 5. PDF ingestion and code execution are still manual; there is no provider-neutral adapter layer.
 6. The Reasoning DNA is hand-authored and has not yet been shown to improve research results through blinded or repeated comparisons.
 7. Feedback-to-rule evolution has not yet been implemented as a versioned, reviewable artifact.
@@ -368,10 +377,11 @@ The old repository examples still pass.
 
 Priority: **P0**
 
-Current status: the source-verified `PR-REAL-01` U-Mamba fixture is complete,
-including page-level evidence and a retained table/prose metric conflict. The
-remaining Phase 1 work is to generate repeated model outputs and conduct blinded
-human review; do not mislabel the curated reference answer as a model run.
+Current status: the source-verified `PR-REAL-01` U-Mamba fixture, generic
+rubrics, run-record schema, integrity validation, and blind-review export are
+complete. The remaining Phase 1 work is to generate repeated model outputs,
+store validated records, and conduct blinded human review; do not mislabel the
+curated reference answer or deterministic run fixture as a model run.
 
 For both existing Skills, create the same prompt scenarios in three modes:
 
@@ -425,7 +435,10 @@ src/personal_research_skills/
 └── evaluations/
 ```
 
-Keep compatibility shims for the current `research_skills` import and CLI until the migration is complete. Add a console entry point only after install-from-clean-checkout is tested.
+Keep compatibility shims for the current `research_skills` import and original
+CLI form until the migration is complete. The console entry point and explicit
+subcommands now exist; future packaging changes must preserve them or include a
+migration note.
 
 ### Phase 4 — Add feedback without pretending to learn
 
@@ -534,10 +547,13 @@ Before claiming completion:
 
 ```bash
 python -m unittest discover -s tests -v
-python scripts/validate_repository.py
-python scripts/evaluate_paper_reading.py \
+research-skills validate
+research-skills validate --run evals/fixtures/run-record-demo/run.yaml
+research-skills evaluate \
   evals/fixtures/paper-reading-demo/evidence-card.md \
-  evals/rubrics/paper-reading.yaml
+  evals/rubrics/paper-reading.yaml \
+  --source evals/fixtures/paper-reading-demo/source.md \
+  --format json
 git diff --check
 git status --short --branch
 ```
@@ -552,7 +568,7 @@ Use this priority order:
 
 ### Must do first
 
-- run three repetitions for baseline, Skill-only, and profile conditions on `PR-REAL-01`;
+- run three repetitions for baseline, Skill-only, and profile conditions on `PR-REAL-01`, recording every run with the v1 schema;
 - score the randomized outputs with blinded human review and retain disagreements;
 - preserve tests and backward compatibility;
 - document exact limitations.
@@ -589,8 +605,10 @@ and the target Skill before making changes.
 Current priority: run the remaining Phase 1 comparison on the source-verified PR-REAL-01 case.
 Generate three fresh runs for baseline, Skill-only, and Skill + Reasoning DNA
 under identical model settings, then randomize and score them with blinded human
-review. Preserve raw outputs, run metadata, reviewer disagreements, and the
-negative result if the profile does not outperform Skill-only.
+review. Validate every run record and artifact digest, generate the reviewer
+bundle with `research-skills blind`, keep its private key hidden until scoring,
+and preserve raw outputs, reviewer disagreements, and the negative result if the
+profile does not outperform Skill-only.
 
 Do not treat the curated reference answer as a model run, and do not add a
 database, web UI, automatic profile rewriting, or provider-specific product

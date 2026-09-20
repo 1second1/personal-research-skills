@@ -1,0 +1,11 @@
+required_headings:
+  - "## Thesis"
+  - "## Argument Map"
+  - "## Evidence"
+  - "## Assumptions"
+  - "## Counterarguments"
+  - "## Boundaries"
+  - "## Implications"
+required_markers:
+  - "Inference:"
+claim_headings: []
