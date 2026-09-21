@@ -4,6 +4,38 @@
 
 这是一个面向科研学习与深度研究的实验性开源项目。项目关注的问题是：明确的个人研究方法，能否让不同科研 Skill 的输出保持一致、可追溯，并通过评测和反馈持续改进？
 
+## 安装到 Codex 和 Claude Code
+
+如果只想使用三个科研 Skill，不需要安装 Python、不需要 API Key，也不需要配置模型服务；
+安装器需要 Node.js 和 `npx`，使用开源的
+[`skills` CLI](https://github.com/vercel-labs/skills)。请在希望启用这些 Skill 的项目目录中运行：
+
+```bash
+npx skills add 1second1/personal-research-skills
+```
+
+也可以用一条命令把三个 Skill 同时安装到 Codex 和 Claude Code：
+
+```bash
+npx skills add 1second1/personal-research-skills \
+  --skill '*' --agent codex --agent claude-code --copy --yes
+```
+
+经过实际烟测，项目级安装位置分别是 Codex 的 `.agents/skills/` 和 Claude Code 的
+`.claude/skills/`。Skill 会继承宿主 Agent 获得的权限，使用前应检查其内容。
+本仓库目前不是 Codex 或 Claude 官方插件，不会把普通 GitHub 仓库包装成官方市场项目来宣传。
+
+### 可用 Skills
+
+| Skill | 适用场景 | 示例请求 |
+|---|---|---|
+| `paper-reading` | 检查论文主张、证据、数值、局限和内部一致性 | `使用 paper-reading 分析 paper.md，不要把推断写成事实。` |
+| `research-question` | 把宽泛研究想法转化为有边界、可证伪的问题 | `使用 research-question 把这个想法收敛成可验证的研究问题。` |
+| `argument-analysis` | 拆分论证中的主张、依据、论证桥梁、反方意见和边界 | `使用 argument-analysis 审查 article.md 的论证结构。` |
+
+在 Codex 中还可以通过 `$paper-reading`、`$research-question` 或
+`$argument-analysis` 显式调用；当请求与 Skill 描述匹配时，宿主也可能自动选择。
+
 ## 当前版本
 
 `v0.2 — Reasoning DNA Runtime 与继承型科研 Skill`
@@ -25,9 +57,10 @@
 
 当前 Runtime 只负责生成组合后的执行上下文，不调用模型、不保存私有记忆，也不声称已经具备自动学习能力。
 
-## 快速开始
+## 框架开发
 
-需要 Python 3.10 或更高版本，不需要 API Key 或私有数据：
+下面的命令用于开发组合器、评测器和运行记录工具；如果只使用已经安装的 Skill，
+不需要执行这些步骤。框架开发需要 Python 3.10 或更高版本，不需要 API Key 或私有数据：
 
 ```bash
 git clone https://github.com/1second1/personal-research-skills.git

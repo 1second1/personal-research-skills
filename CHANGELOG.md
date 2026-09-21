@@ -33,6 +33,9 @@ All notable project changes are documented here.
 - Publish the first repeated `PR-REAL-01` model comparison: nine validated runs,
   best-effort blind scoring, a Skill-only gain over baseline, and no measured
   incremental gain from the Reasoning DNA profile.
+- Add a smoke-tested, one-command project installation path for Codex and
+  Claude Code, and separate Skill usage from Python framework development in
+  both public READMEs.
 
 ## [0.2.0] - 2026-07-28
 

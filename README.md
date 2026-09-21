@@ -12,6 +12,43 @@ Personal Research Skills is an experimental open-source framework for research l
 
 [中文说明](README.zh-CN.md)
 
+## Install as Agent Skills
+
+You do not need Python, an API key, or a model provider to use the packaged
+Skills. The installer requires Node.js and `npx`. Run it from the project where
+you want the Skills available. Installation uses the open-source
+[`skills` CLI](https://github.com/vercel-labs/skills).
+
+Guided installation:
+
+```bash
+npx skills add 1second1/personal-research-skills
+```
+
+Install all three Skills for both Codex and Claude Code in one command:
+
+```bash
+npx skills add 1second1/personal-research-skills \
+  --skill '*' --agent codex --agent claude-code --copy --yes
+```
+
+The verified project-local targets are `.agents/skills/` for Codex and
+`.claude/skills/` for Claude Code. Review installed Skills before use because
+they run with the permissions granted to the host agent. This repository is not
+currently distributed as an official Codex or Claude plugin.
+
+### Available Skills
+
+| Skill | Use it when you need to | Example request |
+|---|---|---|
+| `paper-reading` | examine a paper's claims, evidence, numbers, limitations, and internal consistency | `Use paper-reading to analyze paper.md without turning inference into fact.` |
+| `research-question` | turn a broad research idea into a bounded, falsifiable question | `Use research-question to refine this idea into a testable study.` |
+| `argument-analysis` | separate claims, support, warrants, counterarguments, and boundaries in argumentative prose | `Use argument-analysis to audit the reasoning in article.md.` |
+
+In Codex, you can also invoke a Skill explicitly with `$paper-reading`,
+`$research-question`, or `$argument-analysis`. The host may select a Skill
+automatically when the request matches its description.
+
 ## Why this project exists
 
 Most AI Skills are isolated prompts. This project treats a Skill as a capability with:
@@ -57,8 +94,10 @@ Included today:
 
 The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
 
-## Quickstart
+## Framework development
 
+The commands below are for developing the composer, evaluator, and run-record
+tooling. They are not required when you only want to use the installed Skills.
 Requirements: Python 3.10 or newer. No API key or private data is required.
 
 ```bash
