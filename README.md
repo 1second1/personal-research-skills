@@ -49,19 +49,38 @@ In Codex, you can also invoke a Skill explicitly with `$paper-reading`,
 `$research-question`, or `$argument-analysis`. The host may select a Skill
 automatically when the request matches its description.
 
-## 60-second evidence demo
+This installation makes the three Skills available on their own. It does not
+automatically load [`profiles/reasoning-dna.yaml`](profiles/reasoning-dna.yaml).
+To use that profile, generate a combined context with the
+[`research-skills compose` command](#framework-development) and provide the
+generated Markdown to your agent. The composer generates context; it does not
+call a model.
 
-After installation, attach or add a paper to your agent's working context and
-ask:
+## 60-second Skill demo
+
+After installing `paper-reading`, copy this prompt and checked excerpt into
+Codex or Claude Code. It exercises the standalone Skill; no repository checkout
+or PDF parser is needed. The excerpt is taken from the
+[U-Mamba source map](evals/cases/u-mamba-real-paper/source-map.md), which
+records where these claims appear in the paper.
 
 ```text
-Use paper-reading to analyze this paper. Separate source facts from inferences,
-surface internal conflicts, and end with falsifiable next actions.
+Use the paper-reading Skill to analyze only the checked excerpt below. Keep
+source facts separate from inferences. Report conflicting values with both
+locations; do not decide which value is correct without more evidence.
+
+U-Mamba, arXiv:2401.04722v1, endoscopy instrument segmentation:
+- p. 9, Table 4: U-Mamba_Bot DSC is 0.6540 +/- 0.3008.
+- p. 9, Section 3.4: the prose says the best average DSC is 0.6504.
+The excerpt does not define what the +/- values measure.
 ```
 
-The repository's real-paper example shows what that contract is meant to
-change. On the same U-Mamba evidence map, with one model alias and three fresh
-runs per condition:
+Check that the response preserves both values, cites both locations, and
+leaves the meaning of `+/-` unresolved. Output wording may vary. For a longer
+example, inspect the archived [Skill-only output](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md).
+
+The published experiment used the **full source map**, not just this excerpt.
+With one model alias and three fresh runs per condition, its scores were:
 
 | Condition | Mean rubric score | What the result showed |
 |---|---:|---|
@@ -69,10 +88,9 @@ runs per condition:
 | `paper-reading` Skill | 9.67 / 10 | Better evidence coverage, fact/inference separation, and next actions |
 | Skill + Reasoning DNA | 9.00 / 10 | No incremental gain; all three runs over-interpreted an undefined `±` value |
 
-The Skill also kept an internal source conflict visible: U-Mamba reports an
-endoscopy DSC of `0.6540` in Table 4 but `0.6504` in the surrounding prose.
-It did not silently choose a winner. This is a nine-run pilot with one semantic
-reviewer, not a general benchmark.
+The profile condition used the composer described below; one-command Skill
+installation alone does not reproduce it. This is a nine-run pilot with one
+semantic reviewer, not a general benchmark.
 
 [Read the short case study](docs/case-studies/u-mamba-negative-result.md) ·
 [inspect all raw outputs and run records](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
@@ -81,7 +99,7 @@ reviewer, not a general benchmark.
 
 Most AI Skills are isolated prompts. This project treats a Skill as a capability with:
 
-- a reasoning profile;
+- an optional reasoning profile;
 - explicit input and output contracts;
 - evidence and uncertainty rules;
 - examples and regression evaluations;
@@ -101,7 +119,7 @@ What → Why → Assumption → Boundary → Connection → Application → Valu
 
 ## Current status
 
-`v0.2 — Reasoning DNA runtime and inherited research Skills`
+`v0.2 — Standalone research Skills with optional Reasoning DNA composition`
 
 Included today:
 
@@ -150,6 +168,12 @@ research-skills compose research-question skills/research-question/examples/inpu
 research-skills compose argument-analysis skills/argument-analysis/examples/input.md
 research-skills list --format json
 ```
+
+To apply Reasoning DNA to your own text, replace the example input path with a
+UTF-8 text or Markdown file, then give the generated `context.md` to your
+agent as task context. The default `profile` mode includes both the Skill and
+[`profiles/reasoning-dna.yaml`](profiles/reasoning-dna.yaml); `--mode skill`
+omits the profile. Neither mode runs a model.
 
 The original `research-skills paper-reading ...` form and
 `python scripts/run_skill.py ...` remain backward compatible. Use `-` as the

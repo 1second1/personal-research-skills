@@ -4,6 +4,11 @@ All notable project changes are documented here.
 
 ## Unreleased
 
+- Clarify that installing standalone Skills does not automatically apply the
+  Reasoning DNA profile, and provide a copyable U-Mamba excerpt for a quick
+  Skill demo in both READMEs.
+- Align the evaluation protocol, methodology baseline, and agent handoff
+  status with the published nine-run comparison and canonical profile.
 - Organize the CLI into `compose`, `list`, `validate`, `evaluate`, and `blind`
   commands while preserving the original compose invocation.
 - Generalize deterministic evaluation across all public Skills and version JSON reports.

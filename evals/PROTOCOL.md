@@ -97,6 +97,8 @@ Use a second reviewer for disputed claims; retain disagreements and adjudication
 Report per-task scores, critical failures and variation across repetitions, not
 just a pooled average. Do not change thresholds after seeing condition labels.
 
-The repository now includes one curated real-paper reference case, but no
-baseline / Skill / profile model comparison has been run on it. Store future run
-artifacts outside the public tree until reviewed for private data.
+The repository includes a curated real-paper reference case and a
+[nine-run baseline / Skill / profile comparison](cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
+on its source map. That comparison used one semantic reviewer and best-effort
+blinding; independent review remains pending. Store future run artifacts
+outside the public tree until reviewed for private data.

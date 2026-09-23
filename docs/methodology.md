@@ -2,7 +2,8 @@
 
 ## 目标
 
-本文件定义第一阶段所有科研 Agent 和 Skill 共同继承的方法论基线。
+本文件定义参考 Profile 的方法论基线。独立安装的 Skill 不会自动载入该
+Profile；需要通过 `research-skills compose` 显式组合。
 
 它不是人格描述，也不是不可修改的系统 Prompt。它是一份可以被评估、被质疑、被版本化的研究工作规则。
 
@@ -14,14 +15,14 @@
 
 ### Thinking
 
-以 `Inquiry Pattern` 作为当前思维结构：
+以 [`profiles/reasoning-dna.yaml`](../profiles/reasoning-dna.yaml) 中的
+`thinking.inquiry_pattern` 为当前思维结构：
 
 ```text
-What → Why → Assumption → Boundary
-     → Connection → Generalization → Application → Value
+What → Why → Assumption → Boundary → Connection → Application → Value
 ```
 
-该顺序不是要求每个回答机械输出八个标题，而是要求 Agent 在任务允许时完成这些判断。
+该顺序不是要求每个回答机械输出七个标题，而是要求 Agent 在任务允许时完成这些判断。
 
 ### Workflow
 
@@ -31,6 +32,9 @@ What → Why → Assumption → Boundary
 发现问题 → 阅读论文 → 分析代码 → 设计实验
         → 记录结果 → 复盘失败 → 形成报告
 ```
+
+上图是后续研究工作的路线示意；组合器当前实际注入的流程以 Profile
+文件中的 `workflows` 字段为准。
 
 ### Preference
 

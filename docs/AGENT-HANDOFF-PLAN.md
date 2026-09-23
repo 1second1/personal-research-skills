@@ -2,7 +2,7 @@
 
 ## Cross-Agent Handoff and Long-Term Engineering Plan
 
-### Local implementation update — 2026-09-19
+### Implementation status — updated 2026-09-23
 
 The configuration parser now requires PyYAML (install with `python -m pip install -e .`).
 Profiles and contracts are validated; full contracts and workflows reach composed
@@ -236,7 +236,8 @@ The project is a solid early prototype, not yet a mature AI product or a flagshi
 3. `PR-REAL-01` includes a nine-run three-condition comparison, but it is still analysis of a curated source map rather than an independent reproduction of the paper.
 4. The comparison has one semantic reviewer; condition style may have weakened blinding, and independent human review is still pending.
 5. PDF ingestion and code execution are still manual; there is no provider-neutral adapter layer.
-6. The Reasoning DNA is hand-authored and has not yet been shown to improve research results through blinded or repeated comparisons.
+6. The Reasoning DNA is hand-authored. In the first repeated comparison it did
+   not improve on Skill-only; broader benefit has not been established.
 7. Feedback-to-rule evolution has not yet been implemented as a versioned, reviewable artifact.
 
 The correct status language is therefore:

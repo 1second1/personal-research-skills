@@ -36,17 +36,34 @@ npx skills add 1second1/personal-research-skills \
 在 Codex 中还可以通过 `$paper-reading`、`$research-question` 或
 `$argument-analysis` 显式调用；当请求与 Skill 描述匹配时，宿主也可能自动选择。
 
-## 60 秒实证演示
+这条安装命令让三个 Skill 可以独立使用，**不会自动加载**
+[`profiles/reasoning-dna.yaml`](profiles/reasoning-dna.yaml)。如果要应用个人
+Reasoning DNA，需要用下文的 [`research-skills compose`](#框架开发) 生成组合
+上下文，再把生成的 Markdown 提供给 Agent。组合器只生成上下文，不调用模型。
 
-安装后，把论文加入 Agent 的工作上下文，然后输入：
+## 60 秒 Skill 演示
+
+安装 `paper-reading` 后，把下面的请求和已核对的摘录一起复制到 Codex 或
+Claude Code。这个例子使用独立 Skill，不需要克隆仓库或解析 PDF。摘录来自
+[U-Mamba 来源映射](evals/cases/u-mamba-real-paper/source-map.md)，其中记录了
+这些主张在论文中的位置。
 
 ```text
-使用 paper-reading 分析这篇论文。区分来源事实与推断，找出内部冲突，
-最后给出可证伪的下一步行动。
+使用 paper-reading Skill，只分析下面这段已核对的摘录。区分来源事实和推断；
+列出冲突的数值与各自位置；在证据不足时不要判断哪个数值正确。
+
+U-Mamba，arXiv:2401.04722v1，内镜器械分割：
+- 第 9 页 Table 4：U-Mamba_Bot 的 DSC 为 0.6540 +/- 0.3008。
+- 第 9 页 Section 3.4：正文称最佳平均 DSC 为 0.6504。
+摘录没有定义 +/- 后面的数值代表什么。
 ```
 
-仓库中的真实论文案例展示了这份契约实际改变了什么。在相同 U-Mamba
-证据材料、同一模型别名、每组独立运行三次的条件下：
+检查回答是否同时保留两个数值、标注两个来源位置，并保持 `+/-` 的含义
+未定；具体措辞可能不同。较长的真实输出见
+[归档的仅 Skill 运行](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)。
+
+仓库中已发布的实验使用**完整来源映射**，不是上面这段短摘录。在同一模型
+别名、每组独立运行三次的条件下，评分结果为：
 
 | 条件 | 平均评分 | 本次结果 |
 |---|---:|---|
@@ -54,16 +71,15 @@ npx skills add 1second1/personal-research-skills \
 | 仅 `paper-reading` Skill | 9.67 / 10 | 证据覆盖、事实与推断分离、后续行动均更完整 |
 | Skill + Reasoning DNA | 9.00 / 10 | 没有额外增益；三次运行都过度解释了来源未定义的 `±` |
 
-Skill 还保留了一个明确的来源冲突：U-Mamba 的 Table 4 报告内镜任务 DSC
-为 `0.6540`，相邻正文却写成 `0.6504`，输出没有擅自选择其中一个。
-这只是九次运行、单一语义评审者的小型实验，不是通用基准。
+Profile 条件使用下文的组合器；只安装 Skill 不会复现这一条件。这只是九次
+运行、单一语义评审者的小型实验，不是通用基准。
 
 [阅读完整案例文章](docs/case-studies/u-mamba-negative-result.md) ·
 [检查全部原始输出与运行记录](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
 
 ## 当前版本
 
-`v0.2 — Reasoning DNA Runtime 与继承型科研 Skill`
+`v0.2 — 独立科研 Skill 与可选的 Reasoning DNA 组合`
 
 当前包含：
 
@@ -100,6 +116,12 @@ research-skills compose argument-analysis skills/argument-analysis/examples/inpu
 research-skills evaluate skills/research-question/examples/expected-output.md evals/rubrics/research-question.yaml --format json
 research-skills validate --run evals/fixtures/run-record-demo/run.yaml
 ```
+
+要把 Reasoning DNA 应用到自己的材料，请把上面 `compose` 命令里的示例输入
+路径替换为 UTF-8 文本或 Markdown 文件，再将生成的 `context.md` 交给 Agent
+作为任务上下文。默认 `profile` 模式同时包含 Skill 和
+[`profiles/reasoning-dna.yaml`](profiles/reasoning-dna.yaml)；`--mode skill`
+不包含 Profile。两种模式都不会调用模型。
 
 输入路径写成 `-` 时从 stdin 读取；`--output` 会直接写入 UTF-8 Markdown，
 避免依赖 PowerShell 管道传递 Unicode 字符。原有无 `compose` 命令形式和
