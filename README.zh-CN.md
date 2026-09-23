@@ -21,7 +21,7 @@ npx skills add 1second1/personal-research-skills \
   --skill '*' --agent codex --agent claude-code --copy --yes
 ```
 
-经过实际烟测，项目级安装位置分别是 Codex 的 `.agents/skills/` 和 Claude Code 的
+经过实际检测，项目级安装位置分别是 Codex 的 `.agents/skills/` 和 Claude Code 的
 `.claude/skills/`。Skill 会继承宿主 Agent 获得的权限，使用前应检查其内容。
 本仓库目前不是 Codex 或 Claude 官方插件，不会把普通 GitHub 仓库包装成官方市场项目来宣传。
 
