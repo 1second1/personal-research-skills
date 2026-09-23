@@ -49,6 +49,34 @@ In Codex, you can also invoke a Skill explicitly with `$paper-reading`,
 `$research-question`, or `$argument-analysis`. The host may select a Skill
 automatically when the request matches its description.
 
+## 60-second evidence demo
+
+After installation, attach or add a paper to your agent's working context and
+ask:
+
+```text
+Use paper-reading to analyze this paper. Separate source facts from inferences,
+surface internal conflicts, and end with falsifiable next actions.
+```
+
+The repository's real-paper example shows what that contract is meant to
+change. On the same U-Mamba evidence map, with one model alias and three fresh
+runs per condition:
+
+| Condition | Mean rubric score | What the result showed |
+|---|---:|---|
+| Baseline task | 6.67 / 10 | Useful summary, but no actionable follow-up under the published rubric |
+| `paper-reading` Skill | 9.67 / 10 | Better evidence coverage, fact/inference separation, and next actions |
+| Skill + Reasoning DNA | 9.00 / 10 | No incremental gain; all three runs over-interpreted an undefined `±` value |
+
+The Skill also kept an internal source conflict visible: U-Mamba reports an
+endoscopy DSC of `0.6540` in Table 4 but `0.6504` in the surrounding prose.
+It did not silently choose a winner. This is a nine-run pilot with one semantic
+reviewer, not a general benchmark.
+
+[Read the short case study](docs/case-studies/u-mamba-negative-result.md) ·
+[inspect all raw outputs and run records](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
+
 ## Why this project exists
 
 Most AI Skills are isolated prompts. This project treats a Skill as a capability with:

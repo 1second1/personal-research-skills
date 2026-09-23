@@ -36,6 +36,31 @@ npx skills add 1second1/personal-research-skills \
 在 Codex 中还可以通过 `$paper-reading`、`$research-question` 或
 `$argument-analysis` 显式调用；当请求与 Skill 描述匹配时，宿主也可能自动选择。
 
+## 60 秒实证演示
+
+安装后，把论文加入 Agent 的工作上下文，然后输入：
+
+```text
+使用 paper-reading 分析这篇论文。区分来源事实与推断，找出内部冲突，
+最后给出可证伪的下一步行动。
+```
+
+仓库中的真实论文案例展示了这份契约实际改变了什么。在相同 U-Mamba
+证据材料、同一模型别名、每组独立运行三次的条件下：
+
+| 条件 | 平均评分 | 本次结果 |
+|---|---:|---|
+| 基础任务 | 6.67 / 10 | 能完成总结，但按公开评分标准缺少可执行的后续行动 |
+| 仅 `paper-reading` Skill | 9.67 / 10 | 证据覆盖、事实与推断分离、后续行动均更完整 |
+| Skill + Reasoning DNA | 9.00 / 10 | 没有额外增益；三次运行都过度解释了来源未定义的 `±` |
+
+Skill 还保留了一个明确的来源冲突：U-Mamba 的 Table 4 报告内镜任务 DSC
+为 `0.6540`，相邻正文却写成 `0.6504`，输出没有擅自选择其中一个。
+这只是九次运行、单一语义评审者的小型实验，不是通用基准。
+
+[阅读完整案例文章](docs/case-studies/u-mamba-negative-result.md) ·
+[检查全部原始输出与运行记录](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
+
 ## 当前版本
 
 `v0.2 — Reasoning DNA Runtime 与继承型科研 Skill`

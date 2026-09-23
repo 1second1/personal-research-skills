@@ -36,6 +36,10 @@ All notable project changes are documented here.
 - Add a smoke-tested, one-command project installation path for Codex and
   Claude Code, and separate Skill usage from Python framework development in
   both public READMEs.
+- Add a concise, evidence-backed U-Mamba demo near the top of both public
+  READMEs.
+- Publish a standalone U-Mamba case study covering the Skill-only gain, the
+  negative profile result, deterministic-gate failures, and experiment limits.
 
 ## [0.2.0] - 2026-07-28
 
