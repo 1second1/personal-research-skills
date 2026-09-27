@@ -4,19 +4,33 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](pyproject.toml)
 
-> A composable, evidence-grounded way to turn research methodology into reusable AI Skills.
+> Research Skills that make evidence, uncertainty, and next checks explicit.
 
-Personal Research Skills is an experimental open-source framework for research learning and deep research workflows. It explores one question:
-
-> Can an explicit personal research methodology make different AI Skills more consistent, traceable, and open to improvement?
+`paper-reading` helps an agent examine a paper without silently resolving
+conflicting claims or treating an inference as a reported result. The repository
+also includes `research-question` and `argument-analysis`, plus an optional
+Reasoning DNA profile and tools for composing and evaluating research contexts.
+It is experimental, not an autonomous paper reader or an automatically learning
+agent.
 
 [中文说明](README.zh-CN.md)
 
+**A real example:** In the checked U-Mamba paper, Table 4 gives an endoscopy
+DSC of `0.6540`, while Section 3.4 says `0.6504`. In one archived baseline
+response, the table value was treated as the directly tabulated result; an
+archived [`paper-reading` response](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)
+kept both locations visible and left the meaning of `±` unresolved. Compare
+the [baseline response](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
+with the Skill response yourself. These are illustrative outputs, not proof of
+a general improvement. The [nine-run pilot](#60-second-skill-demo) and its
+limitations are summarized below.
+
 ## Install as Agent Skills
 
-You do not need Python, an API key, or a model provider to use the packaged
-Skills. The installer requires Node.js and `npx`. Run it from the project where
-you want the Skills available. Installation uses the open-source
+To install these Skills into an already working Codex or Claude Code setup,
+you need Node.js and `npx`, but no project-specific Python installation or API
+key. Your host agent still needs its own model access. Run the installer from
+the project where you want the Skills available. Installation uses the open-source
 [`skills` CLI](https://github.com/vercel-labs/skills).
 
 Guided installation:
@@ -25,11 +39,12 @@ Guided installation:
 npx skills add 1second1/personal-research-skills
 ```
 
-Install all three Skills for both Codex and Claude Code in one command:
+Install all three Skills for both Codex and Claude Code in one command. This
+single line works in PowerShell and Bash (do not split it with a Bash `\` in
+PowerShell):
 
-```bash
-npx skills add 1second1/personal-research-skills \
-  --skill '*' --agent codex --agent claude-code --copy --yes
+```text
+npx skills add 1second1/personal-research-skills --skill '*' --agent codex --agent claude-code --copy --yes
 ```
 
 The verified project-local targets are `.agents/skills/` for Codex and

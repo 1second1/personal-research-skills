@@ -1,24 +1,35 @@
 # Personal Research Skills 中文说明
 
-> 将个人研究方法、判断标准和工作流沉淀为可组合、可验证、可演化的 AI Skills。
+> 让科研分析中的证据、不确定性和下一步核查更明确的 AI Skills。
 
-这是一个面向科研学习与深度研究的实验性开源项目。项目关注的问题是：明确的个人研究方法，能否让不同科研 Skill 的输出保持一致、可追溯，并通过评测和反馈持续改进？
+`paper-reading` 帮助 Agent 阅读论文时保留相互冲突的主张，不把推断当作论文报告的结果。
+仓库还包含 `research-question`、`argument-analysis`，以及可选的 Reasoning DNA
+配置和研究上下文组合、评测工具。这是实验性项目，不是自动读论文或自动学习的 Agent。
+
+**真实例子：** 已核对的 U-Mamba 论文中，Table 4 的内镜 DSC 为 `0.6540`，
+Section 3.4 的正文却写为 `0.6504`。一份归档的
+[基础回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
+倾向采用表格值；一份归档的
+[`paper-reading` 回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)
+同时保留两个位置，并未擅自解释 `±` 的统计含义。你可以直接对照原始输出。
+这只是说明差异的实例，不能证明普遍提升；下文列出九次运行的小型实验及其局限。
 
 ## 安装到 Codex 和 Claude Code
 
-如果只想使用三个科研 Skill，不需要安装 Python、不需要 API Key，也不需要配置模型服务；
-安装器需要 Node.js 和 `npx`，使用开源的
-[`skills` CLI](https://github.com/vercel-labs/skills)。请在希望启用这些 Skill 的项目目录中运行：
+若 Codex 或 Claude Code 已能正常调用模型，安装这三个 Skill 不需要为本项目额外安装
+Python 或配置 API Key；宿主 Agent 本身仍须具备模型访问能力。安装器需要 Node.js
+和 `npx`，使用开源的 [`skills` CLI](https://github.com/vercel-labs/skills)。
+请在希望启用这些 Skill 的项目目录中运行：
 
 ```bash
 npx skills add 1second1/personal-research-skills
 ```
 
-也可以用一条命令把三个 Skill 同时安装到 Codex 和 Claude Code：
+也可以用以下单行命令把三个 Skill 同时安装到 Codex 和 Claude Code。
+PowerShell 和 Bash 都可直接复制；在 PowerShell 中不要用 Bash 的 `\` 拆行：
 
-```bash
-npx skills add 1second1/personal-research-skills \
-  --skill '*' --agent codex --agent claude-code --copy --yes
+```text
+npx skills add 1second1/personal-research-skills --skill '*' --agent codex --agent claude-code --copy --yes
 ```
 
 经过实际检测，项目级安装位置分别是 Codex 的 `.agents/skills/` 和 Claude Code 的
