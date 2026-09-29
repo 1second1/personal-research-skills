@@ -34,6 +34,25 @@ class ReasoningDnaTests(unittest.TestCase):
         self.assertIn("## Problem", result)
         self.assertIn("## Evidence", result)
 
+    def test_plus_minus_rule_reaches_skill_modes_but_not_baseline(self):
+        contexts = {
+            mode: compose_skill(
+                ROOT / "skills" / "paper-reading",
+                ROOT / "profiles" / "reasoning-dna.yaml",
+                mode=mode,
+            )
+            for mode in ("baseline", "skill", "profile")
+        }
+
+        for mode in ("skill", "profile"):
+            with self.subTest(mode=mode):
+                context = contexts[mode]
+                self.assertIn("source does not define the meaning of ±", context)
+                self.assertIn("standard deviation, standard error, or confidence interval", context)
+                self.assertIn("source explicitly defines the meaning of ±", context)
+                self.assertIn("verify the meaning of ±", context)
+        self.assertNotIn("source does not define the meaning of ±", contexts["baseline"])
+
     # --- Phase 0: input content, contract, version, and source path assertions ---
 
     def test_composed_skill_includes_input_content(self):

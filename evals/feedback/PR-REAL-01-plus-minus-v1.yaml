@@ -1,0 +1,46 @@
+schema_version: '1.0'
+feedback_id: PR-REAL-01-plus-minus-v1
+status: proposed
+target: paper-reading
+source: evals/cases/u-mamba-real-paper/source-map.md
+source_scope: selective paraphrased evidence map, not the full paper
+observed_failure: >-
+  Four archived answers assign "standard deviation" to +/- values even though
+  the supplied source map does not define the statistic. A later caveat does
+  not erase an earlier unsupported attribution.
+observations:
+  - run_id: PR-REAL-01-skill-r3
+    run_record: evals/cases/u-mamba-real-paper/comparison-2026-09-20/runs/skill-r3.yaml
+    output: evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r3.md
+    quote: The reported standard deviations are large relative to several model-to-model mean differences.
+  - run_id: PR-REAL-01-profile-r1
+    run_record: evals/cases/u-mamba-real-paper/comparison-2026-09-20/runs/profile-r1.yaml
+    output: evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/profile-r1.md
+    quote: 报告的标准差在若干任务中较大
+  - run_id: PR-REAL-01-profile-r2
+    run_record: evals/cases/u-mamba-real-paper/comparison-2026-09-20/runs/profile-r2.yaml
+    output: evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/profile-r2.md
+    quote: 报告均值和标准差，但所供文本未说明这些数值的统计单位
+  - run_id: PR-REAL-01-profile-r3
+    run_record: evals/cases/u-mamba-real-paper/comparison-2026-09-20/runs/profile-r3.yaml
+    output: evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/profile-r3.md
+    quote: 报告的标准差较大，尤其 endoscopy DSC 为
+proposed_rule: >-
+  When the supplied source reports a +/- quantity without defining its
+  statistical meaning, preserve the reported numbers and state that the meaning
+  is unknown. Do not label the reported Y as standard deviation, standard
+  error, confidence interval, dispersion, spread, or variability, or infer its
+  aggregation level or statistical reliability. When the source explicitly
+  defines the notation, use that definition rather than over-hedging. This
+  restriction does not bar proposing a future experiment with defined
+  uncertainty statistics.
+regression_case: evals/regressions/PR-REAL-01-plus-minus-v1.yaml
+review:
+  original_semantic_reviewer_count: 1
+  independent_second_review: two_user_supplied_ai_reviews_saved_locally
+  condition_key_reveal: only after second-review scores are saved
+  promotion_decision: pending_prospective_test
+  note: >-
+    The narrow rule has been added to an isolated Skill candidate. This does
+    not change archived scores, resolve the R004 boundary case, or establish
+    that future model outputs will comply. Human adjudication remains pending.

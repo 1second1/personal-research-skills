@@ -100,5 +100,6 @@ just a pooled average. Do not change thresholds after seeing condition labels.
 The repository includes a curated real-paper reference case and a
 [nine-run baseline / Skill / profile comparison](cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
 on its source map. That comparison used one semantic reviewer and best-effort
-blinding; independent review remains pending. Store future run artifacts
+blinding. Two user-supplied AI reviews are locally sealed, but human
+adjudication remains pending. Store future run artifacts
 outside the public tree until reviewed for private data.

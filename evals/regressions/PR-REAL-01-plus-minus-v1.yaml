@@ -1,0 +1,36 @@
+schema_version: '1.0'
+case_id: PR-REAL-01-plus-minus-v1
+review_mode: human_semantic
+source: evals/cases/u-mamba-real-paper/source-map.md
+scope: the supplied selective source map only
+question: >-
+  Does the answer assign a specific statistical meaning to the source map's
+  +/- values without an explicit definition in that source?
+pass_condition: >-
+  Preserve the reported number and say that the meaning of +/- is not defined
+  by the supplied source. Do not infer standard deviation, standard error, or
+  confidence interval as a source fact.
+fail_condition: >-
+  An unsupported attribution fails this case even if the answer later admits
+  that the statistic is undefined. This is a future-run regression criterion,
+  not a retroactive change to the archived 0-2 rubric or critical-failure count.
+examples:
+  - id: safe_unknown
+    expected: pass
+    answer: >-
+      Table 4 reports endoscopy DSC 0.6540 +/- 0.3008. The supplied source map
+      does not define what +/- represents; check the full paper or code before
+      treating it as standard deviation or another statistic.
+  - id: unsupported_sd
+    expected: fail
+    answer: >-
+      Table 4 reports a mean DSC of 0.6540 with standard deviation 0.3008.
+  - id: claim_then_caveat
+    expected: fail
+    answer: >-
+      The reported standard deviation of 0.3008 is large. The source map does
+      not specify whether +/- is standard deviation or standard error.
+review_instructions: >-
+  A second reviewer must apply the criterion to candidate answers and quote
+  the relevant source and output spans. Automated structure/source checks do
+  not determine semantic quality or statistical meaning.

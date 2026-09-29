@@ -2,7 +2,101 @@
 
 ## Cross-Agent Handoff and Long-Term Engineering Plan
 
-### Implementation status — updated 2026-09-23
+### Current operational handoff — 2026-09-29
+
+**Start here in a new conversation.** The working branch is
+`codex/uncertainty-v2-candidate` in the existing isolated worktree; `master`
+is the unchanged public release line. Read `git status --short --branch` and
+`git log -1 --oneline` in the candidate worktree before making changes. Do not
+silently switch to `master`, recreate the worktree, or publish the candidate
+Skill as a demonstrated improvement. This branch is a saved experiment, not a
+release. The branch is local unless `git branch -vv` shows an upstream.
+
+#### Source of truth and evidence boundaries
+
+- `AGENTS.md` defines the project rules; `README.md` and `README.zh-CN.md`
+  describe public usage. The runtime composes context; it does not execute a
+  model or learn from feedback automatically.
+- `evals/cases/u-mamba-real-paper/comparison-2026-09-20/` contains the nine
+  published v1 outputs, original scores, contexts, and run records. Keep those
+  artifacts unchanged. The original rubric has a ceiling effect; its profile
+  scores neither prove nor exclude a benefit from Reasoning DNA.
+- The ignored local directory
+  `evals/local/pr-real-01-second-review-2026-09-28/` contains the reviewer
+  packet, two user-supplied AI reviews, the private condition key, and
+  `private/seal.json`. The seal hashes 20 files; verify it before relying on
+  the local evidence. The two reviews agree on four narrow `±` failures but
+  differ in scoring. R004 is a boundary case. Reviewer identity/blinding is
+  self-reported; no independent human adjudication has occurred. Never give
+  `private/` to a blind reviewer or commit the ignored packet.
+- `evals/feedback/PR-REAL-01-plus-minus-v1.yaml` and
+  `evals/regressions/PR-REAL-01-plus-minus-v1.yaml` are public, reviewable
+  feedback artifacts. The candidate rule is in `skills/paper-reading/SKILL.md`;
+  `tests/test_reasoning_dna.py` verifies that it reaches Skill/profile
+  contexts, not that a model obeys it. The Skill contract remains at `0.2.0`
+  until a promotion decision is justified.
+
+For local verification in this worktree, set `PYTHONPATH` to the candidate
+checkout before using the existing main-checkout virtual environment; its
+editable install otherwise imports `master`. Do not rebuild or upgrade that
+environment just for this check:
+
+```powershell
+$env:PYTHONPATH = (Get-Location).Path
+& 'C:\personal research skill\.venv\Scripts\python.exe' -m unittest discover -s tests -q
+& 'C:\personal research skill\.venv\Scripts\python.exe' -m research_skills.cli validate
+git diff --check
+```
+
+#### Next engineering task: prospective `±` evaluation
+
+1. **Preregister before generation.** Freeze the source excerpts, source
+   locations, output template, model/runtime settings, arm labels, randomization
+   seed, reviewer instructions, and decision rules under `evals/local/`.
+   Version and hash every exact input/context; identify Skill v1 by the sealed
+   source commit and candidate v2 by this branch commit, not by the unchanged
+   contract version. Keep the condition key separate from reviewer files.
+2. **Use four new, traceable paper cases:** source-undefined `±`, explicitly
+   defined `±` (for example SD), no `±`, and a table/prose numeric conflict.
+   Give the model only a checked excerpt/evidence map with source locations;
+   do not treat an abstract as proof of a table definition. Do not reuse
+   U-Mamba as the only prospective case. Record exactly which pages/sections
+   were checked and any unavailable full text.
+3. **Generate balanced arms:** baseline, Skill v1, and candidate v2, with the
+   same task wording, output template, language, model controls, and at least
+   three independent runs per case and arm (minimum 36 outputs). No personal
+   profile in the main comparison. Capture raw output, exact composed context,
+   run metadata, and SHA-256 digests. If model access or quota is unavailable,
+   stop at verified materials/protocol; never fabricate model runs.
+4. **Blind review.** Score the existing five rubric dimensions descriptively,
+   but use a separate `±` diagnostic. Quote the candidate sentence and the
+   source definition or absence of one. For the undefined case, count
+   unsupported interpretations of `Y`; for the defined case, count omissions
+   or unjustified hedging of the supplied definition. Also check that the
+   no-`±` and table/prose controls retain ordinary evidence-card quality.
+   Use the same visible format in all arms to reduce style leakage; record
+   suspected unblinding and seek human/independent-model spot checks.
+5. **Decision gate.** Report counts by case and arm, not p-values or a generic
+   0–2 average as proof. A candidate passes this *pilot* only if v2 has zero
+   undefined-`±` violations, v1 has at least one (otherwise improvement is
+   unidentifiable), v2 has zero over-hedging errors in the defined case, and
+   neither control shows a new regression. With only three repetitions, call
+   this a limited signal, not general validation. Any disputed R004-style
+   interpretation remains visible rather than being silently recoded.
+6. **Promote only after review.** Record a human-reviewed decision against the
+   versioned feedback artifact. If the pilot passes, bump the Skill contract
+   version, rerun repository/tests/installation checks, update release notes,
+   and then consider merging or publishing. If it fails or is inconclusive,
+   retain the candidate branch and raw records; do not change v1 scores or
+   claim the patch fixed model behavior.
+
+#### What is out of scope for that task
+
+No model-serving backend, PDF ingestion, MCP, RAG, automatic Reasoning DNA
+rewriting, broad Skill redesign, or retrospective rescoring. These are later
+layers, not prerequisites for the small prospective test.
+
+### Implementation status
 
 The configuration parser now requires PyYAML (install with `python -m pip install -e .`).
 Profiles and contracts are validated; full contracts and workflows reach composed
@@ -16,19 +110,21 @@ public schema with SHA-256 integrity checks; blinded exports separate reviewer
 files from the private condition key. None of these deterministic checks
 establish semantic entailment. See `evals/PROTOCOL.md`.
 The historical commit and status below describe the original handoff, not current HEAD.
-The first `PR-REAL-01` comparison now contains nine validated model runs and a
-best-effort blinded single-agent review. Skill-only outscored baseline, while
-the profile did not improve on Skill-only. Next: obtain independent review and
-turn the observed `±` attribution failure into a versioned feedback proposal.
+The first `PR-REAL-01` comparison contains nine validated model runs and an
+original best-effort blinded review. Skill-only outscored baseline under that
+review; the profile showed no measured additional gain on a ceiling-prone
+rubric. Two user-supplied AI reviews are locally sealed, with R004 still a
+boundary case. A narrow `±` Skill candidate exists in an isolated worktree;
+no prospective model evidence for its effect exists yet.
 
 > This is the historical design and cross-agent handoff record. The opening update,
 > README, CHANGELOG, tests, and current Git state define implementation status.
 
 **Repository:** <https://github.com/1second1/personal-research-skills>
 
-**Current branch:** `master`
+**Branch at original handoff:** `master` (historical snapshot, not the candidate branch)
 
-**Current project commit at handoff:** `442eb62`
+**Project commit at original handoff:** `442eb62` (historical snapshot)
 
 **Primary maintainer:** `1second1`
 
@@ -236,9 +332,14 @@ The project is a solid early prototype, not yet a mature AI product or a flagshi
 3. `PR-REAL-01` includes a nine-run three-condition comparison, but it is still analysis of a curated source map rather than an independent reproduction of the paper.
 4. The comparison has one semantic reviewer; condition style may have weakened blinding, and independent human review is still pending.
 5. PDF ingestion and code execution are still manual; there is no provider-neutral adapter layer.
-6. The Reasoning DNA is hand-authored. In the first repeated comparison it did
-   not improve on Skill-only; broader benefit has not been established.
-7. Feedback-to-rule evolution has not yet been implemented as a versioned, reviewable artifact.
+6. The Reasoning DNA is hand-authored. The first repeated comparison did not
+   measure additional profile gain under a ceiling-prone rubric; broader
+   benefit or lack of benefit has not been established.
+7. A versioned `±` feedback candidate and manual regression case exist in
+   `evals/`. Two user-supplied AI reviews are locally sealed. A narrow Skill rule
+   is under test in an isolated worktree; it has not demonstrated an effect in
+   new model runs. R004 still needs human adjudication, and feedback-to-rule
+   promotion is not automated.
 
 The correct status language is therefore:
 
@@ -352,6 +453,10 @@ Each integration must be an optional adapter. The core Skill should remain usabl
 
 ## 7. Recommended implementation sequence
 
+This section retains the long-term architecture history. Phase 0 is already
+implemented; the operational priority for the next Agent is the prospective
+evaluation at the top of this document, not repeating earlier phases.
+
 ### Phase 0 — Correct the current semantic mismatch
 
 Priority: **P0**
@@ -382,9 +487,10 @@ Priority: **P0**
 
 Current status: the source-verified `PR-REAL-01` U-Mamba fixture, generic
 rubrics, run-record schemas, integrity validation, blind-review export, nine
-model outputs, and a scored single-agent review are complete. The remaining
-Phase 1 work is independent second review and adjudication; do not mislabel the
-curated reference answer as a model run or this analysis as paper reproduction.
+model outputs, and an original scored review are complete. Two separately
+supplied AI reviews are locally sealed; scoring disagreements and R004 await
+human adjudication. Do not mislabel the curated reference answer as a model
+run or this analysis as paper reproduction.
 
 For both existing Skills, create the same prompt scenarios in three modes:
 
@@ -571,14 +677,14 @@ Use this priority order:
 
 ### Must do first
 
-- obtain an independent second review of the nine published `PR-REAL-01` runs and retain disagreements;
-- adjudicate the disputed interpretation of undefined `±` values without revealing condition labels during scoring;
+- preserve the sealed v1 record and adjudicate the disputed R004 interpretation without rewriting original scores;
+- preregister and run a prospective `±` comparison on new sources, including one with a defined statistic;
 - preserve tests and backward compatibility;
 - document exact limitations.
 
 ### Do next
 
-- add a versioned feedback artifact;
+- adjudicate the AI-review disagreements with a human reviewer;
 - add a provider-neutral model execution interface and Markdown/stdin adapter;
 - add `codebase-analysis` only after the first Skill evaluation is credible.
 
@@ -605,12 +711,13 @@ Copy the following prompt when handing this repository to another coding agent:
 Read docs/AGENT-HANDOFF-PLAN.md, README.md, profiles/reasoning-dna.yaml,
 and the target Skill before making changes.
 
-Current priority: independently review the nine published `PR-REAL-01` outputs
-without opening their condition-labeled run records. Score the five documented
-dimensions, quote evidence for each deduction, record suspected unblinding,
-then compare against `comparison-2026-09-20/review-scores.yaml` and retain every
-disagreement. The current result is negative for incremental profile value and
-must remain so unless a documented adjudication changes the scores.
+Work in the existing `codex/uncertainty-v2-candidate` worktree, not in master.
+First verify branch, commit, working-tree status, tests, and the ignored v1
+seal. Follow "Current operational handoff" at the top of this document for the
+prospective `±` evaluation. Do not rewrite v1 or reveal the private condition
+key to reviewers. If the required model access or new paper sources are not
+available, complete only the preregistered materials and report the exact
+remaining gate; never substitute simulated outputs.
 
 Do not treat the curated reference answer as a model run, and do not add a
 database, web UI, automatic profile rewriting, or provider-specific product

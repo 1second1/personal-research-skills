@@ -1,8 +1,9 @@
-# What a failed Reasoning DNA experiment taught us
+# What a small Reasoning DNA pilot taught us
 
-> A nine-run U-Mamba paper-reading pilot improved with an explicit Skill
-> contract, but not with an additional personal reasoning profile. The failure
-> is more useful than a polished success claim.
+> In one nine-run U-Mamba paper-reading pilot, Skill-only scored above baseline
+> under the original review. The personal profile showed no measured additional
+> gain on a rubric with a ceiling effect. Neither result establishes a general
+> causal benefit.
 
 ## Result at a glance
 
@@ -12,10 +13,11 @@
 | `paper-reading` Skill | 3 | 9.67 / 10 | 9–10 | 0 |
 | Skill + Reasoning DNA | 3 | 9.00 / 10 | 9–9 | 0 |
 
-In this setup, the Skill contract improved evidence coverage, separation of
-facts from inferences, and actionable next steps. Adding the reference
-Reasoning DNA profile did **not** improve on Skill-only. All three profile runs
-also assigned an unsupported statistical meaning to an undefined `±` value.
+In the original review, the Skill condition scored higher on evidence coverage,
+separation of facts from inferences, and actionable next steps. Adding the
+reference Reasoning DNA profile showed **no measured additional gain** on
+Skill-only; the 0–2 rubric has limited room to detect one. All three profile
+runs also assigned an unsupported statistical meaning to an undefined `±` value.
 
 This is a small, single-model-alias pilot with one semantic reviewer. It is not
 evidence that the ordering generalizes to other papers, models, Skills, or
@@ -100,11 +102,11 @@ artifacts instead of silently selecting one number.
 
 ## What failed
 
-### The personal profile added no measured value
+### The personal profile's added value remains unestablished
 
-Skill + Reasoning DNA scored `9.00`, below Skill-only at `9.67`. The experiment
-therefore provides no support for an incremental profile benefit in this
-setup.
+Skill + Reasoning DNA scored `9.00`, below Skill-only at `9.67` under the
+original rubric and reviewer. This does not establish an incremental profile
+benefit; because the rubric is near its ceiling, it also cannot rule one out.
 
 More methodology text also failed to guarantee better factual discipline. All
 three profile runs described the paper's `±` values as standard deviations
@@ -114,9 +116,10 @@ versioned feedback rule:
 
 > Never assign a statistical meaning to `±` unless the source defines it.
 
-That rule should not be merged merely because it sounds sensible. It needs an
-independent review, a minimal proposal, and a rerun of the affected case so the
-change can be evaluated rather than assumed to help.
+Two user-supplied AI reviews are locally sealed. A narrow candidate Skill
+patch now exists in an isolated worktree, but it needs a prospective test on
+new source material before its effect can be claimed. R004 remains a boundary
+case for human adjudication.
 
 ### The deterministic gate rejected every structured output
 
@@ -197,13 +200,14 @@ sessions or independently judge the paper's conclusions.
 
 ## Next credible steps
 
-1. Obtain an independent second review of the nine published outputs and keep
-   reviewer disagreements visible.
-2. Propose the narrow `±` attribution rule as a versioned feedback change.
-3. Rerun the affected case before claiming that the rule improves factual
-   discipline.
-4. Add more paper types, model families, and independent reviewers before
-   making any broader claim about Skill or profile value.
+1. Preserve the original scores and the locally sealed, separately supplied AI
+   reviews; adjudicate their disagreements and the R004 boundary case without
+   rewriting v1.
+2. Test the [versioned `±` feedback candidate](../../evals/feedback/PR-REAL-01-plus-minus-v1.yaml)
+   and [manual semantic regression case](../../evals/regressions/PR-REAL-01-plus-minus-v1.yaml)
+   prospectively on new sources, including a source that explicitly defines `±`.
+3. Add more paper types, model families, and human review before making any
+   broader claim about Skill or profile value.
 
 Personal Research Skills is not trying to make every experiment look
 successful. It is trying to make each methodological claim inspectable,

@@ -36,6 +36,7 @@ The check validates required structure, citations, and numeric presence in the c
 - No training run or source-code execution was performed.
 - A three-condition, three-repetition comparison is available in
   [`comparison-2026-09-20/`](comparison-2026-09-20/README.md). Skill-only
-  outscored the baseline in that setup; the profile did not improve on
-  Skill-only. It used one semantic reviewer and still needs independent review.
+  outscored the baseline under the original reviewer; the profile showed no
+  measured extra gain on a ceiling-prone rubric. Two user-supplied AI reviews
+  are sealed locally, but human adjudication is still needed.
 - The reported metrics are paper claims, not independently reproduced results.

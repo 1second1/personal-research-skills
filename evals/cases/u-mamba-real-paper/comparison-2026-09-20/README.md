@@ -52,8 +52,10 @@ metrics, or experiments would be a critical failure regardless of total score.
 | Boundaries | 2.00 | 2.00 | 2.00 |
 | Actionability | 0.00 | 2.00 | 2.00 |
 
-The Skill contract improved traceability, explicit reasoning boundaries, and
-next-step quality in this setup. The profile did **not** improve on Skill-only.
+The Skill contract scored higher on traceability, explicit reasoning boundaries,
+and next-step quality in the original review. The profile showed **no measured
+additional gain** on Skill-only under this ceiling-prone rubric; that does not
+rule out an effect on a more discriminating measure.
 All three profile runs called the undefined `±` values “standard deviations”
 before acknowledging that the supplied source did not define them. One
 Skill-only run made the same mistake. This is a useful negative result: more
@@ -79,9 +81,16 @@ as `not_evaluated`.
 - The test evaluates analysis of a supplied evidence map, not PDF extraction,
   code reproduction, or the paper's scientific validity.
 
-The next credible step is an independent second review followed by a narrowly
-scoped feedback proposal: never assign a statistical meaning to `±` unless the
-source defines it.
+Two user-supplied AI reviews are locally sealed. They are inputs to, not
+substitutes for, human adjudication; R004 remains a boundary case. The next
+engineering step is a prospective test of a narrow `±` Skill candidate on new
+sources, including one that defines the notation explicitly.
+
+A [versioned candidate feedback record](../../../feedback/PR-REAL-01-plus-minus-v1.yaml)
+and [manual semantic regression case](../../../regressions/PR-REAL-01-plus-minus-v1.yaml)
+now capture that failure. The candidate Skill patch does not revise the archived
+scores or prove improved model behavior. The review packet and two AI reviews
+remain in the ignored local evaluation directory, separate from the private key.
 
 ## Artifacts
 

@@ -39,6 +39,14 @@ Use these sections in order:
 7. Connect the method to `research_context` only when the context supplies a concrete comparison or decision.
 8. End with numbered, falsifiable actions that specify what evidence would change the current conclusion.
 
+## Reported uncertainty notation
+
+For each reported `X ± Y` (or `X +/- Y`), preserve the reported value and check whether the source explicitly defines the meaning of ± for that result; cite the definition when available. If defined, use the source's term (for example, standard deviation, standard error, or confidence interval) and its stated aggregation level. Do not hedge away a definition the source actually provides.
+
+If the source does not define the meaning of ±, write “reported value X ± Y; source does not define the meaning of ±.” Do not label `Y` as a standard deviation, standard error, or confidence interval, or characterize it as dispersion, spread, or variability. Do not infer case-level or run-level variation, statistical significance, or reliability from `Y`. When a comparison depends on that interpretation, state that the undefined notation cannot establish it and put “verify the meaning of ±” in **Next Actions**, naming the source material to check.
+
+Before finalizing, inspect each sentence that interprets a reported `±` value. This rule concerns the source's `Y`; it does not prohibit proposing a future experiment that calculates a defined uncertainty statistic.
+
 ## Quick Reference
 
 | Write this | When |

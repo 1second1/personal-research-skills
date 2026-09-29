@@ -272,15 +272,16 @@ implemented. The real-paper case uncovered and retains a `0.6540` table value
 versus `0.6504` prose value conflict; it is a curated reference fixture, not a
 model-quality result. Its first repeated comparison found Skill-only above the
 baseline (`9.67` versus `6.67` mean rubric score), while Skill + profile scored
-`9.00`; the profile therefore showed no incremental gain in this setup. This
-was a single-agent best-effort blind review, not an independent human study. A
+`9.00`; the original review detected no incremental profile gain, but its 0–2
+rubric has a ceiling effect and cannot rule one out. This was a single-agent
+best-effort blind review, not an independent human study. Two user-supplied AI
+reviews are sealed locally; disagreements still need human adjudication. A
 single-run [argument-analysis pilot](evals/cases/2013-text3-pilot/README.md)
-showed a clear benefit from the Skill contract but no measured gain from the
-profile over Skill-only. This is evidence from one evaluation setup, not a
-general result.
+also scored the Skill condition higher, with no measured gain from the profile
+over Skill-only. Neither small pilot establishes a general result.
 
-1. Obtain an independent second review of the published real-paper runs and retain disagreements.
-2. Add a reviewable, versioned feedback proposal for the observed `±` attribution failure, then rerun the affected case.
+1. Preserve the sealed original review and adjudicate disagreements, including the R004 `±` boundary case, without changing v1 scores.
+2. Prospectively test the narrow `±` Skill candidate on new sources, including an explicitly defined `±` control; do not claim improved behavior from static checks alone.
 3. Add provider-neutral model execution, then PDF, repository, and experiment adapters after the feedback regression.
 
 ## Contributing

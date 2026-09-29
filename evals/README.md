@@ -55,6 +55,22 @@ give that file to reviewers before scoring. Candidate prose may still reveal a
 condition indirectly, so report this as best-effort blinding rather than proof
 of perfect blindness.
 
+## Feedback and semantic regression
+
+The [PR-REAL-01 `+/-` feedback candidate](feedback/PR-REAL-01-plus-minus-v1.yaml)
+links four archived outputs to the supplied source map. Its status is
+`proposed`; a narrow candidate rule has been drafted in
+[`paper-reading`](../skills/paper-reading/SKILL.md), but its effect has not been
+tested prospectively. The original scores and sealed local reviews have not
+changed.
+The linked [regression case](regressions/PR-REAL-01-plus-minus-v1.yaml) gives
+safe, unsupported, and claim-then-caveat examples for a human semantic
+reviewer. Automated tests check record integrity and artifact links, **not**
+whether a new model answer understands statistical notation. Two user-supplied
+AI reviews are preserved locally; the R004 boundary case and human adjudication
+remain open. Keep locally generated blind packets under the ignored
+`evals/local/` directory and never share their private condition key.
+
 ## Metrics
 
 | Metric | Meaning |
