@@ -2,7 +2,38 @@
 
 ## Cross-Agent Handoff and Long-Term Engineering Plan
 
-### Delivery fixes — 2026-10-03
+### 当前状态入口 — 2026-10-03
+
+本节是唯一的当前交接入口；后面的版本、分支、测试数和计划均属于历史记录。
+续做前核对当前文件与 Git 状态，不把历史结果当作本轮验证。
+
+1. **当前目标**：收束 delivery-fixes 的交付修复，应用少量全局规则，补齐独立诊断与交接口径。
+   本轮完成本地验证和三个小任务验收；没有启动模型效果研究。
+2. **实际工作位置与 Git 状态**：`C:\personal research skill`，分支 `codex/delivery-fixes`。
+   交付修复单独提交为 `7529d365fbd0358478fcead880e99bb1d857828d`；本节与评测协议随其后的独立文档提交保存。
+   本轮只做本地提交，未推送、未发布；远端 CI 未在本轮执行。续做时运行 `git status --short`、
+   `git log -2 --oneline` 核对最新状态，不依赖历史 `master` 标签。
+3. **交付物绝对路径**：
+   - 当前交接：`C:\personal research skill\docs\AGENT-HANDOFF-PLAN.md`。
+   - 交付代码：`C:\personal research skill\research_skills`；回归测试：`C:\personal research skill\tests`。
+   - 效果诊断规范：`C:\personal research skill\evals\PROTOCOL.md`。
+   - Codex 全局规则：`C:\Users\34638\.codex\AGENTS.md`（独立于本仓库，四处定点改写已应用）。
+   - 小任务验收：`E:\freedom\harness-acceptance-20261003\README.md`，原始轨迹与精确提示词同目录保存。
+4. **本轮实际运行的验证**：使用项目 `.venv`，设置 `PYTHONUTF8=1`、`PYTHONIOENCODING=utf-8`、
+   `PYTHONDONTWRITEBYTECODE=1`，重新执行 `python -m unittest discover -s tests -v`，90 项通过；
+   `python -m research_skills.cli validate`、`validate --run evals/fixtures/run-record-demo/run.yaml`、
+   `git diff --check` 均通过。三类独立 CLI 会话得到正确产物、无需确认且未冒用历史验证；
+   这是本轮实际观察，不是普遍可靠性或新旧指令效果对比。新会话续做使用预置交接材料，
+   尚未验证任意中断后的恢复。PATH 中旧 CLI 0.145.0 的模型兼容失败已保留，后续使用本机已有的
+   0.160.0；没有升级程序、改 PATH 或切换模型。续做会话有一次无关的 `resume|简历` 记忆检索，
+   原因未验证，未据此改写全部 Skill。
+5. **未完成事项与授权边界**：实际模型效果、独立语义复审和任意中断恢复仍未验证。
+   36 次前瞻性研究保持暂停；旧九份输出/评分和封存材料没有改写，uncertainty-v2 没有晋升。
+   本轮检查私有包目录未发现 outputs/runs/raw-outputs；这不是重新核验整包 seal 的结果。
+   后续先按真实任务观察流程开销；若要恢复研究、修改冻结方案、推送或发布，需要新的明确指示。
+   新诊断仅供未来授权评测，不追溯改变历史评分，也不修改现有冻结方案。
+
+### 历史记录：Delivery fixes — 2026-10-03
 
 The user stopped the proposed 36-run model evaluation and requested delivery
 fixes and a focused quality review. Do not start that evaluation or create a
@@ -24,7 +55,7 @@ No model-effect claims, Skill contract/version changes or edits to historical
 model outputs/scores are part of this work. Publishing, release and external
 promotion remain separate actions.
 
-### Implementation status — updated 2026-09-23
+### 历史记录：Implementation status — updated 2026-09-23
 
 The configuration parser now requires PyYAML (install with `python -m pip install -e .`).
 Profiles and contracts are validated; full contracts and workflows reach composed
@@ -48,9 +79,9 @@ turn the observed `±` attribution failure into a versioned feedback proposal.
 
 **Repository:** <https://github.com/1second1/personal-research-skills>
 
-**Current branch:** `master`
+**Historical branch at original handoff:** `master`
 
-**Current project commit at handoff:** `442eb62`
+**Historical project commit at original handoff:** `442eb62`
 
 **Primary maintainer:** `1second1`
 

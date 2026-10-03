@@ -97,6 +97,58 @@ Use a second reviewer for disputed claims; retain disagreements and adjudication
 Report per-task scores, critical failures and variation across repetitions, not
 just a pooled average. Do not change thresholds after seeing condition labels.
 
+## Prospective uncertainty diagnostics
+
+Apply this diagnostic to newly authorized evaluations only. It does not rescore
+or rewrite the historical nine-run comparison, alter frozen private evaluation
+materials, promote uncertainty-v2, or authorize the paused 36-run study.
+Freeze the diagnostic, source scope and decision rules before generating outputs.
+
+Report these findings separately from the five dimension scores:
+
+| Diagnostic | Failure criterion | Correct behavior |
+|---|---|---|
+| Unsupported SD attribution | Within the supplied source scope, `±` is undefined, but the answer asserts or uses standard deviation as its established meaning | Preserve the value and state that the meaning is unspecified in the supplied material; distinguish any hypothesis from a source fact |
+| Unnecessary withholding of a defined meaning | The supplied source explicitly defines `±` as SD, the task requires interpreting it, but the answer denies that definition or refuses to identify it without a source-grounded reason | Attribute SD to the source and preserve its scope, such as five folds rather than five independent runs |
+
+Acknowledging that a reported SD has not been independently reproduced is not
+unnecessary withholding. A task that does not require interpreting the notation
+is not penalized merely for omitting that interpretation. Missing access to a
+required source or a genuine conflict in definitions is unresolved evidence,
+not permission to guess. Absence of a definition in an excerpt does not establish
+absence throughout the paper or its external materials.
+
+For each response, record `present`, `absent`, `not_applicable` or `unresolved`
+for each diagnostic, with the exact output quote, source location and rationale.
+Report denominators, individual failures and unresolved cases; do not hide a
+failure behind a pooled score. Unsupported SD attribution fails the uncertainty
+interpretation diagnostic regardless of the general quality score. Unnecessary
+withholding fails the defined-meaning diagnostic. Neither diagnostic replaces
+the other factual and critical-failure checks.
+
+Two reviewers assess disputed claims before condition labels are revealed.
+Preserve both judgments; an adjudicator resolves disagreements against the
+frozen definitions and cited source. If independent adjudication is unavailable,
+keep the item unresolved and withhold any success claim that depends on it.
+Do not revise labels, thresholds or source scope after learning conditions;
+a necessary method change requires a separately identified prospective revision.
+
+## Small harness acceptance tasks
+
+For instruction or workflow changes, start with one simple question, one small
+file edit and one fresh-session continuation of an existing handoff. Save the
+exact prompts, instruction version/hash, actual outputs, artifacts and execution
+traces. Record unnecessary confirmation, artifact discoverability, accurate
+completion/publication status and separation of historical from current checks.
+A new session reading a prepared handoff tests continuation from that record;
+it does not establish recovery from arbitrary interruptions or context loss.
+
+Keep environment/setup failures distinct from agent behavior, retain failed
+attempts, and do not switch models silently to obtain a passing result. These
+three tasks are acceptance observations, not a causal comparison or evidence
+of general reliability. Inspect Skill triggers only when observed steps suggest
+avoidable overhead. This acceptance work does not resume the research study.
+
 The repository includes a curated real-paper reference case and a
 [nine-run baseline / Skill / profile comparison](cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
 on its source map. That comparison used one semantic reviewer and best-effort
