@@ -45,6 +45,37 @@ claim_headings: []
         with self.assertRaisesRegex(ValueError, "Unknown rubric fields"):
             load_rubric("required_headings: [\"## Result\"]\nscore: 10\n")
 
+    def test_fenced_examples_cannot_satisfy_output_requirements(self) -> None:
+        rubric = 'required_headings: ["## Result"]\nrequired_markers: ["bounded"]\nclaim_headings: []\n'
+        examples = (
+            "```markdown\n## Result\nbounded\n```\n",
+            "~~~markdown\n## Result\nbounded\n~~~\n",
+            "````markdown\n```\n## Result\nbounded\n````\n",
+            "~~~markdown\n```\n## Result\nbounded\n~~~\n",
+            "```markdown\n## Result\nbounded\n",
+            "~~~markdown\n## Result\nbounded\n",
+            "   ~~~markdown\n## Result\nbounded\n   ~~~~\n",
+            "~~~markdown\n~~\n## Result\nbounded\n~~~\n",
+            "```markdown\n``` not a closing fence\n## Result\nbounded\n```\n",
+        )
+        for candidate in examples:
+            with self.subTest(candidate=candidate):
+                errors = evaluate(candidate, rubric)
+                self.assertIn("Missing or empty section: ## Result", errors)
+                self.assertIn("Missing marker: bounded", errors)
+
+    def test_fences_do_not_hide_real_sections_after_the_block(self) -> None:
+        rubric = 'required_headings: ["## Result"]\nrequired_markers: ["bounded"]\nclaim_headings: []\n'
+        for fence in ("```", "~~~"):
+            with self.subTest(fence=fence):
+                candidate = f"{fence}\nexample\n{fence}\n## Result\nA bounded answer.\n"
+                self.assertEqual(evaluate(candidate, rubric), [])
+
+    def test_four_space_indentation_is_not_a_fence(self) -> None:
+        rubric = 'required_headings: ["## Result"]\nclaim_headings: []\n'
+        candidate = "    ```\n## Result\nAn actual heading outside indented code.\n    ```\n"
+        self.assertEqual(evaluate(candidate, rubric), [])
+
 
 if __name__ == "__main__":
     unittest.main()

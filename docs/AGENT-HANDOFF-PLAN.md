@@ -2,6 +2,28 @@
 
 ## Cross-Agent Handoff and Long-Term Engineering Plan
 
+### Delivery fixes — 2026-10-03
+
+The user stopped the proposed 36-run model evaluation and requested delivery
+fixes and a focused quality review. Do not start that evaluation or create a
+model-provider revision from the earlier DeepSeek discussion without a new
+request. Its ignored materials remain intact; the candidate uncertainty-v2
+branch remains a separate, unpromoted experiment.
+
+Delivery work is on `codex/delivery-fixes`, based on the public release line.
+The fixes cover LF context output on Windows, fenced-code false positives,
+actual YAML frontmatter validation and preflight rejection of external blind
+review records. Regression assertions were observed failing before the
+implementation changes. CI is configured for Ubuntu/Windows and Python
+3.10/3.12; local verification does not claim those remote jobs have run.
+On 2026-10-03 the local Windows Python 3.12 environment passed all 90 tests,
+repository validation and the demo run-record check. Use the existing `.venv`
+with `PYTHONUTF8=1`, `PYTHONIOENCODING=utf-8` and `PYTHONDONTWRITEBYTECODE=1`.
+
+No model-effect claims, Skill contract/version changes or edits to historical
+model outputs/scores are part of this work. Publishing, release and external
+promotion remain separate actions.
+
 ### Implementation status — updated 2026-09-23
 
 The configuration parser now requires PyYAML (install with `python -m pip install -e .`).

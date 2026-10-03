@@ -25,7 +25,9 @@ def prepare_blind_review(
     runs: list[tuple[Path, dict]] = []
     run_ids: set[str] = set()
     for path in record_paths:
-        record_path = Path(path)
+        record_path = Path(path).resolve()
+        if not record_path.is_relative_to(root_path):
+            raise ValueError(f"Run record must stay under the evaluation root: {record_path}")
         errors = validate_run_record(record_path, root=root_path)
         if errors:
             raise ValueError(f"Invalid run record {record_path}: " + "; ".join(errors))

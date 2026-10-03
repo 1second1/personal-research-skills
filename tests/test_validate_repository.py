@@ -11,6 +11,36 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ValidateRepositoryTests(unittest.TestCase):
+    def test_validator_rejects_missing_or_invalid_frontmatter(self) -> None:
+        cases = (
+            "# Example\nname: example\ndescription: Only body text.\n",
+            "---\nname: example\ndescription: [not, text]\n---\n",
+            "---\nname: example\ndescription: \"\"\n---\n",
+            "---\nname: different\ndescription: Example Skill.\n---\n",
+            "---\nname: example\ndescription: [broken\n---\n",
+            "---\nname: example\n---\ndescription: Only body text.\n",
+        )
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            skill_root = root / "skills/example"
+            skill_root.mkdir(parents=True)
+            skill_path = skill_root / "SKILL.md"
+            for text in cases:
+                with self.subTest(text=text):
+                    skill_path.write_text(text, encoding="utf-8", newline="\n")
+                    self.assertTrue(any("frontmatter" in error for error in validate(root)))
+
+    def test_validator_accepts_frontmatter_block_description(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            skill_root = root / "skills/example"
+            skill_root.mkdir(parents=True)
+            (skill_root / "SKILL.md").write_text(
+                "---\nname: example\ndescription: >\n  An example\n  Skill.\n---\n",
+                encoding="utf-8", newline="\n",
+            )
+            self.assertFalse(any("frontmatter" in error for error in validate(root)))
+
     def test_validator_requires_profile_and_skill_directories(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             errors = validate(Path(temporary_directory))

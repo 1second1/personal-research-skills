@@ -52,10 +52,12 @@ class RunSkillTests(unittest.TestCase):
                 check=False,
             )
             output = output_path.read_text(encoding="utf-8") if output_path.is_file() else ""
+            output_bytes = output_path.read_bytes() if output_path.is_file() else b""
 
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertEqual(completed.stdout, "")
         self.assertIn("What → Why → Assumption → Boundary", output)
+        self.assertFalse(b"\r" in output_bytes, "Composed artifacts must use portable LF newlines")
 
     def test_cli_reports_invalid_utf8_without_traceback(self):
         with tempfile.TemporaryDirectory() as temporary_directory:

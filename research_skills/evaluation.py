@@ -51,6 +51,27 @@ def read_rubric_values(rubric_text: str) -> list[str]:
     return rubric["required_headings"] + rubric.get("required_markers", [])
 
 
+def _without_fenced_code(text: str) -> str:
+    """Exclude top-level fenced examples, including unclosed fences."""
+    lines: list[str] = []
+    closing: re.Pattern | None = None
+    for line in text.splitlines(keepends=True):
+        content = line.rstrip("\r\n")
+        if closing is not None:
+            if closing.fullmatch(content):
+                closing = None
+            lines.append("\n")
+            continue
+        opening = re.fullmatch(r" {0,3}(`{3,}|~{3,})(.*)", content)
+        if opening and not (opening[1][0] == "`" and "`" in opening[2]):
+            fence = opening[1]
+            closing = re.compile(rf" {{0,3}}{fence[0]}{{{len(fence)},}}[ \t]*")
+            lines.append("\n")
+        else:
+            lines.append(line)
+    return "".join(lines)
+
+
 def evaluate(
     candidate_text: str,
     rubric_text: str,
@@ -60,7 +81,7 @@ def evaluate(
     """Return deterministic rubric failures for one Markdown candidate."""
     rubric = load_rubric(rubric_text)
     # A fenced example is not an actual output section.
-    text = re.sub(r"(?ms)^\s*```[^\n]*\n.*?^\s*```[^\n]*$", "", candidate_text)
+    text = _without_fenced_code(candidate_text)
     matches = list(re.finditer(r"(?m)^## ([^\n]+)$", text))
     sections: dict[str, str] = {}
     errors: list[str] = []

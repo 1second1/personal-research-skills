@@ -134,7 +134,7 @@ def _compose(arguments: argparse.Namespace, root: Path) -> int:
             mode=arguments.mode,
         )
         if arguments.output:
-            arguments.output.write_text(context, encoding="utf-8")
+            arguments.output.write_text(context, encoding="utf-8", newline="\n")
         else:
             sys.stdout.write(context)
     except (OSError, ValueError) as error:

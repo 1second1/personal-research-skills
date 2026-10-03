@@ -4,6 +4,22 @@ Notable changes to the research Skills and supporting framework.
 
 ## [Unreleased]
 
+### Fixed
+
+- Composed output files now use LF newlines on Windows as required by run-record
+  integrity validation.
+- Structural evaluation excludes backtick and tilde fenced examples, including
+  longer and unclosed fences, without hiding real sections after a closed block.
+- Repository validation parses Skill YAML frontmatter and rejects missing,
+  malformed or mismatched names/descriptions instead of matching body text.
+- Blind-review export rejects records outside the evaluation root before
+  creating files, preventing a partial packet on that validation failure.
+
+### Development
+
+- The CI configuration now covers Windows and Ubuntu on Python 3.10 and 3.12,
+  with an explicit UTF-8 environment.
+
 ## [0.2.0] - 2026-09-27
 
 This version gathers the current research Skills and supporting framework.

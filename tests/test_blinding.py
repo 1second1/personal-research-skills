@@ -136,6 +136,21 @@ class BlindingTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "Duplicate run_id"):
                 prepare_blind_review([baseline, skill], root / "review", root=root, seed=3)
 
+    def test_external_record_is_rejected_before_creating_export(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            parent = Path(temporary_directory)
+            root = parent / "artifacts"
+            root.mkdir()
+            baseline = _record(root, "baseline", "baseline output")
+            skill = _record(root, "skill", "skill output")
+            external = parent / "external.yaml"
+            external.write_bytes(skill.read_bytes())
+            export = root / "review"
+
+            with self.assertRaisesRegex(ValueError, "evaluation root"):
+                prepare_blind_review([baseline, external], export, root=root, seed=3)
+            self.assertFalse(export.exists(), "Rejected inputs must not leave a partial review packet")
+
 
 if __name__ == "__main__":
     unittest.main()

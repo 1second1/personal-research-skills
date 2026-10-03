@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .dna import load_contract, load_profile
+from .dna import _parse, load_contract, load_profile
 from .evaluation import load_rubric
 from .run_records import validate_run_record
 
@@ -43,7 +43,7 @@ REQUIRED_PATHS = (
     "scripts/prepare_blind_review.py",
 )
 
-SKILL_FRONTMATTER_KEYS = ("name:", "description:")
+SKILL_FRONTMATTER_KEYS = ("name", "description")
 REQUIRED_DIRECTORIES = ("profiles", "skills")
 SKILL_ARTIFACTS = (
     "SKILL.md",
@@ -52,6 +52,23 @@ SKILL_ARTIFACTS = (
     "examples/expected-output.md",
     "evals/pressure-scenarios.md",
 )
+
+
+def _validate_frontmatter(text: str, skill_name: str) -> None:
+    lines = text.splitlines()
+    if not lines or lines[0] != "---":
+        raise ValueError("Expected opening YAML frontmatter delimiter")
+    try:
+        end = lines.index("---", 1)
+    except ValueError as error:
+        raise ValueError("Expected closing YAML frontmatter delimiter") from error
+    metadata = _parse("\n".join(lines[1:end]))
+    for key in SKILL_FRONTMATTER_KEYS:
+        value = metadata.get(key)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(f"{key} must be a non-empty string")
+    if metadata["name"] != skill_name:
+        raise ValueError("name must match the Skill directory")
 
 
 def validate(root: Path) -> list[str]:
@@ -85,10 +102,10 @@ def validate(root: Path) -> list[str]:
                 errors.append(f"Missing Skill rubric: {rubric_relative}")
             skill_path = skill_dir / "SKILL.md"
             if skill_path.is_file():
-                skill_text = skill_path.read_text(encoding="utf-8")
-                for key in SKILL_FRONTMATTER_KEYS:
-                    if key not in skill_text:
-                        errors.append(f"Missing Skill frontmatter key in {skill_dir.name}: {key}")
+                try:
+                    _validate_frontmatter(skill_path.read_text(encoding="utf-8"), skill_dir.name)
+                except (OSError, ValueError) as error:
+                    errors.append(f"Invalid Skill frontmatter in {skill_dir.name}: {error}")
             contract_path = skill_dir / "contract.yaml"
             if contract_path.is_file():
                 try:
