@@ -12,10 +12,11 @@
    `Research Skills for checking paper claims, surfacing evidence conflicts, and turning ideas into testable questions.`
 2. **实际工作位置与 Git 状态**：`C:\personal research skill`，分支 `codex/delivery-fixes`，
    本轮开始时工作树干净，HEAD 为 `209f4d0ed4b3f83801bc3cde6099a0a56e77e3b3`。
-   本次交付为两个 README、本交接入口和一个新 SVG，提交追加到上述基准 HEAD，
-   推送目标为 `origin/codex/delivery-fixes`；实际提交和同步状态使用 `git log -1`、
-   `git status --short --branch` 及远端分支核对。GitHub About 是已生效的远端元数据更新。
-   默认分支仍为 `master`；推送开发分支和合并进首页是不同步骤。
+   README、对照图和交接更新已提交为 `d21b2fa8e420aaaae9f7b32a8f89d35fa45c6533`，
+   连同此前的 `7529d36`、`209f4d0` 一并推送至 `origin/codex/delivery-fixes`，远端 SHA 已核对。
+   本节补录随其后的交接文档提交保存；实际最新提交和同步状态使用 `git log -1`、
+   `git status --short --branch` 核对。GitHub About 是已生效的远端元数据更新。
+   默认分支仍为 `master`，尚未合并交付分支；已向用户呈现合并与保留分支的选择，等待答复。
 3. **交付物绝对路径**：
    - `C:\personal research skill\README.md`、`C:\personal research skill\README.zh-CN.md`。
    - 图源：`C:\personal research skill\docs\assets\u-mamba-evidence-comparison.svg`。
@@ -26,6 +27,9 @@
    图中数值和基础回答摘录与归档文件匹配，`git diff --check` 通过。
    提交前于 2026-10-04 重新执行项目完整验证：90 项测试、仓库校验和演示运行记录校验均通过。
    首次受限执行的 32 项错误来自临时目录 `WinError 5`；获准环境重跑同一组命令后通过，未据此修改代码。
+   推送后的 GitHub Actions 运行 `37196972802`（提交 `d21b2fa`）实际完成并成功：
+   Ubuntu/Windows × Python 3.10/3.12 四项任务均通过。
+   入口：`https://github.com/1second1/personal-research-skills/actions/runs/37196972802`。
 5. **事实修正与授权边界**：两份 r1 回答都发现数值冲突。Skill 回答虽然声明 `±` 未定义，
    后文仍推断变异性；原 README 对它的描述过宽，现已修正并在图中展示此问题。
    这里只描述原始文本，没有裁定 R004，也没有改写旧输出、评分或冻结方案。
@@ -35,7 +39,8 @@
    其工作树没有未保存工作，忽略内容仅为三份 Python 缓存；已删除该本地分支及
    `C:\personal research skill\.worktrees\github-ready-framework` 工作树。
    `codex/uncertainty-v2-candidate` 保留，仍有未晋升的候选改动和一个本地交接提交，不能作为已合并分支删除。
-   远端两个 Dependabot 分支对应开放 PR #1 和 #2，保留待独立依赖审查。
+   远端两个 Dependabot PR #1 和 #2 仅更新 `checkout@v7` 与 `setup-python@v7`；
+   两个版本已经存在于 `origin/master`，因此已关闭这两个过期重复 PR、删除对应远端分支，并 fetch/prune 核对。
    主目录中的 `.local-project-materials`、`evals/local` 和现有 `.venv` 不属于分支清理目标。
 
 ### 历史记录：交付收束与诊断 — 2026-10-03
