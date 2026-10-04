@@ -10,13 +10,14 @@
    并把归档 U-Mamba 来源/基础回答/Skill 回答对照图放入中英文 README；用户随后授权提交、推送和分支收束。
    About 已通过 `gh repo edit` 保存，并回读确认：
    `Research Skills for checking paper claims, surfacing evidence conflicts, and turning ideas into testable questions.`
-2. **实际工作位置与 Git 状态**：`C:\personal research skill`，分支 `codex/delivery-fixes`，
-   本轮开始时工作树干净，HEAD 为 `209f4d0ed4b3f83801bc3cde6099a0a56e77e3b3`。
+2. **实际工作位置与 Git 状态**：`C:\personal research skill`，当前分支 `master`。
+   README/图工作起点为 `209f4d0ed4b3f83801bc3cde6099a0a56e77e3b3`，合并阶段起点为 `f189dd6`，两阶段开始时工作树均干净。
    README、对照图和交接更新已提交为 `d21b2fa8e420aaaae9f7b32a8f89d35fa45c6533`，
    连同此前的 `7529d36`、`209f4d0` 一并推送至 `origin/codex/delivery-fixes`，远端 SHA 已核对。
-   本节补录随其后的交接文档提交保存；实际最新提交和同步状态使用 `git log -1`、
-   `git status --short --branch` 核对。GitHub About 是已生效的远端元数据更新。
-   默认分支仍为 `master`，尚未合并交付分支；已向用户呈现合并与保留分支的选择，等待答复。
+   用户澄清常规交付应直接合并。已将四个交付提交快进合入 `master` 并推送至
+   `origin/master`，远端 SHA 核对为 `f189dd63652674a35fa2c7fc2458b3645b0a0409`，交付分支已清理。
+   本节完成状态补录随后单独提交至 `master`；最新提交和同步状态使用 `git log -1`、
+   `git status --short --branch` 核对。默认分支已包含新 README 和对照图；About 已生效。
 3. **交付物绝对路径**：
    - `C:\personal research skill\README.md`、`C:\personal research skill\README.zh-CN.md`。
    - 图源：`C:\personal research skill\docs\assets\u-mamba-evidence-comparison.svg`。
@@ -30,14 +31,17 @@
    推送后的 GitHub Actions 运行 `37196972802`（提交 `d21b2fa`）实际完成并成功：
    Ubuntu/Windows × Python 3.10/3.12 四项任务均通过。
    入口：`https://github.com/1second1/personal-research-skills/actions/runs/37196972802`。
+   合并阶段在 `master` 上再次实际重跑：90 项测试、仓库校验、演示运行记录校验和 `git diff --check` 均通过。
 5. **事实修正与授权边界**：两份 r1 回答都发现数值冲突。Skill 回答虽然声明 `±` 未定义，
    后文仍推断变异性；原 README 对它的描述过宽，现已修正并在图中展示此问题。
    这里只描述原始文本，没有裁定 R004，也没有改写旧输出、评分或冻结方案。
    图仅概括 2026-09-20 归档的一对回答，不能证明普遍提升。本轮没有启动模型生成。
-   Git 提交与推送现已授权；合并进默认分支与发布新版本仍是不同动作。其余推广建议未执行。
+   用户本次澄清常规交付由 Agent 完成合并、推送和已合并分支清理，无需用户去官网操作。
+   本次已按此完成；实验候选未晋升，未启动模型生成，其余推广建议和新版本发布未执行。
 6. **分支收束**：`feature/github-ready-framework` 已确认是 `origin/master` 的祖先，独立提交数为 0。
    其工作树没有未保存工作，忽略内容仅为三份 Python 缓存；已删除该本地分支及
    `C:\personal research skill\.worktrees\github-ready-framework` 工作树。
+   `codex/delivery-fixes` 已快进合入 `master`；在核对远端 `master` 同步后，已删除该本地和远端分支。
    `codex/uncertainty-v2-candidate` 保留，仍有未晋升的候选改动和一个本地交接提交，不能作为已合并分支删除。
    远端两个 Dependabot PR #1 和 #2 仅更新 `checkout@v7` 与 `setup-python@v7`；
    两个版本已经存在于 `origin/master`，因此已关闭这两个过期重复 PR、删除对应远端分支，并 fetch/prune 核对。
