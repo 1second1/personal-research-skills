@@ -1,18 +1,23 @@
 # Personal Research Skills 中文说明
 
-> 让科研分析中的证据、不确定性和下一步核查更明确的 AI Skills。
+> 核查论文主张，标出证据冲突，把研究想法变成可检验的问题。
 
 `paper-reading` 帮助 Agent 阅读论文时保留相互冲突的主张，不把推断当作论文报告的结果。
 仓库还包含 `research-question`、`argument-analysis`，以及可选的 Reasoning DNA
 配置和研究上下文组合、评测工具。这是实验性项目，不是自动读论文或自动学习的 Agent。
 
-**真实例子：** 已核对的 U-Mamba 论文中，Table 4 的内镜 DSC 为 `0.6540`，
-Section 3.4 的正文却写为 `0.6504`。一份归档的
-[基础回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
-倾向采用表格值；一份归档的
-[`paper-reading` 回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)
-同时保留两个位置，并未擅自解释 `±` 的统计含义。你可以直接对照原始输出。
-这只是说明差异的实例，不能证明普遍提升；下文列出九次运行的小型实验及其局限。
+**归档实例：** U-Mamba 的[来源映射](evals/cases/u-mamba-real-paper/source-map.md)
+记录了第 9 页两处不同的内镜 DSC：Table 4 为 `0.6540`，Section 3.4 为 `0.6504`。
+两份回答都发现了差异。基础回答优先采用表格值；`paper-reading` 回答保留冲突，
+没有确定原因，并提出核对原始 PDF 和仓库评测输出。
+
+[![U-Mamba 来源数值与两份归档回答对照：基础回答优先采用表格值，paper-reading 保留冲突；两者都发现差异，Skill 回答仍从未定义的 ± 推断了变异性。](docs/assets/u-mamba-evidence-comparison.svg)](docs/case-studies/u-mamba-negative-result.md)
+
+图中仅概括 2026 年 9 月 20 日归档的一对回答，输入是选择性改述的来源映射。
+可直接查看[基础回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
+和 [Skill 回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)：
+Skill 回答虽然指出 `±` 未定义，**后文仍据此推断了变异性**。
+这个实例不能证明普遍提升；下文列出九次运行的小型实验及其局限。
 
 ## 安装到 Codex 和 Claude Code
 

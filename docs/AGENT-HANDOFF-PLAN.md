@@ -2,10 +2,45 @@
 
 ## Cross-Agent Handoff and Long-Term Engineering Plan
 
-### 当前状态入口 — 2026-10-03
+### 当前状态入口 — 2026-10-04
 
-本节是唯一的当前交接入口；后面的版本、分支、测试数和计划均属于历史记录。
-续做前核对当前文件与 Git 状态，不把历史结果当作本轮验证。
+本节是唯一的当前交接入口；下文是按日期保留的历史记录。
+
+1. **当前目标与完成范围**：按用户“先做前两个”，更新 GitHub About 描述，
+   并把归档 U-Mamba 来源/基础回答/Skill 回答对照图放入中英文 README；用户随后授权提交、推送和分支收束。
+   About 已通过 `gh repo edit` 保存，并回读确认：
+   `Research Skills for checking paper claims, surfacing evidence conflicts, and turning ideas into testable questions.`
+2. **实际工作位置与 Git 状态**：`C:\personal research skill`，分支 `codex/delivery-fixes`，
+   本轮开始时工作树干净，HEAD 为 `209f4d0ed4b3f83801bc3cde6099a0a56e77e3b3`。
+   本次交付为两个 README、本交接入口和一个新 SVG，提交追加到上述基准 HEAD，
+   推送目标为 `origin/codex/delivery-fixes`；实际提交和同步状态使用 `git log -1`、
+   `git status --short --branch` 及远端分支核对。GitHub About 是已生效的远端元数据更新。
+   默认分支仍为 `master`；推送开发分支和合并进首页是不同步骤。
+3. **交付物绝对路径**：
+   - `C:\personal research skill\README.md`、`C:\personal research skill\README.zh-CN.md`。
+   - 图源：`C:\personal research skill\docs\assets\u-mamba-evidence-comparison.svg`。
+   - 实际渲染预览：`C:\Users\34638\AppData\Local\Temp\prs-u-mamba-evidence-comparison-20261004.png`
+     （临时预览；正式产物是上述 SVG）。
+4. **本轮实际验证**：About 回读一致；SVG XML 可解析，无脚本、外部资源或嵌入页面；
+   使用已有 Sharp 渲染为 1200×770 PNG 并实际查看，文字无截断；两个 README 的 19 个不同本地链接目标存在。
+   图中数值和基础回答摘录与归档文件匹配，`git diff --check` 通过。
+   提交前于 2026-10-04 重新执行项目完整验证：90 项测试、仓库校验和演示运行记录校验均通过。
+   首次受限执行的 32 项错误来自临时目录 `WinError 5`；获准环境重跑同一组命令后通过，未据此修改代码。
+5. **事实修正与授权边界**：两份 r1 回答都发现数值冲突。Skill 回答虽然声明 `±` 未定义，
+   后文仍推断变异性；原 README 对它的描述过宽，现已修正并在图中展示此问题。
+   这里只描述原始文本，没有裁定 R004，也没有改写旧输出、评分或冻结方案。
+   图仅概括 2026-09-20 归档的一对回答，不能证明普遍提升。本轮没有启动模型生成。
+   Git 提交与推送现已授权；合并进默认分支与发布新版本仍是不同动作。其余推广建议未执行。
+6. **分支收束**：`feature/github-ready-framework` 已确认是 `origin/master` 的祖先，独立提交数为 0。
+   其工作树没有未保存工作，忽略内容仅为三份 Python 缓存；已删除该本地分支及
+   `C:\personal research skill\.worktrees\github-ready-framework` 工作树。
+   `codex/uncertainty-v2-candidate` 保留，仍有未晋升的候选改动和一个本地交接提交，不能作为已合并分支删除。
+   远端两个 Dependabot 分支对应开放 PR #1 和 #2，保留待独立依赖审查。
+   主目录中的 `.local-project-materials`、`evals/local` 和现有 `.venv` 不属于分支清理目标。
+
+### 历史记录：交付收束与诊断 — 2026-10-03
+
+本节保留 2026-10-03 的工作记录；续做前核对开头当前状态与实际 Git 状态。
 
 1. **当前目标**：收束 delivery-fixes 的交付修复，应用少量全局规则，补齐独立诊断与交接口径。
    本轮完成本地验证和三个小任务验收；没有启动模型效果研究。

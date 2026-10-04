@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="770" viewBox="0 0 1200 770" role="img" aria-labelledby="title description">
+  <title id="title">U-Mamba: how two archived responses handle a numerical conflict</title>
+  <desc id="description">A selective source map reports endoscopy DSC 0.6540 plus or minus 0.3008 in Table 4 and 0.6504 in Section 3.4, both on page 9. Both archived responses notice the discrepancy. Baseline r1 treats the table value as the directly tabulated result. Skill r1 records both source locations, leaves the cause unresolved, and proposes checking the original PDF and evaluation output. The Skill response still infers variability although the supplied text does not define plus or minus. This is a selected pair archived on 20 September 2026, not a general accuracy benchmark.</desc>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; fill: #172338; }
+    .label { font-size: 16px; font-weight: 700; letter-spacing: 1.2px; }
+    .heading { font-size: 27px; font-weight: 700; }
+    .body { font-size: 21px; }
+    .small { font-size: 18px; fill: #526176; }
+    .value { font-size: 31px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  </style>
+  <rect width="1200" height="770" rx="20" fill="#f5f7fa"/>
+  <text x="32" y="50" class="label" fill="#526176">PERSONAL RESEARCH SKILLS / ARCHIVED EXAMPLE</text>
+  <text x="32" y="106" font-size="38" font-weight="700">One discrepancy. Two ways to handle it.</text>
+  <text x="32" y="145" class="body" fill="#526176">U-Mamba endoscopy DSC · summaries and a selected response excerpt</text>
+
+  <rect x="32" y="180" width="364" height="380" rx="14" fill="#ffffff" stroke="#d6deea"/>
+  <rect x="32" y="180" width="364" height="7" rx="3" fill="#718198"/>
+  <text x="56" y="224" class="label" fill="#526176">SOURCE MAP</text>
+  <text x="56" y="265" class="heading">Two reported values</text>
+  <text x="56" y="306" class="small">v1 · p. 9 · Table 4</text>
+  <text x="56" y="347" class="value">0.6540 ± 0.3008</text>
+  <line x1="56" y1="369" x2="372" y2="369" stroke="#e1e6ee"/>
+  <text x="56" y="404" class="small">v1 · p. 9 · Section 3.4</text>
+  <text x="56" y="445" class="value">0.6504</text>
+  <text x="56" y="502" class="small">Selective, paraphrased input.</text>
+  <text x="56" y="529" class="small">The supplied text leaves ± undefined.</text>
+
+  <rect x="418" y="180" width="364" height="380" rx="14" fill="#ffffff" stroke="#d6deea"/>
+  <rect x="418" y="180" width="364" height="7" rx="3" fill="#b08139"/>
+  <text x="442" y="224" class="label" fill="#916722">BASELINE / R1</text>
+  <text x="442" y="265" class="heading">Prioritizes the table</text>
+  <text x="442" y="306" class="small">The mismatch is acknowledged.</text>
+  <text x="442" y="351" class="label" fill="#526176">RESPONSE EXCERPT</text>
+  <text x="442" y="388" class="body">“the table value should be</text>
+  <text x="442" y="419" class="body">treated as the directly</text>
+  <text x="442" y="450" class="body">tabulated result.”</text>
+  <text x="442" y="502" class="small">Both numbers remain in the response;</text>
+  <text x="442" y="529" class="small">the table value is given priority.</text>
+
+  <rect x="804" y="180" width="364" height="380" rx="14" fill="#ffffff" stroke="#d6deea"/>
+  <rect x="804" y="180" width="364" height="7" rx="3" fill="#247c79"/>
+  <text x="828" y="224" class="label" fill="#216d6b">PAPER-READING / R1</text>
+  <text x="828" y="265" class="heading">Keeps the conflict open</text>
+  <text x="828" y="306" class="small">Both values have source locations.</text>
+  <text x="828" y="351" class="label" fill="#526176">RESPONSE SUMMARY</text>
+  <text x="828" y="388" class="body">0.6540 → Table 4</text>
+  <text x="828" y="419" class="body">0.6504 → Section 3.4</text>
+  <text x="828" y="450" class="body">Cause remains unresolved.</text>
+  <text x="828" y="502" class="small">Next: check the original PDF</text>
+  <text x="828" y="529" class="small">and repository evaluation output.</text>
+
+  <text x="32" y="601" class="body">Both responses notice the mismatch. They differ in how they handle it.</text>
+  <rect x="32" y="622" width="1136" height="80" rx="12" fill="#fff1dc" stroke="#e4c590"/>
+  <text x="52" y="654" font-size="20" font-weight="700">A remaining issue in the Skill response</text>
+  <text x="52" y="683" font-size="20">It also infers variability while the supplied text leaves ± undefined.</text>
+  <text x="32" y="742" font-size="17" fill="#526176">Archived 20 Sep 2026 · Selected r1 pair · Source-map input · No general accuracy claim</text>
+</svg>

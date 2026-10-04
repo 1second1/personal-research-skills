@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](pyproject.toml)
 
-> Research Skills that make evidence, uncertainty, and next checks explicit.
+> Check paper claims, surface evidence conflicts, and turn ideas into testable questions.
 
 `paper-reading` helps an agent examine a paper without silently resolving
 conflicting claims or treating an inference as a reported result. The repository
@@ -15,15 +15,20 @@ agent.
 
 [中文说明](README.zh-CN.md)
 
-**A real example:** In the checked U-Mamba paper, Table 4 gives an endoscopy
-DSC of `0.6540`, while Section 3.4 says `0.6504`. In one archived baseline
-response, the table value was treated as the directly tabulated result; an
-archived [`paper-reading` response](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)
-kept both locations visible and left the meaning of `±` unresolved. Compare
-the [baseline response](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
-with the Skill response yourself. These are illustrative outputs, not proof of
-a general improvement. The [nine-run pilot](#60-second-skill-demo) and its
-limitations are summarized below.
+**An archived example:** The U-Mamba [source map](evals/cases/u-mamba-real-paper/source-map.md)
+records endoscopy DSC `0.6540` in Table 4 and `0.6504` in Section 3.4, both on
+p. 9. Both responses below noticed the discrepancy. The baseline gave the
+table value priority; the `paper-reading` response kept its cause unresolved
+and proposed checking the original PDF and evaluation output.
+
+[![U-Mamba source values and two archived responses: baseline prioritizes the table; paper-reading keeps the conflict open. Both notice the mismatch, and the Skill response still infers variability from undefined ±.](docs/assets/u-mamba-evidence-comparison.svg)](docs/case-studies/u-mamba-negative-result.md)
+
+The figure summarizes one pair archived on 20 September 2026, using a selective
+source map as input. Read the original [baseline](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
+and [Skill](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)
+responses: the Skill response says `±` is undefined, **but later still infers
+variability from it**. This example does not establish a general improvement.
+The [nine-run pilot](#60-second-skill-demo) and its limitations are summarized below.
 
 ## Install as Agent Skills
 
