@@ -10,10 +10,13 @@
    `manuscript-audit`，完成可复现的合成教学案例，以及三组初审／复查比较的材料和预注册。
    新增运行记录 v1.2 与封存检查器；旧 v1.0／v1.1 验证规则和历史输出、评分保持原样。
    这是程序实现和材料准备；模型行为评测尚未执行。
-2. **实际工作位置与 Git 状态**：`C:\personal research skill`，本轮从干净的
-   `master` 提交 `796ad3886cfac5776a8a984453daf953937df179` 开始，工作分支为
-   `codex/manuscript-audit`。本节写入时本轮改动尚未提交；用户此前已授权常规交付直接
-   提交、合并至 `master`、推送及清理已合并分支，收束结果将在本节补录。
+2. **实际工作位置与 Git 状态**：`C:\personal research skill`，当前分支 `master`。
+   本轮从干净的 `796ad3886cfac5776a8a984453daf953937df179` 开始，在临时分支
+   `codex/manuscript-audit` 完成实现。实现提交为
+   `02921f508609e4223b32ace193c9eb3e7d020e97`，已快进合入 `master` 并推送，远端 SHA
+   已核对一致；确认其包含于远端 `master` 后，已删除该本地交付分支，没有创建对应远端分支。
+   这是按用户此前授权的常规交付执行。本节是后续完成状态补录，随独立文档提交保存；
+   最新 HEAD 与同步状态使用 `git log -1`、`git status --short --branch` 核对。
    新版本发布、技能全局安装和额外模型调用未执行。
 3. **交付物绝对路径**：
    - 阅读入口：`C:\personal research skill\skills\paper-reading\SKILL.md`。
@@ -36,6 +39,10 @@
    两次测试集不同，不能把数值下降当作泄漏的受控因果效应。训练集统计量预处理的质疑
    由实际记录、独立重算和仅改变测试特征的检查排除；组件归因通过收窄主张解决，未补做消融。
    程序和结构检查均不评估语义正确性或 Skill 的模型效果。
+   合并到 `master` 后再次实际运行同一完整测试、仓库／旧记录校验、新 Skill 结构检查及
+   封存校验，全部通过。实现提交的 GitHub Actions 运行 `37286598624` 实际完成并成功，
+   Ubuntu／Windows × Python 3.10／3.12 四项任务均通过：
+   `https://github.com/1second1/personal-research-skills/actions/runs/37286598624`。
 5. **材料冻结与对照兼容性**：独立材料在 Skill 指令冻结后创建，未用于模型调试。
    冻结包包含 75 个文件，共 500,082 字节，`seal.json` 的 SHA-256 为
    `18244726547b52446835dfabb967f9433947abba942f02d554e5a67e1667b3c7`。
