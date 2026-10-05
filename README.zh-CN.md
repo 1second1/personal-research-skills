@@ -3,8 +3,12 @@
 > 核查论文主张，标出证据冲突，把研究想法变成可检验的问题。
 
 `paper-reading` 帮助 Agent 阅读论文时保留相互冲突的主张，不把推断当作论文报告的结果。
-仓库还包含 `research-question`、`argument-analysis`，以及可选的 Reasoning DNA
+仓库还包含 `manuscript-audit`、`research-question`、`argument-analysis`，以及可选的 Reasoning DNA
 配置和研究上下文组合、评测工具。这是实验性项目，不是自动读论文或自动学习的 Agent。
+
+**作者投稿前审查：** 新增 `manuscript-audit`，把具体位置、判断依据、最小检查、修复和复查连起来。
+先看[完整合成教学案例](evals/cases/manuscript-audit-demo/README.md)：原版本实际检出患者重叠和数值冲突，
+修复后重新计算并运行同一检查。报告在实现过程中整理，不是独立评测模型输出，也不能证明 Skill 比其他提示更好。
 
 **归档实例：** U-Mamba 的[来源映射](evals/cases/u-mamba-real-paper/source-map.md)
 记录了第 9 页两处不同的内镜 DSC：Table 4 为 `0.6540`，Section 3.4 为 `0.6504`。
@@ -21,7 +25,7 @@ Skill 回答虽然指出 `±` 未定义，**后文仍据此推断了变异性**�
 
 ## 安装到 Codex 和 Claude Code
 
-若 Codex 或 Claude Code 已能正常调用模型，安装这三个 Skill 不需要为本项目额外安装
+若 Codex 或 Claude Code 已能正常调用模型，安装这四个 Skill 不需要为本项目额外安装
 Python 或配置 API Key；宿主 Agent 本身仍须具备模型访问能力。安装器需要 Node.js
 和 `npx`，使用开源的 [`skills` CLI](https://github.com/vercel-labs/skills)。
 请在希望启用这些 Skill 的项目目录中运行：
@@ -30,7 +34,7 @@ Python 或配置 API Key；宿主 Agent 本身仍须具备模型访问能力。�
 npx skills add 1second1/personal-research-skills
 ```
 
-也可以用以下单行命令把三个 Skill 同时安装到 Codex 和 Claude Code。
+也可以用以下单行命令把四个 Skill 同时安装到 Codex 和 Claude Code。
 PowerShell 和 Bash 都可直接复制；在 PowerShell 中不要用 Bash 的 `\` 拆行：
 
 ```text
@@ -46,13 +50,14 @@ npx skills add 1second1/personal-research-skills --skill '*' --agent codex --age
 | Skill | 适用场景 | 示例请求 |
 |---|---|---|
 | `paper-reading` | 检查论文主张、证据、数值、局限和内部一致性 | `使用 paper-reading 分析 paper.md，不要把推断写成事实。` |
+| `manuscript-audit` | 对照论文、代码和结果定位问题，验证质疑并复查修复 | `使用 manuscript-audit 审查我的稿件和结果。定位问题，执行小型检查，先不要修改原稿。` |
 | `research-question` | 把宽泛研究想法转化为有边界、可证伪的问题 | `使用 research-question 把这个想法收敛成可验证的研究问题。` |
 | `argument-analysis` | 拆分论证中的主张、依据、论证桥梁、反方意见和边界 | `使用 argument-analysis 审查 article.md 的论证结构。` |
 
-在 Codex 中还可以通过 `$paper-reading`、`$research-question` 或
+在 Codex 中还可以通过 `$paper-reading`、`$manuscript-audit`、`$research-question` 或
 `$argument-analysis` 显式调用；当请求与 Skill 描述匹配时，宿主也可能自动选择。
 
-这条安装命令让三个 Skill 可以独立使用，**不会自动加载**
+这条安装命令让四个 Skill 可以独立使用，**不会自动加载**
 [`profiles/reasoning-dna.yaml`](profiles/reasoning-dna.yaml)。如果要应用个人
 Reasoning DNA，需要用下文的 [`research-skills compose`](#框架开发) 生成组合
 上下文，再把生成的 Markdown 提供给 Agent。组合器只生成上下文，不调用模型。
@@ -102,10 +107,11 @@ Profile 条件使用下文的组合器；只安装 Skill 不会复现这一条�
 - `profiles/reasoning-dna.yaml`：Values、Inquiry Pattern、Decision Rules、Workflow 和 Preference；
 - 基于 PyYAML 严格校验的 DNA 加载器与 Skill 组合器；
 - `paper-reading`：证据导向的论文阅读 Skill；
+- `manuscript-audit`：面向作者的具体检查、修复和修订稿复查；
 - `research-question`：将宽泛想法转化为有边界、可证伪研究问题的 Skill；
 - `argument-analysis`：分析文章、评论和访谈中的主张、依据、隐含前提与边界；
 - 示例、自动测试、仓库校验和 GitHub Actions；
-- 面向三个 Skill 的通用结构评测器与版本化 JSON 报告；
+- 面向四个 Skill 的通用结构评测器与版本化 JSON 报告；
 - 带 SHA-256 完整性校验的 provider-neutral 运行记录 Schema；
 - 将盲评候选与 condition 对照表分离的可复现导出工具；
 - 首个带来源完整性记录的 [U-Mamba 真实论文案例](evals/cases/u-mamba-real-paper/README.md)，保留表格与正文的数值冲突而不替作者消解。
@@ -113,6 +119,11 @@ Profile 条件使用下文的组合器；只安装 Skill 不会复现这一条�
   公开上下文、原始输出、完整性记录以及 Profile 未带来增益的负结果。
 
 当前 Runtime 只负责生成组合后的执行上下文，不调用模型、不保存私有记忆，也不声称已经具备自动学习能力。
+
+本轮开发增强了论文主张分类、机制追问和不确定性边界，新增合成审查案例及运行记录 v1.2。
+没有发布新 tag，也没有新模型效果结论。
+[三组比较规则](evals/cases/manuscript-audit-pilot/preregistration.md)与
+[预算提案](evals/cases/manuscript-audit-pilot/budget-proposal.md)先准备；材料、模型和预算确认前不启动评测。
 
 ## 框架开发
 

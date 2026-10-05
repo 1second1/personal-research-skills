@@ -11,9 +11,14 @@ import re
 from .dna import _parse
 
 
-SCHEMA_VERSION = "1.1"
-SUPPORTED_SCHEMA_VERSIONS = ("1.0", SCHEMA_VERSION)
+SCHEMA_VERSION = "1.2"
+SUPPORTED_SCHEMA_VERSIONS = ("1.0", "1.1", SCHEMA_VERSION)
 CONDITIONS = ("baseline", "skill", "profile")
+CONDITIONS_BY_VERSION = {
+    "1.0": CONDITIONS,
+    "1.1": CONDITIONS,
+    "1.2": CONDITIONS + ("strong_prompt", "peer_review"),
+}
 ARTIFACT_NAMES = ("input", "context", "output")
 REQUIRED_FIELDS = (
     "schema_version",
@@ -68,6 +73,40 @@ def _mapping_fields(
     return value
 
 
+def _validate_measurements(value: object, errors: list[str]) -> None:
+    fields = {"wall_time_seconds", "model_calls", "input_tokens", "output_tokens",
+              "cost", "currency", "cost_basis"}
+    measurements = _mapping_fields(value, "measurements", fields, errors)
+    if measurements is None:
+        return
+    for name in ("wall_time_seconds", "cost"):
+        number = measurements.get(name)
+        if number is not None and (
+            isinstance(number, bool) or not isinstance(number, (int, float))
+            or not math.isfinite(number) or number < 0
+        ):
+            errors.append(f"measurements.{name} must be finite, non-negative, or null")
+    for name in ("model_calls", "input_tokens", "output_tokens"):
+        number = measurements.get(name)
+        if number is not None and (
+            isinstance(number, bool) or not isinstance(number, int) or number < 0
+        ):
+            errors.append(f"measurements.{name} must be a non-negative integer or null")
+    currency = measurements.get("currency")
+    if currency is not None and (
+        not isinstance(currency, str) or not re.fullmatch(r"[A-Z]{3}", currency)
+    ):
+        errors.append("measurements.currency must be a three-letter uppercase code or null")
+    basis = measurements.get("cost_basis")
+    if basis not in ("reported", "estimated", "unavailable"):
+        errors.append("measurements.cost_basis must be reported, estimated, or unavailable")
+    if measurements.get("cost") is None:
+        if currency is not None or basis != "unavailable":
+            errors.append("measurements.cost unavailable requires null currency and unavailable cost_basis")
+    elif currency is None or basis not in ("reported", "estimated"):
+        errors.append("measurements.cost requires currency and reported or estimated cost_basis")
+
+
 def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
     """Validate metadata, artifact containment, and SHA-256 integrity."""
     record_path = Path(path)
@@ -78,14 +117,17 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
         return [f"Invalid run record: {error}"]
 
     errors: list[str] = []
-    missing = set(REQUIRED_FIELDS) - set(record)
-    unknown = set(record) - set(REQUIRED_FIELDS)
+    schema_version = record.get("schema_version")
+    required_fields = set(REQUIRED_FIELDS)
+    if schema_version == "1.2":
+        required_fields.add("measurements")
+    missing = required_fields - set(record)
+    unknown = set(record) - required_fields
     if missing:
         errors.append("Missing run-record fields: " + ", ".join(sorted(missing)))
     if unknown:
         errors.append("Unknown run-record fields: " + ", ".join(sorted(unknown)))
 
-    schema_version = record.get("schema_version")
     if schema_version not in SUPPORTED_SCHEMA_VERSIONS:
         errors.append(
             "schema_version must be one of: " + ", ".join(SUPPORTED_SCHEMA_VERSIONS)
@@ -101,8 +143,9 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
         else:
             if "T" not in record["created_at"] or created_at.tzinfo is None:
                 errors.append("created_at must include a date, time, and timezone")
-    if record.get("condition") not in CONDITIONS:
-        errors.append("condition must be one of: " + ", ".join(CONDITIONS))
+    conditions = CONDITIONS_BY_VERSION.get(schema_version, CONDITIONS) if isinstance(schema_version, str) else CONDITIONS
+    if record.get("condition") not in conditions:
+        errors.append("condition must be one of: " + ", ".join(conditions))
     repetition = record.get("repetition")
     if isinstance(repetition, bool) or not isinstance(repetition, int) or repetition < 1:
         errors.append("repetition must be a positive integer")
@@ -115,7 +158,7 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
 
     generation_fields = {"temperature", "seed", "max_output_tokens", "tools"}
     optional_generation_fields = (
-        {"reasoning_effort", "verbosity"} if schema_version == "1.1" else set()
+        {"reasoning_effort", "verbosity"} if schema_version in ("1.1", "1.2") else set()
     )
     generation = _mapping_fields(
         record.get("generation"),
@@ -126,7 +169,7 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
     )
     if generation is not None:
         temperature = generation.get("temperature")
-        temperature_unavailable = schema_version == "1.1" and temperature is None
+        temperature_unavailable = schema_version in ("1.1", "1.2") and temperature is None
         if not temperature_unavailable and (
             isinstance(temperature, bool)
             or not isinstance(temperature, (int, float))
@@ -138,7 +181,7 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
         if seed is not None and (isinstance(seed, bool) or not isinstance(seed, int)):
             errors.append("generation.seed must be an integer or null")
         limit = generation.get("max_output_tokens")
-        limit_unavailable = schema_version == "1.1" and limit is None
+        limit_unavailable = schema_version in ("1.1", "1.2") and limit is None
         if not limit_unavailable and (
             isinstance(limit, bool) or not isinstance(limit, int) or limit < 1
         ):
@@ -146,16 +189,17 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
         tools = generation.get("tools")
         if not isinstance(tools, list) or any(not _non_empty_text(item) for item in tools):
             errors.append("generation.tools must be a list of non-empty strings")
-        if schema_version == "1.1":
+        if schema_version in ("1.1", "1.2"):
             for field in ("reasoning_effort", "verbosity"):
                 value = generation.get(field)
                 if value is not None and not _non_empty_text(value):
                     errors.append(f"generation.{field} must be a non-empty string or null")
 
-    artifacts = _mapping_fields(record.get("artifacts"), "artifacts", set(ARTIFACT_NAMES), errors)
-    digests = _mapping_fields(record.get("digests"), "digests", set(ARTIFACT_NAMES), errors)
+    artifact_names = ARTIFACT_NAMES + (("trace",) if schema_version == "1.2" else ())
+    artifacts = _mapping_fields(record.get("artifacts"), "artifacts", set(artifact_names), errors)
+    digests = _mapping_fields(record.get("digests"), "digests", set(artifact_names), errors)
     if artifacts is not None and digests is not None:
-        for name in ARTIFACT_NAMES:
+        for name in artifact_names:
             relative = artifacts.get(name)
             expected = digests.get(name)
             if not _non_empty_text(relative):
@@ -180,4 +224,6 @@ def validate_run_record(path: str | Path, *, root: str | Path) -> list[str]:
     review = _mapping_fields(record.get("review"), "review", {"status"}, errors)
     if review is not None and review.get("status") not in {"unreviewed", "reviewed", "excluded"}:
         errors.append("review.status must be unreviewed, reviewed, or excluded")
+    if schema_version == "1.2":
+        _validate_measurements(record.get("measurements"), errors)
     return errors

@@ -13,6 +13,7 @@ class EvaluationTests(unittest.TestCase):
             ("paper-reading", "paper-reading"),
             ("research-question", "research-question"),
             ("argument-analysis", "argument-analysis"),
+            ("manuscript-audit", "manuscript-audit"),
         )
 
         for skill_name, rubric_name in cases:

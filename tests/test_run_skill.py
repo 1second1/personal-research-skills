@@ -166,7 +166,7 @@ class RunSkillTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         # Contract name and version must be visible.
         self.assertIn("paper-reading", completed.stdout)
-        self.assertIn("Contract: contract.yaml version 0.2.0", completed.stdout)
+        self.assertIn("Contract: contract.yaml version 0.3.0", completed.stdout)
 
     def test_cli_exposes_version(self):
         completed = subprocess.run(
@@ -192,7 +192,7 @@ class RunSkillTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 0, completed.stderr)
         self.assertEqual(
             set(__import__("json").loads(completed.stdout)["skills"]),
-            {"argument-analysis", "paper-reading", "research-question"},
+            {"argument-analysis", "paper-reading", "research-question", "manuscript-audit"},
         )
 
     def test_explicit_compose_subcommand_matches_legacy_form(self):

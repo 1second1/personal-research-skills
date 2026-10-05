@@ -7,7 +7,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "evals/fixtures/paper-reading-demo/evidence-card.md"
-RUBRIC = ROOT / "evals/rubrics/paper-reading.yaml"
+RUBRIC = ROOT / "evals/fixtures/paper-reading-demo/rubric.yaml"
 REAL_CASE = ROOT / "evals/cases/u-mamba-real-paper"
 
 

@@ -8,10 +8,17 @@
 
 `paper-reading` helps an agent examine a paper without silently resolving
 conflicting claims or treating an inference as a reported result. The repository
-also includes `research-question` and `argument-analysis`, plus an optional
+also includes `manuscript-audit`, `research-question`, and `argument-analysis`, plus an optional
 Reasoning DNA profile and tools for composing and evaluating research contexts.
 It is experimental, not an autonomous paper reader or an automatically learning
 agent.
+
+**For authors:** `manuscript-audit` connects a specific manuscript concern to a
+deciding check, a bounded repair, and revision recheck. Start with the
+[complete synthetic teaching case](evals/cases/manuscript-audit-demo/README.md):
+the original run detects overlapping patients and inconsistent reporting;
+the revision is actually recomputed and rechecked. Reports are authored examples,
+not independent model outputs or proof of Skill superiority.
 
 [中文说明](README.zh-CN.md)
 
@@ -44,7 +51,7 @@ Guided installation:
 npx skills add 1second1/personal-research-skills
 ```
 
-Install all three Skills for both Codex and Claude Code in one command. This
+Install all four Skills for both Codex and Claude Code in one command. This
 single line works in PowerShell and Bash (do not split it with a Bash `\` in
 PowerShell):
 
@@ -62,14 +69,15 @@ currently distributed as an official Codex or Claude plugin.
 | Skill | Use it when you need to | Example request |
 |---|---|---|
 | `paper-reading` | examine a paper's claims, evidence, numbers, limitations, and internal consistency | `Use paper-reading to analyze paper.md without turning inference into fact.` |
+| `manuscript-audit` | audit an AI/ML manuscript against supplied code/results and recheck repairs | `Use manuscript-audit to check my draft and results. Locate issues and execute small checks; do not edit the draft yet.` |
 | `research-question` | turn a broad research idea into a bounded, falsifiable question | `Use research-question to refine this idea into a testable study.` |
 | `argument-analysis` | separate claims, support, warrants, counterarguments, and boundaries in argumentative prose | `Use argument-analysis to audit the reasoning in article.md.` |
 
 In Codex, you can also invoke a Skill explicitly with `$paper-reading`,
-`$research-question`, or `$argument-analysis`. The host may select a Skill
+`$manuscript-audit`, `$research-question`, or `$argument-analysis`. The host may select a Skill
 automatically when the request matches its description.
 
-This installation makes the three Skills available on their own. It does not
+This installation makes the four Skills available on their own. It does not
 automatically load [`profiles/reasoning-dna.yaml`](profiles/reasoning-dna.yaml).
 To use that profile, generate a combined context with the
 [`research-skills compose` command](#framework-development) and provide the
@@ -146,10 +154,11 @@ Included today:
 - `profiles/reasoning-dna.yaml`: values, inquiry pattern, decision rules, workflows, and preferences;
 - a validated YAML profile loader and Skill composer (PyYAML);
 - `paper-reading`: evidence-grounded paper analysis;
+- `manuscript-audit`: concrete author-facing checks, repairs and revision recheck;
 - `research-question`: conversion of broad ideas into bounded, falsifiable questions;
 - `argument-analysis`: claim, support, warrant, counterargument, and boundary analysis for argumentative prose;
 - deterministic examples, tests, repository validation, and GitHub Actions;
-- a generic structural evaluator with versioned JSON reports and rubrics for all three Skills;
+- a generic structural evaluator with versioned JSON reports and rubrics for all four Skills;
 - backward-compatible run-record schemas with SHA-256 artifact verification
   and honest `null` values for provider settings a runtime does not expose;
 - deterministic blind-review export with the condition key separated from reviewer files;
@@ -159,6 +168,12 @@ Included today:
   profile result.
 
 The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
+
+This checkout adds claim/evidence matching and uncertainty scope to paper-reading,
+plus the executed synthetic audit case and run-record v1.2. No new release tag or
+model-quality result is implied. The [three-arm evaluation protocol](evals/cases/manuscript-audit-pilot/preregistration.md)
+and [budget proposal](evals/cases/manuscript-audit-pilot/budget-proposal.md) are
+prepared before generation; actual evaluation waits for material/model/budget approval.
 
 ## Framework development
 

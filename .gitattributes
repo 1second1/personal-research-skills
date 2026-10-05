@@ -8,3 +8,6 @@
 
 # Preserve model outputs byte-for-byte; Markdown hard breaks may end in two spaces.
 evals/cases/**/outputs/*.md whitespace=-blank-at-eol
+
+# Unified-diff context encodes an empty source line as one space.
+evals/cases/manuscript-audit-demo/repair.diff whitespace=-blank-at-eol

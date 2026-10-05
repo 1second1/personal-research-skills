@@ -1,5 +1,5 @@
 name: paper-reading
-version: 0.2.0
+version: 0.3.0
 purpose: Produce an evidence-grounded research evidence card from supplied paper text.
 
 inputs:
@@ -29,6 +29,11 @@ constraints:
   - Do not invent page, section, or experiment locations.
   - Mark unsupported conclusions and information gaps explicitly.
   - Make next_actions falsifiable and measurable.
+  - Match central feasibility, necessity, causal contribution, and mechanism claims to the evidence that would test them.
+  - Do not infer the meaning or variability interpretation of undefined uncertainty notation.
+  - Preserve the scope of source-defined uncertainty, such as folds rather than independent runs.
+  - Do not equate an unreported check with work not performed, or an unverified risk with an error.
+  - Prioritize small discriminating checks by their impact on the central claim.
 
 evaluation:
   - factual_consistency

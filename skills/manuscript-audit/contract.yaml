@@ -1,0 +1,32 @@
+name: manuscript-audit
+version: 0.1.0
+purpose: Help an author audit, verify, repair, and recheck concrete claims in an AI or machine-learning experimental manuscript against supplied evidence.
+inputs:
+  - {name: manuscript, required: true, type: markdown_or_text}
+  - {name: code, required: false, type: supplied_files_or_text}
+  - {name: configurations, required: false, type: supplied_files_or_text}
+  - {name: results, required: false, type: supplied_files_or_text}
+  - {name: source_locations, required: false, type: mapping}
+  - {name: previous_audit, required: false, type: markdown_or_text}
+outputs:
+  - summary
+  - findings
+  - checks
+  - repair_plan
+  - recheck
+constraints:
+  - Keep source facts, calculations, inferences, and unverified risks distinct.
+  - Give each finding a stable ID, concrete location, evidence, impact, minimal check, actual execution status, repair, and recheck disposition.
+  - Separate confirmed_error, evidence_gap, unverified_risk, and excluded judgments from repair resolution.
+  - Do not invent issues, locations, tools, executions, or reproduction evidence.
+  - Permit no findings and withdrawal of excluded concerns.
+  - Do not equate unreported work with work not performed.
+  - Preserve the scope of uncertainty definitions and do not interpret undefined plus-minus notation.
+  - Repair only when authorized; preserve originals and close findings only with revision evidence.
+evaluation:
+  - true_issue_detection
+  - false_positives
+  - location_accuracy
+  - check_and_repair_actionability
+  - execution_honesty
+  - revision_recheck

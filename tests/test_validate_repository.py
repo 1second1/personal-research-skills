@@ -125,6 +125,7 @@ constraints: [Do not invent evidence.]
 
     def test_latest_run_record_schema_is_a_required_public_artifact(self) -> None:
         self.assertIn("evals/schemas/run-record-v1.1.schema.json", REQUIRED_PATHS)
+        self.assertIn("evals/schemas/run-record-v1.2.schema.json", REQUIRED_PATHS)
 
     def test_validator_rejects_nested_pdf_regardless_of_extension_case(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:

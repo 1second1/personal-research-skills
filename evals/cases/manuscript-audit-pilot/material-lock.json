@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "package_relative_path": "evals/local/manuscript-audit-prospective-20261005",
+  "files": 75,
+  "bytes": 500082,
+  "seal_sha256": "18244726547b52446835dfabb967f9433947abba942f02d554e5a67e1667b3c7",
+  "model_evaluation_requests": 0,
+  "model_budget_approved": false,
+  "notice": "Local ignored materials; this receipt does not publish answers or authorize generation."
+}

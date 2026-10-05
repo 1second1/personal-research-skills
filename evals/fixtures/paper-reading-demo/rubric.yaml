@@ -1,3 +1,5 @@
+# This fixture actually contains an inference and asks about lightweight speed.
+# These markers must not be required for every paper.
 required_headings:
   - "## Problem"
   - "## Evidence"
@@ -7,9 +9,12 @@ required_headings:
   - "## Boundaries"
   - "## Connections"
   - "## Next Actions"
-# Case-specific requirements belong in the corresponding case rubric.
-# No conflict, inference, or timing topic must be invented to satisfy this gate.
-required_markers: []
+required_markers:
+  - "[Source:"
+  - "Conflict:"
+  - "Inference:"
+  - "unsupported"
+  - "measure inference time"
 claim_headings:
   - "## Evidence"
   - "## Conflicts and Anomalies"

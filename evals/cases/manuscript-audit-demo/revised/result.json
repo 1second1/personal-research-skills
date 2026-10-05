@@ -1,0 +1,247 @@
+{
+  "input_digests": {
+    "config": "8d52911b2d858f12a29f91224bc7b8e6a25f1c911c2a4a5e9e9de98d26a36ba6",
+    "data": "577c2142ef05c882ec6d06edd4896a45a005117baf2ec88ddf16093300a28e0b",
+    "experiment": "f5e2376e6f6929499a08b2e012b094d879c6c93a03c29ebbf77f8bfb18b3cca8"
+  },
+  "limits": [
+    "generated signals",
+    "one fixed split",
+    "one complete model",
+    "no component ablation"
+  ],
+  "metrics": {
+    "accuracy": 0.25,
+    "correct": 4,
+    "n_test": 16,
+    "n_train": 32
+  },
+  "model": "1nn",
+  "normalizer": {
+    "fit_sample_ids": [
+      "S001",
+      "S002",
+      "S003",
+      "S004",
+      "S005",
+      "S006",
+      "S007",
+      "S008",
+      "S013",
+      "S014",
+      "S015",
+      "S016",
+      "S017",
+      "S018",
+      "S019",
+      "S020",
+      "S025",
+      "S026",
+      "S027",
+      "S028",
+      "S029",
+      "S030",
+      "S031",
+      "S032",
+      "S037",
+      "S038",
+      "S039",
+      "S040",
+      "S041",
+      "S042",
+      "S043",
+      "S044"
+    ],
+    "mean": {
+      "feature_1": 60.15,
+      "feature_2": 7.575
+    },
+    "scale": {
+      "feature_1": 33.911834217570714,
+      "feature_2": 2.5006249218945253
+    }
+  },
+  "predictions": [
+    {
+      "nearest_train_sample_id": "S013",
+      "patient_id": "P003",
+      "prediction": 0,
+      "sample_id": "S009",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S013",
+      "patient_id": "P003",
+      "prediction": 0,
+      "sample_id": "S010",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S013",
+      "patient_id": "P003",
+      "prediction": 0,
+      "sample_id": "S011",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S013",
+      "patient_id": "P003",
+      "prediction": 0,
+      "sample_id": "S012",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S025",
+      "patient_id": "P006",
+      "prediction": 1,
+      "sample_id": "S021",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S025",
+      "patient_id": "P006",
+      "prediction": 1,
+      "sample_id": "S022",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S025",
+      "patient_id": "P006",
+      "prediction": 1,
+      "sample_id": "S023",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S025",
+      "patient_id": "P006",
+      "prediction": 1,
+      "sample_id": "S024",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P009",
+      "prediction": 0,
+      "sample_id": "S033",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P009",
+      "prediction": 0,
+      "sample_id": "S034",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P009",
+      "prediction": 0,
+      "sample_id": "S035",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P009",
+      "prediction": 0,
+      "sample_id": "S036",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P012",
+      "prediction": 0,
+      "sample_id": "S045",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P012",
+      "prediction": 0,
+      "sample_id": "S046",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P012",
+      "prediction": 0,
+      "sample_id": "S047",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S037",
+      "patient_id": "P012",
+      "prediction": 0,
+      "sample_id": "S048",
+      "truth": 0
+    }
+  ],
+  "synthetic": true,
+  "test_patient_ids": [
+    "P003",
+    "P006",
+    "P009",
+    "P012"
+  ],
+  "test_sample_ids": [
+    "S009",
+    "S010",
+    "S011",
+    "S012",
+    "S021",
+    "S022",
+    "S023",
+    "S024",
+    "S033",
+    "S034",
+    "S035",
+    "S036",
+    "S045",
+    "S046",
+    "S047",
+    "S048"
+  ],
+  "train_patient_ids": [
+    "P001",
+    "P002",
+    "P004",
+    "P005",
+    "P007",
+    "P008",
+    "P010",
+    "P011"
+  ],
+  "train_sample_ids": [
+    "S001",
+    "S002",
+    "S003",
+    "S004",
+    "S005",
+    "S006",
+    "S007",
+    "S008",
+    "S013",
+    "S014",
+    "S015",
+    "S016",
+    "S017",
+    "S018",
+    "S019",
+    "S020",
+    "S025",
+    "S026",
+    "S027",
+    "S028",
+    "S029",
+    "S030",
+    "S031",
+    "S032",
+    "S037",
+    "S038",
+    "S039",
+    "S040",
+    "S041",
+    "S042",
+    "S043",
+    "S044"
+  ]
+}

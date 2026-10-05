@@ -1,0 +1,43 @@
+{
+  "check_passed": true,
+  "checks": {
+    "input_digests_match": {
+      "passed": true
+    },
+    "normalizer_train_only": {
+      "fit_sample_count": 32,
+      "passed": true,
+      "test_only_perturbation_preserves_normalizer": true,
+      "training_sample_count": 32
+    },
+    "patient_disjoint": {
+      "overlap_patient_ids": [],
+      "passed": true
+    },
+    "reported_accuracy_matches": {
+      "passed": true,
+      "recomputed": 0.25,
+      "reported": 0.25
+    },
+    "result_matches_rerun": {
+      "passed": true
+    }
+  },
+  "input_digests": {
+    "checker": "cd2ccd859ed51bcfe544ef52507329745c434774415e1cd537e90da15213e8d6",
+    "config": "8d52911b2d858f12a29f91224bc7b8e6a25f1c911c2a4a5e9e9de98d26a36ba6",
+    "data": "577c2142ef05c882ec6d06edd4896a45a005117baf2ec88ddf16093300a28e0b",
+    "experiment": "f5e2376e6f6929499a08b2e012b094d879c6c93a03c29ebbf77f8bfb18b3cca8",
+    "manuscript": "8c8a986596d566dfd6ddc51703926005ec24e71622045d8212f9bd1bae3c56df",
+    "result": "181c0b6b4e3ac07f91b345ac6a3e5ff17a642a271e95b0679ade8dd1071f50db"
+  },
+  "not_checked": [
+    "causal attribution wording requires manual evidence review",
+    "real-patient generalization",
+    "statistical reliability",
+    "training reproducibility"
+  ],
+  "schema_version": "1.0",
+  "semantic_quality": "not_evaluated",
+  "synthetic": true
+}

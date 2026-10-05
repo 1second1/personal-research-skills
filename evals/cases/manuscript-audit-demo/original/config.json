@@ -1,0 +1,8 @@
+{
+  "model": "1nn",
+  "normalization": "train_only",
+  "split": {
+    "unit": "sample",
+    "test_ids": ["S004", "S008", "S012", "S016", "S020", "S024", "S028", "S032", "S036", "S040", "S044", "S048"]
+  }
+}

@@ -7,7 +7,7 @@ Install dependencies with `python -m pip install -e .`, then run:
 ```bash
 python -m unittest discover -s tests -v
 research-skills validate
-research-skills evaluate evals/fixtures/paper-reading-demo/evidence-card.md evals/rubrics/paper-reading.yaml --source evals/fixtures/paper-reading-demo/source.md --format json
+research-skills evaluate evals/fixtures/paper-reading-demo/evidence-card.md evals/fixtures/paper-reading-demo/rubric.yaml --source evals/fixtures/paper-reading-demo/source.md --format json
 research-skills evaluate evals/cases/u-mamba-real-paper/expected-output.md evals/cases/u-mamba-real-paper/rubric.yaml --source evals/cases/u-mamba-real-paper/source-map.md --format json
 research-skills evaluate skills/research-question/examples/expected-output.md evals/rubrics/research-question.yaml --format json
 research-skills evaluate skills/argument-analysis/examples/expected-output.md evals/rubrics/argument-analysis.yaml --format json
@@ -24,6 +24,30 @@ and Conflicts and Anomalies.
 Numeric checks flag numbers absent from the source; they cannot detect swapped
 metric attribution, changed units, reversed comparisons or unsupported prose.
 These checks are a rejection filter, not a factual correctness score.
+
+The general paper-reading rubric does not force conflict, inference, or timing
+topics when they are absent. Case-specific semantic requirements remain in case
+rubrics. The manuscript-audit rubric checks its five sections only: no-finding
+responses are permitted, and issue-card correctness needs evidence review.
+
+## Author manuscript audit and revision pilot
+
+The [executed synthetic teaching case](cases/manuscript-audit-demo/README.md)
+includes originals, revisions, raw predictions, failed/passing checks and logs.
+Its reports are authored references, not independently generated model answers.
+The [prospective three-arm protocol](cases/manuscript-audit-pilot/preregistration.md)
+uses separate sealed materials and a user-approved model/budget. It does not
+authorize generation or reuse old uncertainty-v2 experiment materials.
+
+Run-record v1.2 adds `strong_prompt` and `peer_review` conditions, a required
+hashed `trace` artifact, and `measurements` for elapsed seconds, actual model
+requests, input/output tokens, cost, currency and cost basis. Unknowns are null;
+cost basis is `unavailable`, `reported` or `estimated`. Trace preserves receipts
+and failures. Native v1.0/v1.1 condition sets and required fields are unchanged.
+The blind exporter still exports reports only; traces/usage remain outside the
+semantic-review bundle. Separately verify execution claims and disclose any
+unblinding. Validation checks integrity/types, not whether a reported execution
+or bill is true.
 
 Regression tests include valid evidence, invented citation labels, invented
 numbers, conflict claims with bad citations or numbers, empty rubrics, empty

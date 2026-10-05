@@ -1,0 +1,8 @@
+{
+  "model": "1nn",
+  "normalization": "train_only",
+  "split": {
+    "unit": "patient",
+    "test_ids": ["P003", "P006", "P009", "P012"]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "synthetic": true,
+  "model_service_calls": 0,
+  "steps": [
+    {
+      "argv": [
+        "C:\\personal research skill\\.venv\\Scripts\\python.exe",
+        "evals\\cases\\manuscript-audit-demo\\verify.py",
+        "--data",
+        "evals\\cases\\manuscript-audit-demo\\data.csv",
+        "--config",
+        "evals\\cases\\manuscript-audit-demo\\revised\\config.json",
+        "--manuscript",
+        "evals\\cases\\manuscript-audit-demo\\revised\\manuscript.md",
+        "--result",
+        "evals\\cases\\manuscript-audit-demo\\revised\\result.json",
+        "--output",
+        "evals\\cases\\manuscript-audit-demo\\revised\\check.json"
+      ],
+      "started_at": "2026-10-05T07:59:31.616400+00:00",
+      "ended_at": "2026-10-05T07:59:31.720853+00:00",
+      "exit_code": 0,
+      "stdout": "{\"check_passed\": true, \"failed_checks\": []}\n",
+      "stderr": "",
+      "expected_exit_code": 0
+    }
+  ]
+}

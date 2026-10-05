@@ -1,0 +1,235 @@
+{
+  "input_digests": {
+    "config": "2a78e19b911f9007c36963701def0487a6792c3fcad6980fce87b13c3d11f82d",
+    "data": "577c2142ef05c882ec6d06edd4896a45a005117baf2ec88ddf16093300a28e0b",
+    "experiment": "f5e2376e6f6929499a08b2e012b094d879c6c93a03c29ebbf77f8bfb18b3cca8"
+  },
+  "limits": [
+    "generated signals",
+    "one fixed split",
+    "one complete model",
+    "no component ablation"
+  ],
+  "metrics": {
+    "accuracy": 1.0,
+    "correct": 12,
+    "n_test": 12,
+    "n_train": 36
+  },
+  "model": "1nn",
+  "normalizer": {
+    "fit_sample_ids": [
+      "S001",
+      "S002",
+      "S003",
+      "S005",
+      "S006",
+      "S007",
+      "S009",
+      "S010",
+      "S011",
+      "S013",
+      "S014",
+      "S015",
+      "S017",
+      "S018",
+      "S019",
+      "S021",
+      "S022",
+      "S023",
+      "S025",
+      "S026",
+      "S027",
+      "S029",
+      "S030",
+      "S031",
+      "S033",
+      "S034",
+      "S035",
+      "S037",
+      "S038",
+      "S039",
+      "S041",
+      "S042",
+      "S043",
+      "S045",
+      "S046",
+      "S047"
+    ],
+    "mean": {
+      "feature_1": 65.1,
+      "feature_2": 5.050000000000001
+    },
+    "scale": {
+      "feature_1": 34.520621856121494,
+      "feature_2": 4.082687023681014
+    }
+  },
+  "predictions": [
+    {
+      "nearest_train_sample_id": "S003",
+      "patient_id": "P001",
+      "prediction": 1,
+      "sample_id": "S004",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S007",
+      "patient_id": "P002",
+      "prediction": 0,
+      "sample_id": "S008",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S011",
+      "patient_id": "P003",
+      "prediction": 1,
+      "sample_id": "S012",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S015",
+      "patient_id": "P004",
+      "prediction": 0,
+      "sample_id": "S016",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S019",
+      "patient_id": "P005",
+      "prediction": 1,
+      "sample_id": "S020",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S023",
+      "patient_id": "P006",
+      "prediction": 0,
+      "sample_id": "S024",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S027",
+      "patient_id": "P007",
+      "prediction": 1,
+      "sample_id": "S028",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S031",
+      "patient_id": "P008",
+      "prediction": 0,
+      "sample_id": "S032",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S035",
+      "patient_id": "P009",
+      "prediction": 1,
+      "sample_id": "S036",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S039",
+      "patient_id": "P010",
+      "prediction": 0,
+      "sample_id": "S040",
+      "truth": 0
+    },
+    {
+      "nearest_train_sample_id": "S043",
+      "patient_id": "P011",
+      "prediction": 1,
+      "sample_id": "S044",
+      "truth": 1
+    },
+    {
+      "nearest_train_sample_id": "S047",
+      "patient_id": "P012",
+      "prediction": 0,
+      "sample_id": "S048",
+      "truth": 0
+    }
+  ],
+  "synthetic": true,
+  "test_patient_ids": [
+    "P001",
+    "P002",
+    "P003",
+    "P004",
+    "P005",
+    "P006",
+    "P007",
+    "P008",
+    "P009",
+    "P010",
+    "P011",
+    "P012"
+  ],
+  "test_sample_ids": [
+    "S004",
+    "S008",
+    "S012",
+    "S016",
+    "S020",
+    "S024",
+    "S028",
+    "S032",
+    "S036",
+    "S040",
+    "S044",
+    "S048"
+  ],
+  "train_patient_ids": [
+    "P001",
+    "P002",
+    "P003",
+    "P004",
+    "P005",
+    "P006",
+    "P007",
+    "P008",
+    "P009",
+    "P010",
+    "P011",
+    "P012"
+  ],
+  "train_sample_ids": [
+    "S001",
+    "S002",
+    "S003",
+    "S005",
+    "S006",
+    "S007",
+    "S009",
+    "S010",
+    "S011",
+    "S013",
+    "S014",
+    "S015",
+    "S017",
+    "S018",
+    "S019",
+    "S021",
+    "S022",
+    "S023",
+    "S025",
+    "S026",
+    "S027",
+    "S029",
+    "S030",
+    "S031",
+    "S033",
+    "S034",
+    "S035",
+    "S037",
+    "S038",
+    "S039",
+    "S041",
+    "S042",
+    "S043",
+    "S045",
+    "S046",
+    "S047"
+  ]
+}

@@ -1,0 +1,302 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/1second1/personal-research-skills/blob/master/evals/schemas/run-record-v1.2.schema.json",
+  "title": "Personal Research Skills run record v1.2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "run_id",
+    "task_id",
+    "condition",
+    "repetition",
+    "created_at",
+    "repository_revision",
+    "model",
+    "generation",
+    "artifacts",
+    "digests",
+    "review",
+    "measurements"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.2"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "condition": {
+      "enum": [
+        "baseline",
+        "skill",
+        "profile",
+        "strong_prompt",
+        "peer_review"
+      ]
+    },
+    "repetition": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "repository_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "provider",
+        "name",
+        "version"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "temperature",
+        "seed",
+        "max_output_tokens",
+        "tools"
+      ],
+      "properties": {
+        "temperature": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "max_output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "reasoning_effort": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        },
+        "verbosity": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input",
+        "context",
+        "output",
+        "trace"
+      ],
+      "properties": {
+        "input": {
+          "type": "string",
+          "minLength": 1
+        },
+        "context": {
+          "type": "string",
+          "minLength": 1
+        },
+        "output": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trace": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "digests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input",
+        "context",
+        "output",
+        "trace"
+      ],
+      "properties": {
+        "input": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "context": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "output": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "trace": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unreviewed",
+            "reviewed",
+            "excluded"
+          ]
+        }
+      }
+    },
+    "measurements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wall_time_seconds",
+        "model_calls",
+        "input_tokens",
+        "output_tokens",
+        "cost",
+        "currency",
+        "cost_basis"
+      ],
+      "properties": {
+        "wall_time_seconds": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "model_calls": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "input_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "output_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "cost": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{3}$"
+        },
+        "cost_basis": {
+          "enum": [
+            "reported",
+            "estimated",
+            "unavailable"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "cost": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "currency": {
+                "type": "null"
+              },
+              "cost_basis": {
+                "const": "unavailable"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "currency": {
+                "type": "string"
+              },
+              "cost_basis": {
+                "enum": [
+                  "reported",
+                  "estimated"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

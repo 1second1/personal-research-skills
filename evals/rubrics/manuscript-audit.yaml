@@ -1,0 +1,10 @@
+required_headings:
+  - "## Summary"
+  - "## Findings"
+  - "## Checks"
+  - "## Repair Plan"
+  - "## Recheck"
+required_markers: []
+# Issue-card correctness and execution truth require evidence review.
+# A no-finding response must be possible; do not force finding markers.
+claim_headings: []

@@ -1,0 +1,46 @@
+{
+  "synthetic": true,
+  "model_service_calls": 0,
+  "steps": [
+    {
+      "argv": [
+        "C:\\personal research skill\\.venv\\Scripts\\python.exe",
+        "evals\\cases\\manuscript-audit-demo\\experiment.py",
+        "--data",
+        "evals\\cases\\manuscript-audit-demo\\data.csv",
+        "--config",
+        "evals\\cases\\manuscript-audit-demo\\original\\config.json",
+        "--output",
+        "evals\\cases\\manuscript-audit-demo\\original\\result.json"
+      ],
+      "started_at": "2026-10-05T07:57:15.779674+00:00",
+      "ended_at": "2026-10-05T07:57:15.879806+00:00",
+      "exit_code": 0,
+      "stdout": "{\"accuracy\": 1.0, \"correct\": 12, \"n_test\": 12, \"n_train\": 36}\n",
+      "stderr": "",
+      "expected_exit_code": 0
+    },
+    {
+      "argv": [
+        "C:\\personal research skill\\.venv\\Scripts\\python.exe",
+        "evals\\cases\\manuscript-audit-demo\\verify.py",
+        "--data",
+        "evals\\cases\\manuscript-audit-demo\\data.csv",
+        "--config",
+        "evals\\cases\\manuscript-audit-demo\\original\\config.json",
+        "--manuscript",
+        "evals\\cases\\manuscript-audit-demo\\original\\manuscript.md",
+        "--result",
+        "evals\\cases\\manuscript-audit-demo\\original\\result.json",
+        "--output",
+        "evals\\cases\\manuscript-audit-demo\\original\\check.json"
+      ],
+      "started_at": "2026-10-05T07:57:15.879806+00:00",
+      "ended_at": "2026-10-05T07:57:15.978784+00:00",
+      "exit_code": 1,
+      "stdout": "{\"check_passed\": false, \"failed_checks\": [\"patient_disjoint\", \"reported_accuracy_matches\"]}\n",
+      "stderr": "",
+      "expected_exit_code": 1
+    }
+  ]
+}
