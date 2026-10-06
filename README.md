@@ -4,38 +4,25 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](pyproject.toml)
 
-> Check paper claims, surface evidence conflicts, and turn ideas into testable questions.
+> Read papers critically. Audit your manuscript against code and results. Turn ideas into testable questions.
 
-`paper-reading` helps an agent examine a paper without silently resolving
-conflicting claims or treating an inference as a reported result. The repository
-also includes `manuscript-audit`, `research-question`, and `argument-analysis`, plus an optional
-Reasoning DNA profile and tools for composing and evaluating research contexts.
-It is experimental, not an autonomous paper reader or an automatically learning
-agent.
+Four standalone Agent Skills for **Codex and Claude Code**. Start with a paper,
+an AI/ML draft, a research idea, or an argument. Each Skill guides the agent to
+connect claims with evidence, keep uncertainty visible, and propose concrete
+next steps.
 
-**For authors:** `manuscript-audit` connects a specific manuscript concern to a
-deciding check, a bounded repair, and revision recheck. Start with the
-[complete synthetic teaching case](evals/cases/manuscript-audit-demo/README.md):
-the original run detects overlapping patients and inconsistent reporting;
-the revision is actually recomputed and rechecked. Reports are authored examples,
-not independent model outputs or proof of Skill superiority.
+[Install](#install-as-agent-skills) · [Audit a draft](#audit-a-draft) ·
+[Try the paper-reading demo](#60-second-skill-demo) · [中文说明](README.zh-CN.md)
 
-[中文说明](README.zh-CN.md)
+**v0.3.0 adds manuscript auditing:** locate a concern → check the evidence →
+repair the claim or experiment → recheck the revision.
+The [complete synthetic teaching case](evals/cases/manuscript-audit-demo/README.md)
+shows the workflow with saved checks and an honest lower score after repair.
+These are authored teaching reports, not independent model outputs.
 
-**An archived example:** The U-Mamba [source map](evals/cases/u-mamba-real-paper/source-map.md)
-records endoscopy DSC `0.6540` in Table 4 and `0.6504` in Section 3.4, both on
-p. 9. Both responses below noticed the discrepancy. The baseline gave the
-table value priority; the `paper-reading` response kept its cause unresolved
-and proposed checking the original PDF and evaluation output.
-
-[![U-Mamba source values and two archived responses: baseline prioritizes the table; paper-reading keeps the conflict open. Both notice the mismatch, and the Skill response still infers variability from undefined ±.](docs/assets/u-mamba-evidence-comparison.svg)](docs/case-studies/u-mamba-negative-result.md)
-
-The figure summarizes one pair archived on 20 September 2026, using a selective
-source map as input. Read the original [baseline](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
-and [Skill](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)
-responses: the Skill response says `±` is undefined, **but later still infers
-variability from it**. This example does not establish a general improvement.
-The [nine-run pilot](#60-second-skill-demo) and its limitations are summarized below.
+The Skills are experimental research aids. Your agent supplies model access
+and tools; the optional Python framework composes contexts and checks artifacts.
+It does not call a model or learn automatically.
 
 ## Install as Agent Skills
 
@@ -84,6 +71,25 @@ To use that profile, generate a combined context with the
 generated Markdown to your agent. The composer generates context; it does not
 call a model.
 
+## Audit a draft
+
+Attach your manuscript and any available code, configuration, and result files,
+then use this request after installing `manuscript-audit`:
+
+```text
+Use manuscript-audit to check manuscript.md against the supplied code and results.
+Locate each concern and separate confirmed errors, evidence gaps, and possible risks.
+Run feasible small checks, and record which checks were executed or remain unrun.
+Suggest the smallest repair and explain what evidence would close each issue.
+Do not edit the manuscript yet.
+```
+
+The report follows **Summary → Findings → Checks → Repair Plan → Recheck**.
+Inspect an [authored example report](skills/manuscript-audit/examples/expected-output.md)
+or follow the [complete teaching case](evals/cases/manuscript-audit-demo/README.md)
+from the original draft through repair and recheck. Missing files remain evidence
+limits; a check that cannot run is recorded as unrun.
+
 ## 60-second Skill demo
 
 After installing `paper-reading`, copy this prompt and checked excerpt into
@@ -123,6 +129,25 @@ semantic reviewer, not a general benchmark.
 [Read the short case study](docs/case-studies/u-mamba-negative-result.md) ·
 [inspect all raw outputs and run records](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
 
+<details>
+<summary>Archived response comparison, including the Skill's uncertainty mistake</summary>
+
+The U-Mamba [source map](evals/cases/u-mamba-real-paper/source-map.md) records
+endoscopy DSC `0.6540` in Table 4 and `0.6504` in Section 3.4, both on p. 9.
+Both responses below noticed the discrepancy. The baseline gave the table value
+priority; the `paper-reading` response kept its cause unresolved and proposed
+checking the original PDF and evaluation output.
+
+[![U-Mamba source values and two archived responses: baseline prioritizes the table; paper-reading keeps the conflict open. Both notice the mismatch, and the Skill response still infers variability from undefined ±.](docs/assets/u-mamba-evidence-comparison.svg)](docs/case-studies/u-mamba-negative-result.md)
+
+The figure summarizes one pair archived on 20 September 2026, using a selective
+source map as input. Read the original [baseline](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
+and [Skill](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)
+responses: the Skill response says `±` is undefined, **but later still infers
+variability from it**. This example does not establish a general improvement.
+
+</details>
+
 ## Why this project exists
 
 Most AI Skills are isolated prompts. This project treats a Skill as a capability with:
@@ -133,7 +158,7 @@ Most AI Skills are isolated prompts. This project treats a Skill as a capability
 - examples and regression evaluations;
 - a documented boundary.
 
-The first reference profile models a four-layer system:
+The first reference profile models a six-layer system:
 
 ```text
 Identity → Values → Thinking → Workflow → Preferences → Skills
@@ -147,7 +172,10 @@ What → Why → Assumption → Boundary → Connection → Application → Valu
 
 ## Current status
 
-`v0.2 — Standalone research Skills with optional Reasoning DNA composition`
+`v0.3.0 — Manuscript auditing, repair, and revision recheck`
+
+See [release notes](https://github.com/1second1/personal-research-skills/releases/tag/v0.3.0)
+and the [changelog](CHANGELOG.md) for the version's scope and limitations.
 
 Included today:
 
@@ -169,11 +197,18 @@ Included today:
 
 The runtime currently generates a composed execution context. It does not call a model, store private memory, or claim to learn automatically.
 
-This checkout adds claim/evidence matching and uncertainty scope to paper-reading,
-plus the executed synthetic audit case and run-record v1.2. No new release tag or
-model-quality result is implied. The [three-arm evaluation protocol](evals/cases/manuscript-audit-pilot/preregistration.md)
-and [budget proposal](evals/cases/manuscript-audit-pilot/budget-proposal.md) are
-prepared before generation; actual evaluation waits for material/model/budget approval.
+This release adds claim/evidence matching and uncertainty scope to paper-reading,
+the executed synthetic audit case, and run-record v1.2. The manuscript-audit
+rules now distinguish undefined statistics from numerical coincidences, component
+necessity from observed success, and tool limits from missing source inputs.
+Rechecks explicitly correct unsupported prior allegations and close only the
+concern supported by new evidence. These rule changes do not establish a general
+model-quality improvement or a final ranking among review methods.
+
+The archived [evaluation protocol](evals/cases/manuscript-audit-pilot/preregistration.md)
+and [budget proposal](evals/cases/manuscript-audit-pilot/budget-proposal.md) document
+preparation, not completion or authorization of future runs. Private evaluation
+packets are not included in this release.
 
 ## Framework development
 
@@ -248,6 +283,7 @@ personal-research-skills/
 ├── scripts/                  # backward-compatible wrappers
 ├── skills/
 │   ├── paper-reading/
+│   ├── manuscript-audit/
 │   ├── research-question/
 │   └── argument-analysis/
 ├── evals/

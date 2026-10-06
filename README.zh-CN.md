@@ -1,27 +1,20 @@
 # Personal Research Skills 中文说明
 
-> 核查论文主张，标出证据冲突，把研究想法变成可检验的问题。
+> 有依据地读论文，对照代码与结果审查稿件，把研究想法变成可检验的问题。
 
-`paper-reading` 帮助 Agent 阅读论文时保留相互冲突的主张，不把推断当作论文报告的结果。
-仓库还包含 `manuscript-audit`、`research-question`、`argument-analysis`，以及可选的 Reasoning DNA
-配置和研究上下文组合、评测工具。这是实验性项目，不是自动读论文或自动学习的 Agent。
+四个可独立安装到 **Codex 和 Claude Code** 的科研 Agent Skill。
+从手头的论文、AI／机器学习稿件、研究想法或论证文章开始，让 Agent 将主张与证据对应，
+保留不确定性，并给出具体的下一步。
 
-**作者投稿前审查：** 新增 `manuscript-audit`，把具体位置、判断依据、最小检查、修复和复查连起来。
-先看[完整合成教学案例](evals/cases/manuscript-audit-demo/README.md)：原版本实际检出患者重叠和数值冲突，
-修复后重新计算并运行同一检查。报告在实现过程中整理，不是独立评测模型输出，也不能证明 Skill 比其他提示更好。
+[安装](#安装到-codex-和-claude-code) · [审查自己的稿件](#审查自己的稿件) ·
+[60 秒论文阅读演示](#60-秒-skill-演示) · [English](README.md)
 
-**归档实例：** U-Mamba 的[来源映射](evals/cases/u-mamba-real-paper/source-map.md)
-记录了第 9 页两处不同的内镜 DSC：Table 4 为 `0.6540`，Section 3.4 为 `0.6504`。
-两份回答都发现了差异。基础回答优先采用表格值；`paper-reading` 回答保留冲突，
-没有确定原因，并提出核对原始 PDF 和仓库评测输出。
+**v0.3.0 新增稿件审查：** 定位质疑 → 核对证据 → 修复表述或实验 → 复查修订稿。
+[完整合成教学案例](evals/cases/manuscript-audit-demo/README.md)保存了实际检查和修复后的较低成绩。
+报告是教学示例，不是独立模型评测输出。
 
-[![U-Mamba 来源数值与两份归档回答对照：基础回答优先采用表格值，paper-reading 保留冲突；两者都发现差异，Skill 回答仍从未定义的 ± 推断了变异性。](docs/assets/u-mamba-evidence-comparison.svg)](docs/case-studies/u-mamba-negative-result.md)
-
-图中仅概括 2026 年 9 月 20 日归档的一对回答，输入是选择性改述的来源映射。
-可直接查看[基础回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
-和 [Skill 回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)：
-Skill 回答虽然指出 `±` 未定义，**后文仍据此推断了变异性**。
-这个实例不能证明普遍提升；下文列出九次运行的小型实验及其局限。
+这些 Skill 是实验性的研究辅助工具。宿主 Agent 提供模型和工具；可选 Python 框架用于
+组合上下文和检查产物，本身不调用模型，也不自动学习。
 
 ## 安装到 Codex 和 Claude Code
 
@@ -62,6 +55,23 @@ npx skills add 1second1/personal-research-skills --skill '*' --agent codex --age
 Reasoning DNA，需要用下文的 [`research-skills compose`](#框架开发) 生成组合
 上下文，再把生成的 Markdown 提供给 Agent。组合器只生成上下文，不调用模型。
 
+## 审查自己的稿件
+
+安装 `manuscript-audit` 后，提供稿件和已有的代码、配置、结果文件，再复制以下请求：
+
+```text
+使用 manuscript-audit，对照提供的代码和结果审查 manuscript.md。
+定位每项质疑，区分确认错误、证据缺口和可能风险。
+执行可行的小型检查，记录哪些已执行、哪些未执行。
+给出最小修复，并说明什么证据能够关闭每项问题。
+先不要修改原稿。
+```
+
+报告按 **Summary → Findings → Checks → Repair Plan → Recheck** 组织。
+可以先看[教学报告示例](skills/manuscript-audit/examples/expected-output.md)，或沿
+[完整教学案例](evals/cases/manuscript-audit-demo/README.md)查看原稿、修复和复查。
+缺失文件按证据限制处理，无法运行的检查保留为未执行。
+
 ## 60 秒 Skill 演示
 
 安装 `paper-reading` 后，把下面的请求和已核对的摘录一起复制到 Codex 或
@@ -98,9 +108,29 @@ Profile 条件使用下文的组合器；只安装 Skill 不会复现这一条�
 [阅读完整案例文章](docs/case-studies/u-mamba-negative-result.md) ·
 [检查全部原始输出与运行记录](evals/cases/u-mamba-real-paper/comparison-2026-09-20/README.md)
 
+<details>
+<summary>查看归档回答对照，以及 Skill 对不确定性的错误解释</summary>
+
+U-Mamba 的[来源映射](evals/cases/u-mamba-real-paper/source-map.md)记录了第 9 页两处不同的
+内镜 DSC：Table 4 为 `0.6540`，Section 3.4 为 `0.6504`。两份回答都发现了差异。
+基础回答优先采用表格值；`paper-reading` 回答保留冲突，没有确定原因，并提出核对
+原始 PDF 和仓库评测输出。
+
+[![U-Mamba 来源数值与两份归档回答对照：基础回答优先采用表格值，paper-reading 保留冲突；两者都发现差异，Skill 回答仍从未定义的 ± 推断了变异性。](docs/assets/u-mamba-evidence-comparison.svg)](docs/case-studies/u-mamba-negative-result.md)
+
+图中仅概括 2026 年 9 月 20 日归档的一对回答，输入是选择性改述的来源映射。
+可直接查看[基础回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/baseline-r1.md)
+和 [Skill 回答](evals/cases/u-mamba-real-paper/comparison-2026-09-20/outputs/skill-r1.md)。
+Skill 回答虽然注明 `±` 未定义，**后文仍从它推断了变异性**；这个实例不能证明普遍改进。
+
+</details>
+
 ## 当前版本
 
-`v0.2 — 独立科研 Skill 与可选的 Reasoning DNA 组合`
+`v0.3.0 — 稿件审查、修复与修订稿复查`
+
+本版范围和限制见 [Release](https://github.com/1second1/personal-research-skills/releases/tag/v0.3.0)
+与[更新记录](CHANGELOG.md)。
 
 当前包含：
 
@@ -120,10 +150,14 @@ Profile 条件使用下文的组合器；只安装 Skill 不会复现这一条�
 
 当前 Runtime 只负责生成组合后的执行上下文，不调用模型、不保存私有记忆，也不声称已经具备自动学习能力。
 
-本轮开发增强了论文主张分类、机制追问和不确定性边界，新增合成审查案例及运行记录 v1.2。
-没有发布新 tag，也没有新模型效果结论。
-[三组比较规则](evals/cases/manuscript-audit-pilot/preregistration.md)与
-[预算提案](evals/cases/manuscript-audit-pilot/budget-proposal.md)先准备；材料、模型和预算确认前不启动评测。
+本版增强了论文主张分类、机制追问和不确定性边界，新增合成审查案例及运行记录 v1.2。
+稿件审查规则明确区分未定义统计量与数值巧合、组件必要性与观察到的成功，以及工具限制与
+源材料缺失；复查时明确纠正旧报告中的无依据指控，只关闭新证据支持关闭的问题。
+这些规则修改不能证明普遍的模型质量提升，也没有给不同审查方法确定最终排名。
+
+归档的[三组比较规则](evals/cases/manuscript-audit-pilot/preregistration.md)与
+[预算提案](evals/cases/manuscript-audit-pilot/budget-proposal.md)记录准备工作，不代表后续实验
+已完成或已获授权。私有评测包不包含在本版发布中。
 
 ## 框架开发
 

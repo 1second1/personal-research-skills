@@ -4,6 +4,27 @@ Notable changes to the research Skills and supporting framework.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-06
+
+### Added
+
+- `manuscript-audit`, the fourth standalone Skill, for evidence-grounded AI/ML
+  manuscript checks, bounded repairs, and revision recheck.
+- An executed synthetic teaching case with original failures, a repaired run,
+  input digests, and negative checks; its reports are authored examples.
+- Backward-compatible run-record v1.2, evaluation-material sealing checks,
+  and manuscript-audit structural evaluation.
+
+### Changed
+
+- Paper-reading now maps claim types to evidence and preserves uncertainty scope.
+- Manuscript-audit distinguishes numerical coincidences from definitions,
+  component success from necessity, and tool limits from source reproducibility.
+  Rechecks correct unsupported prior allegations and scope issue closure.
+- English and Chinese READMEs lead with installation and concrete tasks, add a
+  copyable author-audit request, and retain historical failures in an expandable
+  comparison. Private evaluation packets are excluded from the release.
+
 ### Fixed
 
 - Composed output files now use LF newlines on Windows as required by run-record

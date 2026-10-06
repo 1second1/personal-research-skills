@@ -1,6 +1,6 @@
 [project]
 name = "personal-research-skills"
-version = "0.2.0"
+version = "0.3.0"
 description = "Composable, evidence-grounded research methodology for reusable AI Skills"
 readme = "README.md"
 requires-python = ">=3.10"

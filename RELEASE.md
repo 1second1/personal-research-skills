@@ -3,7 +3,7 @@
 Before creating a release:
 
 1. Check that `pyproject.toml` version and the proposed Git tag match.
-2. In a clean temporary project, list and install all three Skills for Codex
+2. In a clean temporary project, list and install all four Skills for Codex
    and Claude Code using the command in each README; inspect the actual target
    files and run the documented example prompt. This is a maintainer smoke
    test, not independent user validation.
