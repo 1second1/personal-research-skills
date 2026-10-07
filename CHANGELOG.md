@@ -4,6 +4,14 @@ Notable changes to the research Skills and supporting framework.
 
 ## [Unreleased]
 
+### Documentation and community
+
+- Add a bilingual, copyable first-audit walkthrough and an English/Chinese
+  share kit grounded in the public synthetic teaching case.
+- Add a workflow diagram and a 1280 × 640 repository preview image.
+- Surface single-Skill installation and feedback links in both READMEs;
+  add a usage-feedback form and make bug-report file paths optional.
+
 ## [0.3.0] - 2026-10-06
 
 ### Added

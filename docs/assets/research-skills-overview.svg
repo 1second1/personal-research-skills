@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520" role="img" aria-labelledby="title description">
+  <title id="title">Personal Research Skills: check the claim, keep the evidence</title>
+  <desc id="description">Four standalone research Agent Skills for Codex and Claude Code. Manuscript auditing follows a sequence: locate a concern, check supplied evidence, repair the claim or experiment, and recheck the revision. This is a workflow diagram, not a benchmark result.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4.5 L0 9" fill="none" stroke="#247c79" stroke-width="2"/></marker>
+  </defs>
+  <rect width="1280" height="520" fill="#f5f7fa"/>
+  <g font-family="Segoe UI, Arial, Helvetica, sans-serif" fill="#172338">
+    <text x="64" y="120" font-size="80" font-weight="700">Check the claim.</text>
+    <text x="64" y="218" font-size="80" font-weight="700">Keep the evidence.</text>
+    <path d="M64 256 H1216" stroke="#d6deea" stroke-width="1"/>
+    <g font-size="43" font-weight="600">
+      <text x="64" y="340">Locate</text>
+      <text x="358" y="340">Check</text>
+      <text x="649" y="340">Repair</text>
+      <text x="951" y="340" fill="#216d6b">Recheck</text>
+    </g>
+    <g stroke="#247c79" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M242 324 H310"/>
+      <path d="M526 324 H601"/>
+      <path d="M824 324 H903"/>
+    </g>
+    <text x="64" y="441" font-size="32" fill="#526176">Personal Research Skills · Codex &amp; Claude Code</text>
+    <text x="64" y="484" font-size="25" fill="#526176">Paper reading · Manuscript audits · Research questions · Argument analysis</text>
+  </g>
+</svg>

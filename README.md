@@ -4,6 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB.svg)](pyproject.toml)
 
+[![Check the claim. Keep the evidence. A manuscript audit locates concerns, checks evidence, proposes repairs, and rechecks revisions. Workflow diagram, not a benchmark.](docs/assets/research-skills-overview.svg)](docs/quickstart.md)
+
 > Read papers critically. Audit your manuscript against code and results. Turn ideas into testable questions.
 
 Four standalone Agent Skills for **Codex and Claude Code**. Start with a paper,
@@ -11,7 +13,7 @@ an AI/ML draft, a research idea, or an argument. Each Skill guides the agent to
 connect claims with evidence, keep uncertainty visible, and propose concrete
 next steps.
 
-[Install](#install-as-agent-skills) · [Audit a draft](#audit-a-draft) ·
+[Try one audit](docs/quickstart.md) · [Install](#install-as-agent-skills) · [Audit a draft](#audit-a-draft) ·
 [Try the paper-reading demo](#60-second-skill-demo) · [中文说明](README.zh-CN.md)
 
 **v0.3.0 adds manuscript auditing:** locate a concern → check the evidence →
@@ -25,6 +27,15 @@ and tools; the optional Python framework composes contexts and checks artifacts.
 It does not call a model or learn automatically.
 
 ## Install as Agent Skills
+
+Start with **one Skill** if you want to audit an AI/ML draft:
+
+```text
+npx skills add 1second1/personal-research-skills --skill manuscript-audit --agent codex --agent claude-code --copy --yes
+```
+
+[Try a copyable teaching excerpt](docs/quickstart.md) to see the reporting style,
+then use your own manuscript. You need a working host agent, Node.js and `npx`.
 
 To install these Skills into an already working Codex or Claude Code setup,
 you need Node.js and `npx`, but no project-specific Python installation or API
@@ -340,6 +351,15 @@ general result.
 3. Add provider-neutral model execution, then PDF, repository, and experiment adapters after the feedback regression.
 
 ## Contributing
+
+Have a real use case? [Share what helped or failed](https://github.com/1second1/personal-research-skills/issues/new?template=usage_feedback.yml).
+[Report a bug](https://github.com/1second1/personal-research-skills/issues/new?template=bug_report.yml)
+or [propose a Skill](https://github.com/1second1/personal-research-skills/issues/new?template=skill_proposal.yml).
+English and Chinese feedback are welcome. Use public or synthetic excerpts;
+keep unpublished drafts, credentials and participant data private.
+
+To introduce the project to others, use the [English and Chinese share kit](docs/share-kit.md).
+It includes copyable posts, the source case, and a repository preview image.
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md), [the detailed contribution guide](docs/contributing.md), [SECURITY.md](SECURITY.md), [RELEASE.md](RELEASE.md), and [CHANGELOG.md](CHANGELOG.md) before opening a pull request.
 

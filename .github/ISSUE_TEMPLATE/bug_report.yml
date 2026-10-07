@@ -3,13 +3,29 @@ description: Report a reproducible problem in a Skill, validator, evaluator, or 
 title: "bug: "
 labels: [bug]
 body:
+  - type: markdown
+    attributes:
+      value: Share public or synthetic examples only. Keep unpublished drafts, API keys, and participant data private. English or 中文 welcome.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Skill or affected area
+      options:
+        - manuscript-audit
+        - paper-reading
+        - research-question
+        - argument-analysis
+        - Installation or documentation
+        - Framework CLI or evaluation tools
+    validations:
+      required: true
   - type: input
     id: path
     attributes:
-      label: Affected path
+      label: Affected path (optional)
       placeholder: skills/paper-reading/SKILL.md
     validations:
-      required: true
+      required: false
   - type: textarea
     id: command
     attributes:

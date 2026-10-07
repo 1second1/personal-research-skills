@@ -1,12 +1,14 @@
 # Personal Research Skills 中文说明
 
+[![核查主张，保留证据。稿件审查依次定位质疑、检查证据、提出修复和复查修订稿。这是工作流程示意，不是评测成绩。](docs/assets/research-skills-overview.svg)](docs/quickstart.md#中文试用)
+
 > 有依据地读论文，对照代码与结果审查稿件，把研究想法变成可检验的问题。
 
 四个可独立安装到 **Codex 和 Claude Code** 的科研 Agent Skill。
 从手头的论文、AI／机器学习稿件、研究想法或论证文章开始，让 Agent 将主张与证据对应，
 保留不确定性，并给出具体的下一步。
 
-[安装](#安装到-codex-和-claude-code) · [审查自己的稿件](#审查自己的稿件) ·
+[先试一次审查](docs/quickstart.md#中文试用) · [安装](#安装到-codex-和-claude-code) · [审查自己的稿件](#审查自己的稿件) ·
 [60 秒论文阅读演示](#60-秒-skill-演示) · [English](README.md)
 
 **v0.3.0 新增稿件审查：** 定位质疑 → 核对证据 → 修复表述或实验 → 复查修订稿。
@@ -17,6 +19,15 @@
 组合上下文和检查产物，本身不调用模型，也不自动学习。
 
 ## 安装到 Codex 和 Claude Code
+
+想先审查 AI／机器学习稿件，可以只安装 `manuscript-audit`：
+
+```text
+npx skills add 1second1/personal-research-skills --skill manuscript-audit --agent codex --agent claude-code --copy --yes
+```
+
+然后复制[教学摘录与请求](docs/quickstart.md#中文试用)试用，再换成自己的稿件。
+需要已能正常使用的宿主 Agent、Node.js 和 `npx`。
 
 若 Codex 或 Claude Code 已能正常调用模型，安装这四个 Skill 不需要为本项目额外安装
 Python 或配置 API Key；宿主 Agent 本身仍须具备模型访问能力。安装器需要 Node.js
@@ -226,5 +237,15 @@ Table 4 的 `0.6540` 与正文的 `0.6504` 冲突；它是人工核验的参考�
 1. 对已发布的真实论文运行进行第二位独立评审并保留分歧；
 2. 针对 `±` 被错误解释为标准差的问题建立可审查、可版本化反馈，并回归测试；
 3. 在反馈回归后接通用模型执行层，再接 PDF、仓库和实验执行适配器。
+
+## 反馈与分享
+
+[反馈实际使用体验](https://github.com/1second1/personal-research-skills/issues/new?template=usage_feedback.yml) ·
+[报告问题](https://github.com/1second1/personal-research-skills/issues/new?template=bug_report.yml) ·
+[提出 Skill 建议](https://github.com/1second1/personal-research-skills/issues/new?template=skill_proposal.yml)
+
+欢迎中文或英文反馈，说明哪项任务有帮助、哪里误判或难以使用。只分享公开或合成摘录，
+未发表稿件、凭据与参与者数据请保留在本地。
+[中英文分享素材](docs/share-kit.md)提供可复制介绍、案例来源和仓库预览图。
 
 英文主说明请阅读 [README.md](README.md)。

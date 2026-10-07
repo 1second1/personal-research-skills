@@ -1,0 +1,36 @@
+name: Usage feedback / 使用反馈
+description: Share a useful result, a misleading answer, or a difficult first step. English or 中文 welcome.
+title: "usage: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tell us what helped or failed in a real task. Share only public or synthetic excerpts; keep unpublished manuscripts, credentials, and participant data private. No benchmark or code contribution is required.
+        欢迎中文反馈具体帮助、误判或难以使用的步骤。只分享公开或合成摘录。
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill or first-use step / Skill 或使用步骤
+      options:
+        - manuscript-audit
+        - paper-reading
+        - research-question
+        - argument-analysis
+        - Installation or documentation
+    validations:
+      required: true
+  - type: textarea
+    id: experience
+    attributes:
+      label: Your task and what happened / 任务与实际情况
+      description: What were you trying to do, and which part helped, failed, or confused you?
+      placeholder: I audited a draft. The issue was located correctly, but the repair needed a missing input.
+    validations:
+      required: true
+  - type: textarea
+    id: excerpt
+    attributes:
+      label: Public or synthetic excerpt (optional) / 可选摘录
+      description: A small request/response excerpt or public link is enough. Mark your host agent and model if known; do not guess hidden settings.
+    validations:
+      required: false
